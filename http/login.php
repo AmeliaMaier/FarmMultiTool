@@ -1,26 +1,32 @@
 <?php
-session_start();
-require_once "./../php_app/db.php";
-if(isset($_SESSION['user_id'])!="") {
-header("Location: dashboard.php");
-}
-if (isset($_POST['login'])) {
-$username = mysqli_real_escape_string($conn, $_POST['email']);
-$password = mysqli_real_escape_string($conn, $_POST['password']);
+try {
+    session_start();
+    require_once "./../php_app/db.php";
+    if (isset($_SESSION['user_id']) != "") {
+        header("Location: dashboard.php");
+    }
+    if (isset($_POST['login'])) {
+        $username = $_POST['email'];
+        $password = $_POST['password'];
 
-if(strlen($password) < 6) {
-$password_error = "Password must be minimum of 6 characters";
-}  
-include "./../php_app/password_operations.php";
-$result = compare_passwords($password, get_password_details($username));
-if ($result['success']) {
-$_SESSION['user_id'] = $result['user_id'];
-$_SESSION['user_name'] = $result['user_name'];
-$_SESSION['user_type'] = $result['user_type'];
-header("Location: dashboard.php");
-} else {
-$error_message = "Incorrect Username or Password!!!";
-}
+        if (strlen($password) < 6) {
+            $password_error = "Password must be minimum of 6 characters";
+        }
+
+        include "./../php_app/password_operations.php";
+        $result = compare_passwords($password, get_password_details($username));
+
+        if ($result['success']) {
+            $_SESSION['user_id'] = $result['user_id'];
+            $_SESSION['user_name'] = $result['user_name'];
+            $_SESSION['user_type'] = $result['user_type'];
+            header("Location: dashboard.php");
+        } else {
+            $error_message = "Incorrect Username or Password!!!";
+        }
+    }
+}catch(Exception $e) {
+    echo 'Message: ' .$e->getMessage();
 }
 ?>
 <!DOCTYPE html>
