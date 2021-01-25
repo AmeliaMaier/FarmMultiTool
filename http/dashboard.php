@@ -13,7 +13,7 @@ try{
 <head>
     <meta charset="UTF-8">
     <title>User Info Dashboard | Tutsmake.com</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
