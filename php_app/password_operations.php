@@ -1,7 +1,7 @@
 <?php
 return;
 
-function get_password_details($username){
+function get_password_details($user_name){
     require_once "db.php";
     $stmt = $conn->prepare("SELECT user_logins.id as user_id, 
                    user_password, 
@@ -9,9 +9,11 @@ function get_password_details($username){
                    type as user_type 
                    FROM user_logins 
                    INNER JOIN user_type ON user_logins.id = user_type.user_id 
-                   WHERE user_name = :username
+                   WHERE user_name = :user_name
+                   AND user_logins.deleted_dt IS NULL 
+                   AND user_type.deleted_dt IS NULL
                    LIMIT 1;");
-    $stmt->bindParam(':username', $username); 
+    $stmt->bindParam(':user_name', $user_name);
     $stmt->execute();
     
      /* bind result variables */
@@ -20,7 +22,7 @@ function get_password_details($username){
     /* fetch values */
     while ($stmt->fetch()) {
         return array("id"=>$id,
-                    "username"=>$username, 
+                    "user_name"=>$user_name,
                     "password"=>$password, 
                     "salt"=>$salt,
                     "user_type"=>$user_type,
@@ -33,8 +35,16 @@ function get_password_details($username){
 function compare_passwords($password, $db_record){
     if(!$db_record['success']){
         /* nothing was found */
-        return $db_record;
+        return array("success"=>false);
     }
-    return;
+    if (hash_hmac("sha256", $password, $db_record['salt']) === $db_record['password'])
+        /* user_name found, password matches */
+        return array("success"=>true,
+                    "id"=>$db_record["id"],
+                    "username"=>$db_record["username"],
+                    "user_type"=>$db_record["user_type"]);
+    /* user_name found, password not match */
+    return array("success"=>false);
 }
+
 ?>

@@ -14,8 +14,9 @@ $password_error = "Password must be minimum of 6 characters";
 include "./../php_app/password_operations.php";
 $result = compare_passwords($password, get_password_details($username));
 if ($result['success']) {
-$_SESSION['user_id'] = $result['id'];
-$_SESSION['user_name'] = $result['name'];
+$_SESSION['user_id'] = $result['user_id'];
+$_SESSION['user_name'] = $result['user_name'];
+$_SESSION['user_type'] = $result['user_type'];
 header("Location: dashboard.php");
 } else {
 $error_message = "Incorrect Username or Password!!!";
