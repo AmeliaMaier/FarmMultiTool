@@ -29,8 +29,8 @@ try {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Simple Login Form in PHP with Validation | Tutsmake.com</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Simple Login Form in PHP with Validation</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 <div class="container">
@@ -44,7 +44,7 @@ try {
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group ">
                     <label>Username</label>
-                    <input type="text" name="user_name" class="form-control" value="" maxlength="30" required="">
+                    <input type="text" name="user_name" class="form-control" value="" maxlength="50" required="">
                     <span class="text-danger"><?php if (isset($username_error)) echo $username_error; ?></span>
                 </div>
                 <div class="form-group">
