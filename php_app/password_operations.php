@@ -18,11 +18,11 @@ function get_password_details($user_name){
     $stmt->execute();
 
     /* bind result variables */
-    $stmt->bind_result($id, $password, $salt, $user_type);
+    $stmt->bind_result($user_id, $password, $salt, $user_type);
 
     /* fetch values */
     while ($stmt->fetch()) {
-        return array("id"=>$id,
+        return array("user_id"=>$user_id,
             "user_name"=>$user_name,
             "password"=>$password,
             "salt"=>$salt,
@@ -41,8 +41,8 @@ function compare_passwords($password, $db_record){
     if (hash_hmac("sha256", $password, $db_record['salt']) === $db_record['password'])
         /* user_name found, password matches */
         return array("success"=>true,
-            "id"=>$db_record["id"],
-            "username"=>$db_record["username"],
+            "user_id"=>$db_record["user_id"],
+            "user_name"=>$db_record["user_name"],
             "user_type"=>$db_record["user_type"]);
     /* user_name found, password not match */
     return array("success"=>false);
