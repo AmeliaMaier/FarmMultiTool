@@ -5,7 +5,7 @@ try{
         header("Location: login.php");
     }
     if (isset($_POST['logout'])) {
-        session_destroy();
+        unset($_SESSION['user_id']);
         header('Location: login.php');
     }
 }catch(Exception $e) {
