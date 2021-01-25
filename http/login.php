@@ -1,6 +1,6 @@
 <?php
 try {
-    session_start();
+    session_start(['cookie_lifetime' => 43200]);
     require_once "./../php_app/db.php";
     if (isset($_SESSION['user_id']) != "") {
         header("Location: dashboard.php");
@@ -11,7 +11,7 @@ try {
 
         include "./../php_app/password_operations.php";
         $result = compare_passwords($password, get_password_details($user_name));
-        // $result = array('success'=>true);
+
         if ($result['success']) {
             $_SESSION['user_id'] = $result['user_id'];
             $_SESSION['user_name'] = $result['user_name'];
