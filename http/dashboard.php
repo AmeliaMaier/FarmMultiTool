@@ -4,10 +4,10 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
-    if (isset($_POST['logout'])) {
-        unset($_SESSION);
-        header('Location: login.php');
-    }
+//    if (isset($_POST['logout'])) {
+//        unset($_SESSION);
+//        header('Location: login.php');
+//    }
 }catch(Exception $e) {
     $error_message = $e.getMessage();
 }
@@ -28,7 +28,8 @@ try{
                 <div class="card-body">
                     <h5 class="card-title">Name :- <?php echo $_SESSION['user_name']?></h5>
                     <p class="card-text">Account_Type :- <?php echo $_SESSION['user_type']?></p>
-                    <input type="submit" class="btn btn-primary" name="logout" value="Logout">
+<!--                    <input type="submit" class="btn btn-primary" name="logout" value="Logout">-->
+                    <a href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
