@@ -4,8 +4,9 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+
 }catch(Exception $e) {
-    echo .$e->getMessage();
+    $error_message = $e.getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -17,13 +18,13 @@ try{
 </head>
 <body>
 <div class="container">
+    <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Name :- <?php echo $_SESSION['user_name']?></h5>
-                    <p class="card-text">Email :- <?php echo $_SESSION['user_email']?></p>
-                    <p class="card-text">Mobile :- <?php echo $_SESSION['user_mobile']?></p>
+                    <p class="card-text">Account_Type :- <?php echo $_SESSION['user_type']?></p>
                     <a href="logout.php" class="btn btn-primary">Logout</a>
                 </div>
             </div>
