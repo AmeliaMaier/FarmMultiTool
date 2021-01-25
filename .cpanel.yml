@@ -3,3 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/farmmult/public_html/
     - /bin/cp -R http/* $DEPLOYPATH
+    - export DEPLOYPATH=/home/farmmult/php_app/
+    - /bin/cp -R php_app/* $DEPLOYPATH
