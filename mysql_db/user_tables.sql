@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `user_logins` (
     `user_password` text NOT NULL,
     `user_salt` text NOT NULL,
     `created_dt` date NOT NULL,
-    `deleted_dt` date NOT NULL,
+    `deleted_dt` date DEFAULT NULL,
     PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `user_type` (
     `user_id` bigint(20) NOT NULL,
     `type` text NOT NULL,
     `created_dt` date NOT NULL,
-    `deleted_dt` date NOT NULL,
+    `deleted_dt` date DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `fk_user_type_user_logins` (`user_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
