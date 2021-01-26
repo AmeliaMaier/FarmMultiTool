@@ -25,9 +25,8 @@ try{
                 <div class="card-body">
                     <h5 class="card-title">Name :- <?php echo $_SESSION['user_name']?></h5>
                     <p class="card-text">Account_Type :- <?php echo $_SESSION['user_type']?></p>
-                    <!--                    <input type="submit" class="btn btn-primary" name="logout" value="Logout">-->
-                    <a href="logout.php">Logout</a>
-                    <a href="dashboard.php">Dashboard</a>
+                    <p <a href="logout.php">Logout</a> </p>
+                    <p <a href="dashboard.php">Dashboard</a> </p>
                 </div>
             </div>
         </div>
@@ -35,7 +34,7 @@ try{
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <a href="source_table.php">Add Data Source</a>
+                <p <a href="source_table.php">Add Data Source</a> </p>
                 </div>
         </div>
     </div>
