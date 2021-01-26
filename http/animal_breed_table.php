@@ -23,10 +23,10 @@ try{
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Name :- <?php echo $_SESSION['user_name']?></h5>
-                    <p class="card-text">Account_Type :- <?php echo $_SESSION['user_type']?></p>
-                    <p <a href="logout.php">Logout</a> </p>
-                    <p <a href="dashboard.php">Dashboard</a> </p>
+                    <h5 class="card-title">Name : <?php echo $_SESSION['user_name']?></h5>
+                    <p> class="card-text">Account_Type : <?php echo $_SESSION['user_type']?></p>
+                    <p> <a href="logout.php">Logout</a> </p>
+                    <p> <a href="dashboard.php">Dashboard</a> </p>
                 </div>
             </div>
         </div>
@@ -34,8 +34,8 @@ try{
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <p <a href="source_table.php">Add Data Source</a> </p>
-                <p <a href="animal_species_table.php">Add Animal Species</a> </p>
+                <p> <a href="source_table.php">Add Data Source</a> </p>
+                <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
             </div>
         </div>
     </div>
