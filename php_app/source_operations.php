@@ -2,6 +2,7 @@
 return;
 
 function add_source($source_type, $address_isbn, $title, $user_id){
+    include "db.php";
     if (source_exists($address_isbn)){
         return array("success"=>false, "error"=>"A data source already exists with address/isbn ".$address_isbn);
     }
@@ -12,7 +13,6 @@ function add_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function source_exists($address_isbn){
-    include "db.php";
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'SELECT * 
@@ -20,12 +20,12 @@ function source_exists($address_isbn){
                 WHERE `address_isbn` = ?');
     $stmt->bind_param('s', $address_isbn);
     $stmt->execute();
-    $count = $stmt -> store_result() -> num_rows;
+    $stmt -> store_result();
+    $count = $stmt -> num_rows;
     return $count > 0;
 }
 
 function insert_source($source_type, $address_isbn, $title, $user_id){
-    include "db.php";
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'INSERT INTO `core_sources`
