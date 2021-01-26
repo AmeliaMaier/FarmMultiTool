@@ -12,6 +12,8 @@ CREATE TABLE `farmmult_core`.`core_sources`
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `core_sources`
     ADD CONSTRAINT `user_type_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_sources` CHANGE `address_isbn` `address_isbn` VARCHAR(250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `core_sources` ADD UNIQUE( `address_isbn`);
 
 CREATE TABLE `farmmult_core`.`core_animal_species`
 (

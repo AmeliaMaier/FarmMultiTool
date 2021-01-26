@@ -13,7 +13,7 @@ try{
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Info Dashboard | Tutsmake.com</title>
+    <title>User Info Dashboard</title>
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>

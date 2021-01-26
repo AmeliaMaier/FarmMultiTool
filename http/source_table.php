@@ -4,7 +4,23 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    if (isset($_POST['add'])) {
+        $source_type = $_POST['source_type'];
+        $address_isbn = $_POST['address_isbn'];
+        $title = $_POST['title'];
 
+        include "./../php_app/source_operations.php";
+        $result = add_source($source_type, $address_isbn, $title, $_SESSION['user_id']);
+
+        if ($result['success']) {
+            $_SESSION['user_id'] = $result['user_id'];
+            $_SESSION['user_name'] = $result['user_name'];
+            $_SESSION['user_type'] = $result['user_type'];
+            header("Location: dashboard.php");
+        } else {
+            $error_message = "Incorrect Username or Password!!!";
+        }
+    }
 }catch(Exception $e) {
     $error_message = $e.getMessage();
 }
@@ -18,7 +34,6 @@ try{
 </head>
 <body>
 <div class="container">
-    <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
@@ -29,6 +44,35 @@ try{
                     <p> <a href="dashboard.php">Dashboard</a> </p>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="page-header">
+                <h2>Add a Data Source</h2>
+            </div>
+            <p>Please fill all fields in the form</p>
+            <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group ">
+                    <label>Source Type</label>
+                    <select name="source_type" id="source_type">
+                        <option value="book">Book</option>
+                        <option value="webpage">Webpage</option>
+                    </select>
+                    <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Web Address or ISBN</label>
+                    <input type="text" name="address_isbn" class="form-control" value="" maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($address_isbn_error)) echo $address_isbn_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" class="form-control" value="" maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($title_error)) echo $title_error; ?></span>
+                </div>
+                <input type="submit" class="btn btn-primary" name="add" value="submit">
+
+            </form>
         </div>
     </div>
 </div>
