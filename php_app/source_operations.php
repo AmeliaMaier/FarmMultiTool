@@ -15,12 +15,12 @@ function source_exists($address_isbn){
     include "db.php";
     $conn = get_db_connection();
     $stmt = $conn->prepare(
-        'SELECT COUNT(*) 
+        'SELECT * 
                 FROM core_sources 
                 WHERE `address_isbn` = ?');
     $stmt->bind_param('s', $address_isbn);
     $stmt->execute();
-    $count = $stmt->get_result()->fetch_row()[0];
+    $count = $stmt -> store_result() -> num_rows;
     return $count > 0;
 }
 
