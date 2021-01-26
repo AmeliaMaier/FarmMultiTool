@@ -13,12 +13,10 @@ try{
         $result = add_source($source_type, $address_isbn, $title, $_SESSION['user_id']);
 
         if ($result['success']) {
-            $_SESSION['user_id'] = $result['user_id'];
-            $_SESSION['user_name'] = $result['user_name'];
-            $_SESSION['user_type'] = $result['user_type'];
-            header("Location: dashboard.php");
+            $success_message = 'Data source added for Address/ISBN '.$address_isbn;
         } else {
-            $error_message = "Incorrect Username or Password!!!";
+            unset($success_message);
+            $error_message = $result['error'];
         }
     }
 }catch(Exception $e) {
@@ -51,6 +49,7 @@ try{
             </div>
             <p>Please fill all fields in the form</p>
             <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
+            <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group ">
                     <label>Source Type</label>
