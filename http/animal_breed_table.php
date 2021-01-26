@@ -13,7 +13,7 @@ try{
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Info Dashboard | Tutsmake.com</title>
+    <title>Add Animal Breed</title>
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -25,8 +25,9 @@ try{
                 <div class="card-body">
                     <h5 class="card-title">Name :- <?php echo $_SESSION['user_name']?></h5>
                     <p class="card-text">Account_Type :- <?php echo $_SESSION['user_type']?></p>
-<!--                    <input type="submit" class="btn btn-primary" name="logout" value="Logout">-->
+                    <!--                    <input type="submit" class="btn btn-primary" name="logout" value="Logout">-->
                     <a href="logout.php">Logout</a>
+                    <a href="dashboard.php">Dashboard</a>
                 </div>
             </div>
         </div>
@@ -36,7 +37,6 @@ try{
             <div class="card-body">
                 <a href="source_table.php">Add Data Source</a>
                 <a href="animal_species_table.php">Add Animal Species</a>
-                <a href="animal_breed_table.php">Add Animal Breed</a>
             </div>
         </div>
     </div>
