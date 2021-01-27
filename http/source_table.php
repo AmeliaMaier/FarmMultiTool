@@ -45,8 +45,10 @@ try{
             </div>
         </div>
         <div class="col-lg-9">
-            <p>Existing Data Sources</p>
-            <span class="table-info"> <?php echo $html_table; ?> </span>
+            <div class="page-header">
+                <h2>Existing Data Sources</h2>
+            </div>
+            <span class="table"> <?php echo $html_table; ?> </span>
         </div>
         <div class="col-lg-10">
             <div class="page-header">
