@@ -36,12 +36,30 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
     return $stmt->execute();
 }
 
-function get_sources(){
+function get_sources_table(){
     $conn = get_db_connection();
     $query = "SELECT source_type, address_isbn, title
                 FROM core_sources 
                 WHERE deleted_dt IS NULL";
     $result = $conn->query($query);
-    return $result;
+
+    $html_table = '<table> <tr> <td> Source Type </td> <td> Address or ISBN </td> <td> Title </td> </tr>';
+
+    if ($result !== false) {
+        foreach($result as $row) {
+            $field1name = $row["source_type"];
+            $field2name = $row["address_isbn"];
+            $field3name = $row["title"];
+
+            $html_table .= '<tr> 
+                                  <td>'.$field1name.'</td> 
+                                  <td>'.$field2name.'</td> 
+                                  <td>'.$field3name.'</td> 
+                              </tr>';
+        }
+        $result->free();
+    }
+    $html_table .= ' </table>';
+    return $html_table;
 }
 ?>
