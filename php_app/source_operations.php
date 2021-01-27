@@ -38,7 +38,7 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
 function get_sources_table(){
     include "db.php";
     $conn = get_db_connection();
-    $query = "SELECT source_type, address_isbn, title
+    $query = "SELECT id, source_type, address_isbn, title
                 FROM core_sources 
                 WHERE deleted_dt IS NULL";
     $result = $conn->query($query);
@@ -61,5 +61,24 @@ function get_sources_table(){
     }
     $html_table .= ' </table>';
     return $html_table;
+}
+
+function get_sources_dropdown(){
+    include "db.php";
+    $conn = get_db_connection();
+    $query = "SELECT id, source_type, address_isbn, title
+                FROM core_sources 
+                WHERE deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+
+    $html_dropdown = "<select name='source_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
+        }
+    }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
 }
 ?>

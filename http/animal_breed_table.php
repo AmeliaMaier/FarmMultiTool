@@ -35,7 +35,9 @@ try{
         <div class="card">
             <div class="card-body">
                 <p> <a href="source_table.php">Add Data Source</a> </p>
+                <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
                 <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
+                <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
             </div>
         </div>
     </div>

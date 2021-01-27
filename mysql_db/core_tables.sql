@@ -12,8 +12,9 @@ CREATE TABLE `farmmult_core`.`core_sources`
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `core_sources`
     ADD CONSTRAINT `user_type_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
-ALTER TABLE `core_sources` CHANGE `address_isbn` `address_isbn` VARCHAR(250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
-ALTER TABLE `core_sources` ADD UNIQUE( `address_isbn`);
+ALTER TABLE `core_sources` CHANGE `address_isbn` `address_isbn` VARCHAR (250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `core_sources`
+    ADD UNIQUE (`address_isbn`);
 
 CREATE TABLE `farmmult_core`.`core_animal_species`
 (
@@ -35,7 +36,7 @@ CREATE TABLE `farmmult_core`.`core_animal_species`
     `vaccine_schedule` BOOLEAN NULL DEFAULT NULL,
     `gestation_days`   INT NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `fk_core_animal_species_source_id` (`core_source_id`)
+    KEY                `fk_core_animal_species_source_id` (`core_source_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `core_animal_species` CHANGE `species_name` `species_name` VARCHAR (250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `core_animal_species`
@@ -73,9 +74,9 @@ CREATE TABLE `farmmult_core`.`core_animal_breed`
     `created_dt`     DATE         NOT NULL,
     `deleted_dt`     DATE NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `fk_core_animal_breed_source_id` (`core_source_id`),
-    KEY `fk_core_animal_breed_user_id` (`user_id`),
-    KEY `fk_core_animal_breed_species_id` (`species_id`)
+    KEY              `fk_core_animal_breed_source_id` (`core_source_id`),
+    KEY              `fk_core_animal_breed_user_id` (`user_id`),
+    KEY              `fk_core_animal_breed_species_id` (`species_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE `core_animal_breed`
     ADD CONSTRAINT `core_animal_breed_ibfk_1`
@@ -89,3 +90,22 @@ ALTER TABLE `core_animal_breed`
 ALTER TABLE `core_animal_breed`
     ADD UNIQUE `core_animal_breed_unique_index`
     (`core_source_id`, `species_id`, `breed_name`);
+
+CREATE TABLE `farmmult_core`.`core_source_archive`
+(
+    `id`         BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id`    BIGINT NOT NULL,
+    `source_id`  BIGINT NOT NULL,
+    `folder_id`  BIGINT NOT NULL,
+    `file_id`    BIGINT NOT NULL,
+    `share_url`  TEXT NULL DEFAULT NULL,
+    `created_dt` DATE   NOT NULL,
+    `deleted_dt` DATE NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_source_archive`
+    ADD CONSTRAINT `core_source_archive_ibfk_1`
+        FOREIGN KEY (`source_id`) REFERENCES `core_sources` (`id`);
+ALTER TABLE `core_source_archive`
+    ADD CONSTRAINT `core_source_archive_ibfk_2`
+        FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
