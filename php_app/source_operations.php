@@ -71,7 +71,6 @@ function get_sources_dropdown(){
                 WHERE deleted_dt IS NULL";
     $result = $conn->query($query);
 
-
     $html_dropdown = "<select name='source_id'>";
     if ($result !== false) {
         foreach ($result as $row) {
