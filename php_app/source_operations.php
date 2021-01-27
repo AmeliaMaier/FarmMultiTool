@@ -42,6 +42,6 @@ function get_sources(){
                 FROM core_sources 
                 WHERE deleted_dt IS NULL";
     $result = $conn->query($query);
-    return $result
+    return $result;
 }
 ?>
