@@ -2,7 +2,6 @@
 return;
 
 function add_source($source_type, $address_isbn, $title, $user_id){
-    include "db.php";
     if (source_exists($address_isbn)){
         return array("success"=>false, "error"=>"A data source already exists with address/isbn ".$address_isbn);
     }
@@ -37,6 +36,7 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function get_sources_table(){
+    include "db.php";
     $conn = get_db_connection();
     $query = "SELECT source_type, address_isbn, title
                 FROM core_sources 
