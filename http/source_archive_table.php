@@ -56,8 +56,8 @@ try{
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-10">
-            <div class="page-header">
+        <div class="card">
+            <div class="card-body">
                 <h2>Add Archived Data Source</h2>
             </div>
             <p>Please fill all fields in the form</p>
