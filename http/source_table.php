@@ -1,15 +1,16 @@
 <?php
 try{
     session_start();
+    include "./../php_app/source_operations.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+
     if (isset($_POST['add'])) {
         $source_type = $_POST['source_type'];
         $address_isbn = $_POST['address_isbn'];
         $title = $_POST['title'];
 
-        include "./../php_app/source_operations.php";
         $result = add_source($source_type, $address_isbn, $title, $_SESSION['user_id']);
 
         if ($result['success']) {
@@ -43,6 +44,36 @@ try{
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9">
+            <p>Existing Data Sources</p>
+            <?php
+            echo '<table border="0" cellspacing="2" cellpadding="2">
+              <tr>
+                  <td> <font face="Arial">Source Type</font> </td>
+                  <td> <font face="Arial">Address or ISBN</font> </td>
+                  <td> <font face="Arial">Title</font> </td>
+              </tr>';
+            $result = get_sources();
+            if ($result) {
+                while ($row = $result->fetch_assoc()) {
+                    $field1name = $row["source_type"];
+                    $field2name = $row["address_isbn"];
+                    $field3name = $row["title"];
+
+                    echo '<tr> 
+                  <td>'.$field1name.'</td> 
+                  <td>'.$field2name.'</td> 
+                  <td>'.$field3name.'</td> 
+              </tr>';
+                }
+                $result->free();
+            }
+            ?>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-10">
             <div class="page-header">
                 <h2>Add a Data Source</h2>

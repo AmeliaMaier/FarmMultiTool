@@ -13,11 +13,11 @@ function add_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function source_exists($address_isbn){
-    $conn = get_db_connection();
     $stmt = $conn->prepare(
         'SELECT * 
                 FROM core_sources 
-                WHERE `address_isbn` = ?');
+                WHERE `address_isbn` = ?
+                AND deleted_dt IS NULL');
     $stmt->bind_param('s', $address_isbn);
     $stmt->execute();
     $stmt -> store_result();
@@ -36,4 +36,12 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
     return $stmt->execute();
 }
 
+function get_sources(){
+    $conn = get_db_connection();
+    $query = "SELECT source_type, address_isbn, title
+                FROM core_sources 
+                WHERE deleted_dt IS NULL";
+    $result = $conn->query($query);
+    return $result
+}
 ?>
