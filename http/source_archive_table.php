@@ -74,7 +74,7 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Data Source</label>
-                    <?php $source_dropdown ?>
+                    <span class="custom-select"><?php $source_dropdown ?></span>
                     <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
                 </div>
             </form>
