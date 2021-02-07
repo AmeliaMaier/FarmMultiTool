@@ -1,7 +1,7 @@
 <?php
 try {
     session_start(['cookie_lifetime' => 43200]);
-    require_once "./../php_app/db.php";
+//    require_once "./../php_app/db.php";
     if (isset($_SESSION['user_id']) != "") {
         header("Location: dashboard.php");
     }

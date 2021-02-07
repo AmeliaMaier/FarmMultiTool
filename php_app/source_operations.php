@@ -12,6 +12,7 @@ function add_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function source_exists($address_isbn){
+    include "db.php";
     $stmt = $conn->prepare(
         'SELECT * 
                 FROM core_sources 
@@ -25,6 +26,7 @@ function source_exists($address_isbn){
 }
 
 function insert_source($source_type, $address_isbn, $title, $user_id){
+    include "db.php";
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'INSERT INTO `core_sources`

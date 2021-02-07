@@ -2,7 +2,7 @@
 return;
 
 function get_password_details($user_name){
-    // include "db.php";
+     include "db.php";
     $conn = get_db_connection();
     $stmt = $conn->prepare("SELECT user_logins.id as user_id, 
                   user_password, 
@@ -34,6 +34,7 @@ function get_password_details($user_name){
 }
 
 function compare_passwords($password, $db_record){
+    include "db.php";
     if(!$db_record['success']){
         /* nothing was found */
         return array("success"=>false);
