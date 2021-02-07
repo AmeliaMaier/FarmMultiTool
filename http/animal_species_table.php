@@ -13,141 +13,141 @@ try{
         $animal_species_name = $_POST['animal_species_name'];
         $source_id = (int) $_POST['source_id'];
         $difficulty_level = $_POST['difficulty_level'];
-        if ($_POST['housing_cage'] && $_POST['housing_cage_no']){
+        if (isset($_POST['housing_cage']) && isset($_POST['housing_cage_no'])){
             $housing_type_error = 'Cannot select both Cage Happy and Cage Unhappy for the same species.';
         }else {
-            if ($_POST['housing_cage']) {
+            if (isset($_POST['housing_cage'])) {
                 $cage_happy = true;
             }else {
-                if( $_POST['housing_cage_no']){
+                if(isset($_POST['housing_cage_no'])){
                     $cage_happy = false;
                 }else{
                     $cage_happy = null;
                 }
             }
         }
-        if ($_POST['housing_pasture'] && $_POST['housing_pasture_no']){
+        if (isset($_POST['housing_pasture']) && ($_POST['housing_pasture_no'])){
             if(isset($housing_type_error)){
                 $housing_type_error .= ' Cannot select both Pasture Happy and Pasture Unhappy for the same species.';
             }else {
                 $housing_type_error = 'Cannot select both Pasture Happy and Pasture Unhappy for the same species.';
             }
         }else {
-            if ($_POST['housing_pasture']) {
+            if (isset($_POST['housing_pasture'])) {
                 $pasture_happy = true;
             }else {
-                if( $_POST['housing_pasture_no']){
+                if(isset($_POST['housing_pasture_no'])){
                     $pasture_happy = false;
                 }else{
                     $pasture_happy = null;
                 }
             }
         }
-        if ($_POST['food_meat'] && $_POST['food_meat_no']){
+        if (isset($_POST['food_meat']) && isset($_POST['food_meat_no'])){
             $food_type_error = 'Cannot select both Eats Meat and Can\'t Eat Meat for the same species.';
         }else {
-            if ($_POST['food_meat']) {
+            if (isset($_POST['food_meat'])) {
                 $food_meat = true;
             }else {
-                if( $_POST['food_meat_no']){
+                if(isset($_POST['food_meat_no'])){
                     $food_meat = false;
                 }else{
                     $food_meat = null;
                 }
             }
         }
-        if ($_POST['food_bug'] && $_POST['food_bug_no']){
+        if (isset($_POST['food_bug']) && isset($_POST['food_bug_no'])){
             if(isset($food_type_error)){
                 $food_type_error .= ' Cannot select both Eats Bugs and Can\'t Eat Bugs for the same species.';
             }else {
                 $food_type_error = 'Cannot select both Eats Bugs and Can\'t Eat Bugs for the same species.';
             }
         }else {
-            if ($_POST['food_bug']) {
+            if(isset($_POST['food_bug'])) {
                 $food_bug = true;
             }else {
-                if( $_POST['food_bug_no']){
+                if(isset($_POST['food_bug_no'])){
                     $food_bug = false;
                 }else{
                     $food_bug = null;
                 }
             }
         }
-        if ($_POST['food_plant'] && $_POST['food_plant_no']){
+        if (isset($_POST['food_plant']) && isset($_POST['food_plant_no'])){
             if(isset($food_type_error)){
                 $food_type_error .= ' Cannot select both Eats Plants and Can\'t Eat Plants for the same species.';
             }else {
                 $food_type_error = 'Cannot select both Eats Plants and Can\'t Eat Plants for the same species.';
             }
         }else {
-            if ($_POST['food_plant']) {
+            if (isset($_POST['food_plant'])) {
                 $food_plant = true;
             }else {
-                if( $_POST['food_plant_no']){
+                if(isset($_POST['food_plant_no'])){
                     $food_plant = false;
                 }else{
                     $food_plant = null;
                 }
             }
         }
-        if ($_POST['source_meat'] && $_POST['source_meat_no']){
+        if (isset($_POST['source_meat']) && isset($_POST['source_meat_no'])){
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
-            if ($_POST['source_meat']) {
+            if (isset($_POST['source_meat'])) {
                 $source_meat = true;
             }else {
-                if( $_POST['source_meat_no']){
+                if(isset($_POST['source_meat_no'])){
                     $source_meat = false;
                 }else{
                     $source_meat = null;
                 }
             }
         }
-        if ($_POST['source_egg'] && $_POST['source_egg_no']){
+        if (isset($_POST['source_egg']) && isset($_POST['source_egg_no'])){
             if(isset($source_of_error)){
                 $source_of_error .= ' Cannot select both Raised for Eggs and Not Raised for Eggs for the same species.';
             }else {
                 $source_of_error = 'Cannot select both Raised for Eggs and Not Raised for Eggs for the same species.';
             }
         }else {
-            if ($_POST['source_egg']) {
+            if (isset($_POST['source_egg'])) {
                 $source_egg = true;
             }else {
-                if( $_POST['source_egg_no']){
+                if(isset($_POST['source_egg_no'])){
                     $source_egg = false;
                 }else{
                     $source_egg = null;
                 }
             }
         }
-        if ($_POST['source_milk'] && $_POST['source_milk_no']){
+        if (isset($_POST['source_milk']) && isset($_POST['source_milk_no'])){
             if(isset($source_of_error)){
                 $source_of_error .= ' Cannot select both Raised for Milk and Not Raised for Milk for the same species.';
             }else {
                 $source_of_error = 'Cannot select both Raised for Milk and Not Raised for Milk for the same species.';
             }
         }else {
-            if ($_POST['source_milk']) {
+            if (isset($_POST['source_milk'])) {
                 $source_milk = true;
             }else {
-                if( $_POST['source_milk_no']){
+                if(isset($_POST['source_milk_no'])){
                     $source_milk = false;
                 }else{
                     $source_milk = null;
                 }
             }
         }
-        if ($_POST['source_fiber'] && $_POST['source_fiber_no']){
+        if (isset($_POST['source_fiber']) && isset($_POST['source_fiber_no'])){
             if(isset($source_of_error)){
                 $source_of_error .= ' Cannot select both Raised for Fiber and Not Raised for Fiber for the same species.';
             }else {
                 $source_of_error = 'Cannot select both Raised for Fiber and Not Raised for Fiber for the same species.';
             }
         }else {
-            if ($_POST['source_fiber']) {
+            if (isset($_POST['source_fiber'])) {
                 $source_fiber = true;
             }else {
-                if( $_POST['source_fiber_no']){
+                if(isset($_POST['source_fiber_no'])){
                     $source_fiber = false;
                 }else{
                     $source_fiber = null;
@@ -157,13 +157,13 @@ try{
         $gestation_days = (int) $_POST['gestation_days'];
         $min_temp = (int) $_POST['min_temp'];
         $max_temp = (int) $_POST['max_temp'];
-        if ($_POST['vaccines'] && $_POST['vaccines_no']){
+        if (isset($_POST['vaccines']) && isset($_POST['vaccines_no'])){
             $vaccines_error = 'Cannot select both Has Vaccines and Does Not Have Vaccies for the same species.';
         }else {
-            if ($_POST['vaccines']) {
+            if (isset($_POST['vaccines'])) {
                 $vaccines = true;
             }else {
-                if( $_POST['vaccines_no']){
+                if(isset($_POST['vaccines_no'])){
                     $vaccines = false;
                 }else{
                     $vaccines = null;
