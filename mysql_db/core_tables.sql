@@ -96,8 +96,8 @@ CREATE TABLE `farmmult_core`.`core_source_archive`
     `id`         BIGINT NOT NULL AUTO_INCREMENT,
     `user_id`    BIGINT NOT NULL,
     `source_id`  BIGINT NOT NULL,
-    `folder_id`  BIGINT NOT NULL,
-    `file_id`    BIGINT NOT NULL,
+    `sftp_folder_id`  BIGINT NOT NULL,
+    `sftp_file_id`    BIGINT NOT NULL,
     `share_url`  TEXT NULL DEFAULT NULL,
     `created_dt` DATE   NOT NULL,
     `deleted_dt` DATE NULL DEFAULT NULL,
@@ -109,3 +109,6 @@ ALTER TABLE `core_source_archive`
 ALTER TABLE `core_source_archive`
     ADD CONSTRAINT `core_source_archive_ibfk_2`
         FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_source_archive`
+    ADD CONSTRAINT `core_source_archive_ibfk_3`
+        FOREIGN KEY (`sftp_folder_id`) REFERENCES `sftp_folders` (`sftp_folder_id`);

@@ -11,6 +11,20 @@ function add_source($source_type, $address_isbn, $title, $user_id){
     return array("success"=>false, "error"=>"An error occurred while saving the data source.");
 }
 
+function add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id){
+    if ($archive_type == 'auto'){
+        return array("success"=>false, "error"=>"Auto Archive is not yet Implemented. Please re-add Manually.");
+    }
+    if (source_archive_exists($source_id)){
+        return array("success"=>false, "error"=>"Data Source ".$source_id." is already archived. No changes saved.");
+    }
+    if(insert_source_archive($source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id)){
+        return array("success"=>true);
+    }
+    return array("success"=>false, "error"=>"An error occurred while saving the data source's archive record.");
+
+}
+
 function source_exists($address_isbn){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -26,6 +40,21 @@ function source_exists($address_isbn){
     return $count > 0;
 }
 
+function source_archive_exists($source_id){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT * 
+                FROM core_sources_archive 
+                WHERE `source_id` = ?
+                AND deleted_dt IS NULL');
+    $stmt->bind_param('i', $source_id);
+    $stmt->execute();
+    $stmt -> store_result();
+    $count = $stmt -> num_rows;
+    return $count > 0;
+}
+
 function insert_source($source_type, $address_isbn, $title, $user_id){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -35,6 +64,18 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
                 VALUES 
                 (?, ?, ?, ?, CURRENT_DATE)');
     $stmt->bind_param('isss', $user_id, $source_type, $address_isbn, $title);
+    return $stmt->execute();
+}
+
+function insert_source_archive($source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'INSERT INTO `core_sources_archive`
+                (`user_id`, `source_id`, `sftp_folder_id`, `sftp_file_id`, `share_url`, `created_dt`) 
+                VALUES 
+                (?, ?, ?, ?, ?, CURRENT_DATE)');
+    $stmt->bind_param('iiiis', $user_id, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url);
     return $stmt->execute();
 }
 
@@ -66,6 +107,52 @@ function get_sources_table(){
     return $html_table;
 }
 
+
+function get_sources_archive_table(){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $query = "SELECT cs.id as source_id, 
+                        cs.source_type, 
+                        cs.address_isbn, 
+                        cs.title, 
+                        csa.share_url, 
+                        sf.name as sftp_folder_name
+                FROM core_sources cs
+                LEFT JOIN core_source_archive csa
+                    ON cs.id = csa.source_id
+                    AND csa.deleted_dt IS NULL
+                LEFT JOIN sftp_folders sf 
+                    ON csa.sftp_folder_id = sf.sftp_folder_id
+                    AND sf.deleted_dt IS NULL
+                WHERE cs.deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_table = '<table> <tr> <td> Source ID </td> <td> Source Type </td> <td> Address or ISBN </td> <td> Title </td> <td> Share URL </td>  <td> SFTP Folder Name </td></tr>';
+
+    if ($result !== false) {
+        foreach($result as $row) {
+            $field1name = $row["source_id"];
+            $field2name = $row["source_type"];
+            $field3name = $row["address_isbn"];
+            $field4name = $row["title"];
+            $field5name = $row["share_url"];
+            $field6name = $row["sftp_folder_name"];
+
+            $html_table .= '<tr> 
+                                  <td>'.$field1name.'</td> 
+                                  <td>'.$field2name.'</td> 
+                                  <td>'.$field3name.'</td> 
+                                  <td>'.$field4name.'</td> 
+                                  <td>'.$field5name.'</td> 
+                                  <td>'.$field6name.'</td> 
+                              </tr>';
+        }
+        $result->free();
+    }
+    $html_table .= ' </table>';
+    return $html_table;
+}
+
 function get_sources_dropdown(){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -78,6 +165,24 @@ function get_sources_dropdown(){
     if ($result !== false) {
         foreach ($result as $row) {
             $html_dropdown .= "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
+        }
+    }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
+function get_sftp_folder_dropdown(){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $query = "SELECT sftp_id, name
+                FROM core_sources 
+                WHERE deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='sftp_folder_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['sftp_id'] . "'>" . $row['name'] . "</option>";
         }
     }
     $html_dropdown .= " </select>";

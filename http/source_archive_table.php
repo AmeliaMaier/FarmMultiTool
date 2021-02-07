@@ -5,16 +5,20 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $html_table = get_sources_table();
     $source_dropdown = get_sources_dropdown();
+    $sftp_folder_dropdown = get_sftp_folder_dropdown();
     if (isset($_POST['add'])) {
-        $source_type = $_POST['source_type'];
-        $address_isbn = $_POST['address_isbn'];
-        $title = $_POST['title'];
+        $archive_type = $_POST['archive_type'];
+        $source_id = $_POST['source_id'];
+        $sftp_folder_id = $_POST['sftp_folder_id'];
+        $sftp_file_id = $_POST['sftp_file_id'];
+        $sftp_share_url = $_POST['sftp_share_url'];
 
-        $result = add_source($source_type, $address_isbn, $title, $_SESSION['user_id']);
+        $result = add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $_SESSION['user_id']);
 
         if ($result['success']) {
-            $success_message = 'Data source added for Address/ISBN '.$address_isbn;
+            $success_message = 'Data source archive record added'.$source_id;
         } else {
             unset($success_message);
             $error_message = $result['error'];
@@ -58,6 +62,16 @@ try{
     <div class="row">
         <div class="card">
             <div class="card-body">
+                <div class="col-lg-9">
+                    <div class="page-header">
+                        <h2>Existing Data Source Archive Records</h2>
+                    </div>
+                    <span class="table"> <?php echo $html_table; ?> </span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
                 <h2>Add Archived Data Source</h2>
             </div>
             <p>Please fill all fields in the form</p>
@@ -67,8 +81,8 @@ try{
                 <div class="form-group ">
                     <label>Archive Type</label>
                     <<select name="archive_type" id="archive_type">
-                        <option value="auto">Automatically Archive Based on URL</option>
                         <option value="already">Manually Archived Data Source</option>
+                        <option value="auto">Automatically Archive Based on URL - Not Implemented</option>
                     </select>>
                     <span class="text-danger"><?php if (isset($archive_type_error)) echo $archive_type_error; ?></span>
                 </div>
@@ -77,6 +91,22 @@ try{
                     <span class="custom-select"><?php echo $source_dropdown ?></span>
                     <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
                 </div>
+                <div class="form-group">
+                    <label>SFTP Folder Used</label>
+                    <span class="custom-select"><?php echo $sftp_folder_dropdown ?></span>
+                    <span class="text-danger"><?php if (isset($sftp_folder_error)) echo $sftp_folder_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>SFTP File ID</label>
+                    <input type="number" name="sftp_file_id" class="form-control" value=""  min="0" max="9223372036854775807" required="">
+                    <span class="text-danger"><?php if (isset($sftp_file_error)) echo $sftp_file_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>SFTP Sharing URL</label>
+                    <input type="text" name="sftp_share_url" class="form-control" value="" maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($sftp_share_url_error)) echo $sftp_share_url_error; ?></span>
+                </div>
+                <input type="submit" class="btn btn-primary" name="add" value="submit">
             </form>
         </div>
     </div>

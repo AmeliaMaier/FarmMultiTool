@@ -2,7 +2,7 @@ CREATE TABLE `farmmult_core`.`sftp_folders`
 (
     `user_id`    BIGINT NOT NULL,
     `name`       TEXT   NOT NULL,
-    `sftp_id`    BIGINT NOT NULL,
+    `sftp_folder_id`    BIGINT NOT NULL,
     `created_dt` DATE   NOT NULL,
     `deleted_dt` DATE   NULL DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
