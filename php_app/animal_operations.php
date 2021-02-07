@@ -29,7 +29,7 @@ function get_animal_species_table(){
             WHERE cas.deleted_dt IS NULL ";
     $result = $conn->query($query);
 
-    $html_table = '<table> <tr> <td> Animal_Species_ID </td> 
+    $html_table = '<table> <tr> 
                                 <td> Animal_Species_Name </td> 
                                 <td> Source_Name </td>  
                                 <td> Difficulty_Level </td>  
@@ -50,7 +50,6 @@ function get_animal_species_table(){
 
     if ($result !== false) {
         foreach($result as $row) {
-            $field1name = $row["animal_species_id"];
             $field2name = $row["species_name"];
             $field3name = $row["source_name"];
             $field4name = $row["difficulty_level"];
@@ -69,7 +68,6 @@ function get_animal_species_table(){
             $field17name = $row["vaccine_schedule"];
 
             $html_table .= '<tr> 
-                                  <td>'.$field1name.'</td> 
                                   <td>'.$field2name.'</td> 
                                   <td>'.$field3name.'</td> 
                                   <td>'.$field4name.'</td> 

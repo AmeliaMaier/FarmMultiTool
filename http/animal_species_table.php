@@ -6,6 +6,8 @@ try{
         header("Location: login.php");
     }
     $html_table = get_animal_species_table();
+    $source_dropdown = get_sources_dropdown();
+
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
         $source_id = (int) $_POST['source_id'];
@@ -73,38 +75,38 @@ try{
             <div class="card-body">
                 <h2>Add Animal Species by Source</h2>
             </div>
-            <p>Please fill all fields in the form</p>
+            <p>Please fill all applicable fields in the form</p>
             <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
             <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-<!--                <div class="form-group ">-->
-<!--                    <label>Archive Type</label>-->
-<!--                    <<select name="archive_type" id="archive_type">-->
-<!--                        <option value="already">Manually Archived Data Source</option>-->
-<!--                        <option value="auto">Automatically Archive Based on URL - Not Implemented</option>-->
-<!--                    </select>>-->
-<!--                    <span class="text-danger">--><?php //if (isset($archive_type_error)) echo $archive_type_error; ?><!--</span>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>Data Source</label>-->
-<!--                    <span class="custom-select">--><?php //echo $source_dropdown ?><!--</span>-->
-<!--                    <span class="text-danger">--><?php //if (isset($data_source_error)) echo $data_source_error; ?><!--</span>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>SFTP Folder Used</label>-->
-<!--                    <span class="custom-select">--><?php //echo $sftp_folder_dropdown ?><!--</span>-->
-<!--                    <span class="text-danger">--><?php //if (isset($sftp_folder_error)) echo $sftp_folder_error; ?><!--</span>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>SFTP File Name</label>-->
-<!--                    <input type="Text" name="sftp_file_name" class="form-control" value=""  maxlength="250" required="">-->
-<!--                    <span class="text-danger">--><?php //if (isset($sftp_file_error)) echo $sftp_file_error; ?><!--</span>-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>SFTP Sharing URL</label>-->
-<!--                    <input type="text" name="sftp_share_url" class="form-control" value="" maxlength="250" required="">-->
-<!--                    <span class="text-danger">--><?php //if (isset($sftp_share_url_error)) echo $sftp_share_url_error; ?><!--</span>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label>Animal Species Name</label>
+                    <input type="text" name="animal_species_name" class="form-control" value="" maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($animal_species_name_error)) echo $animal_species_name_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Data Source</label>
+                    <span class="custom-select"><?php echo $source_dropdown ?></span>
+                    <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Difficulty Level</label>
+                    <select name="source_type" id="source_type">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                    <span class="text-danger"><?php if (isset($difficulty_level_error)) echo $difficulty_level_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Housing Type</label>
+                    <input type="checkbox" id="housing_cage" name="housing_cage" value="cage">
+                        <label for="housing_cage"> Cage Happy </label><br>
+                    <input type="checkbox" id="housing_pasture" name="housing_pasture" value="pasture">
+                        <label for="housing_pasture"> Pasture Happy </label><br>
+                    <span class="text-danger"><?php if (isset($housing_type_error)) echo $housing_type_error; ?></span>
+                </div>
+
                 <input type="submit" class="btn btn-primary" name="add" value="submit">
             </form>
         </div>
