@@ -100,11 +100,15 @@ try{
                     <span class="text-danger"><?php if (isset($difficulty_level_error)) echo $difficulty_level_error; ?></span>
                 </div>
                 <div class="form-group">
-                    <label>Housing Type</label>
+                    <label>Housing Type</label><br>
                     <input type="checkbox" id="housing_cage" name="housing_cage" value="cage">
-                        <label for="housing_cage"> Cage Happy </label><br>
+                        <label for="housing_cage"> Cage Happy </label>
+                    <input type="checkbox" id="housing_cage_no" name="housing_cage_no" value="cage_no">
+                        <label for="housing_cage_no"> Cage UnHappy </label><br>
                     <input type="checkbox" id="housing_pasture" name="housing_pasture" value="pasture">
-                        <label for="housing_pasture"> Pasture Happy </label><br>
+                        <label for="housing_pasture"> Pasture Happy </label>
+                    <input type="checkbox" id="housing_pasture_no" name="housing_pasture_no" value="pasture_no">
+                        <label for="housing_pasture_no"> Pasture UnHappy </label><br>
                     <span class="text-danger"><?php if (isset($housing_type_error)) echo $housing_type_error; ?></span>
                 </div>
 
