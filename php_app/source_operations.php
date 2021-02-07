@@ -185,7 +185,7 @@ function get_sftp_folder_dropdown(){
     $html_dropdown = "<select name='sftp_folder_id'>";
     if ($result !== false) {
         foreach ($result as $row) {
-            $html_dropdown .= "<option value='" . $row['sftp_id'] . "'>" . $row['name'] . "</option>";
+            $html_dropdown .= "<option value='" . $row['sftp_folder_id'] . "'>" . $row['name'] . "</option>";
         }
     }
     $html_dropdown .= " </select>";
