@@ -45,7 +45,7 @@ function source_archive_exists($source_id){
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'SELECT * 
-                FROM core_sources_archive 
+                FROM core_source_archive 
                 WHERE `source_id` = ?
                 AND deleted_dt IS NULL');
     $stmt->bind_param('i', $source_id);
@@ -71,7 +71,7 @@ function insert_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sf
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
     $stmt = $conn->prepare(
-        'INSERT INTO `core_sources_archive`
+        'INSERT INTO `core_source_archive`
                 (`user_id`, `source_id`, `sftp_folder_id`, `sftp_file_name`, `share_url`, `created_dt`) 
                 VALUES 
                 (?, ?, ?, ?, ?, CURRENT_DATE)');
