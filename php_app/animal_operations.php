@@ -1,6 +1,60 @@
 <?php
 return;
 
+function add_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
+                                            $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
+                                            $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
+                                            $vaccines){
+    if (animal_species_exists($animal_species_name, $source_id)){
+        return array("success"=>false, "error"=>"A record already exists for species ".$animal_species_name." with source id ".$source_id);
+    }
+    if(insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
+        $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
+        $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
+        $vaccines)){
+        return array("success"=>true);
+    }
+    return array("success"=>false, "error"=>"An error occurred while saving the species.");
+
+}
+
+function animal_species_exists($animal_species_name, $source_id){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT cas.* 
+                FROM core_animal_species cas 
+                    INNER JOIN core_sources cs 
+                        ON cas.core_source_id = cs.id 
+                        AND cs.deleted_dt IS NULL 
+                WHERE cas.species_name = ? 
+                  AND cas.core_source_id = ? 
+                  AND cas.deleted_dt IS NULL ');
+    $stmt->bind_param('si', $animal_species_name, $source_id);
+    $stmt->execute();
+    $stmt -> store_result();
+    $count = $stmt -> num_rows;
+    return $count > 0;
+}
+
+function insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
+                               $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
+                               $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
+                               $vaccines){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'INSERT INTO `core_animal_species`(`user_id`, `core_source_id`, `species_name`, `meat_source`, 
+                                  `fiber_source`, `milk_source`, `egg_source`, `cage_happy`, `pasture_happy`, 
+                                  `difficulty_level`, `eats_bugs`, `eats_meat`, `eats_plants`, `min_temp`, `max_temp`, 
+                                  `vaccine_schedule`, `gestation_days`, `created_dt`) 
+                VALUES 
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
+    $stmt->bind_param('iisbbbbbbsbbbiibi', $user_id, $source_id, $animal_species_name, $source_meat,
+                        $source_fiber, $source_milk, $source_egg, $cage_happy, $pasture_happy, $difficulty_level,
+                        $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days);
+    return $stmt->execute();
+}
 
 function get_animal_species_table(){
     if(!function_exists('get_db_connection')){include "db.php";}

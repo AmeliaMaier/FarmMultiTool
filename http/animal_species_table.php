@@ -10,19 +10,179 @@ try{
     $source_dropdown = get_sources_dropdown();
 
     if (isset($_POST['add'])) {
-        $archive_type = $_POST['archive_type'];
+        $animal_species_name = $_POST['animal_species_name'];
         $source_id = (int) $_POST['source_id'];
-        $sftp_folder_id = (int) $_POST['sftp_folder_id'];
-        $sftp_file_name = $_POST['sftp_file_name'];
-        $sftp_share_url = $_POST['sftp_share_url'];
+        $difficulty_level = $_POST['difficulty_level'];
+        if ($_POST['housing_cage'] && $_POST['housing_cage_no']){
+            $housing_type_error = 'Cannot select both Cage Happy and Cage Unhappy for the same species.';
+        }else {
+            if ($_POST['housing_cage']) {
+                $cage_happy = true;
+            }else {
+                if( $_POST['housing_cage_no']){
+                    $cage_happy = false;
+                }else{
+                    $cage_happy = null;
+                }
+            }
+        }
+        if ($_POST['housing_pasture'] && $_POST['housing_pasture_no']){
+            if(isset($housing_type_error)){
+                $housing_type_error .= ' Cannot select both Pasture Happy and Pasture Unhappy for the same species.';
+            }else {
+                $housing_type_error = 'Cannot select both Pasture Happy and Pasture Unhappy for the same species.';
+            }
+        }else {
+            if ($_POST['housing_pasture']) {
+                $pasture_happy = true;
+            }else {
+                if( $_POST['housing_pasture_no']){
+                    $pasture_happy = false;
+                }else{
+                    $pasture_happy = null;
+                }
+            }
+        }
+        if ($_POST['food_meat'] && $_POST['food_meat_no']){
+            $food_type_error = 'Cannot select both Eats Meat and Can\'t Eat Meat for the same species.';
+        }else {
+            if ($_POST['food_meat']) {
+                $food_meat = true;
+            }else {
+                if( $_POST['food_meat_no']){
+                    $food_meat = false;
+                }else{
+                    $food_meat = null;
+                }
+            }
+        }
+        if ($_POST['food_bug'] && $_POST['food_bug_no']){
+            if(isset($food_type_error)){
+                $food_type_error .= ' Cannot select both Eats Bugs and Can\'t Eat Bugs for the same species.';
+            }else {
+                $food_type_error = 'Cannot select both Eats Bugs and Can\'t Eat Bugs for the same species.';
+            }
+        }else {
+            if ($_POST['food_bug']) {
+                $food_bug = true;
+            }else {
+                if( $_POST['food_bug_no']){
+                    $food_bug = false;
+                }else{
+                    $food_bug = null;
+                }
+            }
+        }
+        if ($_POST['food_plant'] && $_POST['food_plant_no']){
+            if(isset($food_type_error)){
+                $food_type_error .= ' Cannot select both Eats Plants and Can\'t Eat Plants for the same species.';
+            }else {
+                $food_type_error = 'Cannot select both Eats Plants and Can\'t Eat Plants for the same species.';
+            }
+        }else {
+            if ($_POST['food_plant']) {
+                $food_plant = true;
+            }else {
+                if( $_POST['food_plant_no']){
+                    $food_plant = false;
+                }else{
+                    $food_plant = null;
+                }
+            }
+        }
+        if ($_POST['source_meat'] && $_POST['source_meat_no']){
+            $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
+        }else {
+            if ($_POST['source_meat']) {
+                $source_meat = true;
+            }else {
+                if( $_POST['source_meat_no']){
+                    $source_meat = false;
+                }else{
+                    $source_meat = null;
+                }
+            }
+        }
+        if ($_POST['source_egg'] && $_POST['source_egg_no']){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Eggs and Not Raised for Eggs for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Eggs and Not Raised for Eggs for the same species.';
+            }
+        }else {
+            if ($_POST['source_egg']) {
+                $source_egg = true;
+            }else {
+                if( $_POST['source_egg_no']){
+                    $source_egg = false;
+                }else{
+                    $source_egg = null;
+                }
+            }
+        }
+        if ($_POST['source_milk'] && $_POST['source_milk_no']){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Milk and Not Raised for Milk for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Milk and Not Raised for Milk for the same species.';
+            }
+        }else {
+            if ($_POST['source_milk']) {
+                $source_milk = true;
+            }else {
+                if( $_POST['source_milk_no']){
+                    $source_milk = false;
+                }else{
+                    $source_milk = null;
+                }
+            }
+        }
+        if ($_POST['source_fiber'] && $_POST['source_fiber_no']){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Fiber and Not Raised for Fiber for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Fiber and Not Raised for Fiber for the same species.';
+            }
+        }else {
+            if ($_POST['source_fiber']) {
+                $source_fiber = true;
+            }else {
+                if( $_POST['source_fiber_no']){
+                    $source_fiber = false;
+                }else{
+                    $source_fiber = null;
+                }
+            }
+        }
+        $gestation_days = (int) $_POST['gestation_days'];
+        $min_temp = (int) $_POST['min_temp'];
+        $max_temp = (int) $_POST['max_temp'];
+        if ($_POST['vaccines'] && $_POST['vaccines_no']){
+            $vaccines_error = 'Cannot select both Has Vaccines and Does Not Have Vaccies for the same species.';
+        }else {
+            if ($_POST['vaccines']) {
+                $vaccines = true;
+            }else {
+                if( $_POST['vaccines_no']){
+                    $vaccines = false;
+                }else{
+                    $vaccines = null;
+                }
+            }
+        }
 
-        $result = add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $_SESSION['user_id']);
+        if (!isset($housing_type_error) && !isset($food_type_error) && !isset($source_of_error) && !isset($vaccines_error)){
+            $result = add_animal_species($_SESSION['user_id'], $animal_species_name, $source_id, $difficulty_level,
+                                            $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
+                                            $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
+                                            $vaccines);
 
-        if ($result['success']) {
-            $success_message = 'Data source archive record added'.$source_id;
-        } else {
-            unset($success_message);
-            $error_message = $result['error'];
+            if ($result['success']) {
+                $success_message = 'Data source archive record added'.$source_id;
+            } else {
+                unset($success_message);
+                $error_message = $result['error'];
+            }
         }
     }
 }catch(Exception $e) {
@@ -92,7 +252,7 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Difficulty Level</label><br>
-                    <select name="source_type" id="source_type">
+                    <select name="difficulty_level" id="difficulty_level">
                         <option value="beginner">Beginner</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="expert">Expert</option>
@@ -114,37 +274,37 @@ try{
                 <div class="form-group">
                     <label>Food Type</label><br>
                     <input type="checkbox" id="food_meat" name="food_meat" value="food_meat">
-                    <label for="food_meat"> Eats Meat </label>
+                        <label for="food_meat"> Eats Meat </label>
                     <input type="checkbox" id="food_meat_no" name="food_meat_no" value="food_meat_no">
-                    <label for="food_meat_no"> Can't Eat Meat </label><br>
+                        <label for="food_meat_no"> Can't Eat Meat </label><br>
                     <input type="checkbox" id="food_bug" name="food_bug" value="food_bug">
-                    <label for="food_bug"> Eats Bugs </label>
+                        <label for="food_bug"> Eats Bugs </label>
                     <input type="checkbox" id="food_bug_no" name="food_bug_no" value="food_bug_no">
-                    <label for="food_bug_no"> Can't Eat Bugs </label><br>
+                        <label for="food_bug_no"> Can't Eat Bugs </label><br>
                     <input type="checkbox" id="food_plant" name="food_plant" value="food_plant">
-                    <label for="food_plant"> Eats Plants </label>
+                        <label for="food_plant"> Eats Plants </label>
                     <input type="checkbox" id="food_plant_no" name="food_plant_no" value="food_plant_no">
-                    <label for="food_plant_no"> Can't Eat Plants </label><br>
-                    <span class="text-danger"><?php if (isset($housing_type_error)) echo $housing_type_error; ?></span>
+                        <label for="food_plant_no"> Can't Eat Plants </label><br>
+                    <span class="text-danger"><?php if (isset($food_type_error)) echo $food_type_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Source Of:</label><br>
                     <input type="checkbox" id="source_meat" name="source_meat" value="source_meat">
-                    <label for="source_meat"> Raised for Meat </label>
+                        <label for="source_meat"> Raised for Meat </label>
                     <input type="checkbox" id="source_meat_no" name="source_meat_no" value="source_meat_no">
-                    <label for="source_meat_no"> Not Raised for Meat </label><br>
+                        <label for="source_meat_no"> Not Raised for Meat </label><br>
                     <input type="checkbox" id="source_egg" name="source_egg" value="source_egg">
-                    <label for="source_egg"> Raised for Eggs </label>
+                        <label for="source_egg"> Raised for Eggs </label>
                     <input type="checkbox" id="source_egg_no" name="source_egg_no" value="source_egg_no">
-                    <label for="source_egg_no"> Not Raised for Eggs </label><br>
+                        <label for="source_egg_no"> Not Raised for Eggs </label><br>
                     <input type="checkbox" id="source_milk" name="source_milk" value="source_milk">
-                    <label for="source_milk"> Raised for Milk </label>
+                        <label for="source_milk"> Raised for Milk </label>
                     <input type="checkbox" id="source_milk_no" name="source_milk_no" value="source_milk_no">
-                    <label for="source_milk_no"> Not Raised for Milk </label><br>
+                        <label for="source_milk_no"> Not Raised for Milk </label><br>
                     <input type="checkbox" id="source_fiber" name="source_fiber" value="source_fiber">
-                    <label for="source_fiber"> Raised for Fiber </label>
+                        <label for="source_fiber"> Raised for Fiber </label>
                     <input type="checkbox" id="source_fiber_no" name="source_fiber_no" value="source_fiber_no">
-                    <label for="source_fiber_no"> Not Raised for Fiber </label><br>
+                        <label for="source_fiber_no"> Not Raised for Fiber </label><br>
                     <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
