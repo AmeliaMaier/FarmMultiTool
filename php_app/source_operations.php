@@ -116,7 +116,8 @@ function get_sources_archive_table(){
                         cs.address_isbn, 
                         cs.title, 
                         csa.share_url, 
-                        sf.name as sftp_folder_name
+                        sf.name as sftp_folder_name,
+                        csa.sftp_file_name
                 FROM core_sources cs
                 LEFT JOIN core_source_archive csa
                     ON cs.id = csa.source_id
@@ -127,7 +128,7 @@ function get_sources_archive_table(){
                 WHERE cs.deleted_dt IS NULL";
     $result = $conn->query($query);
 
-    $html_table = '<table> <tr> <td> Source ID </td> <td> Source Type </td> <td> Address or ISBN </td> <td> Title </td> <td> Share URL </td>  <td> SFTP Folder Name </td></tr>';
+    $html_table = '<table> <tr> <td> Source ID </td> <td> Source Type </td> <td> Address or ISBN </td> <td> Title </td> <td> Share URL </td> <td> SFTP Folder Name </td> <td> SFTP File Name </td></tr>';
 
     if ($result !== false) {
         foreach($result as $row) {
@@ -137,6 +138,7 @@ function get_sources_archive_table(){
             $field4name = $row["title"];
             $field5name = $row["share_url"];
             $field6name = $row["sftp_folder_name"];
+            $field7name = $row["sftp_file_name"];
 
             $html_table .= '<tr> 
                                   <td>'.$field1name.'</td> 
@@ -145,6 +147,7 @@ function get_sources_archive_table(){
                                   <td>'.$field4name.'</td> 
                                   <td>'.$field5name.'</td> 
                                   <td>'.$field6name.'</td> 
+                                  <td>'.$field7name.'</td> 
                               </tr>';
         }
         $result->free();
