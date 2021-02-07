@@ -5,7 +5,7 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
-    $html_table = get_sources_archive_table();
+    $html_table = get_animal_species_table();
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
         $source_id = (int) $_POST['source_id'];
