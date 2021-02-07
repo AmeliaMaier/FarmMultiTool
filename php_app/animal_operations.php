@@ -29,23 +29,23 @@ function get_animal_species_table(){
             WHERE cas.deleted_dt IS NULL ";
     $result = $conn->query($query);
 
-    $html_table = '<table> <tr> <td> Animal Species ID </td> 
-                                <td> Animal Species Name </td> 
-                                <td> Source Name </td>  
-                                <td> Difficulty Level </td>  
-                                <td> Cage Happy </td>  
-                                <td> Pasture Happy </td>  
-                                <td> Eats Bugs </td>  
-                                <td> Eats Meat </td>  
-                                <td> Eats Plants </td>  
-                                <td> Fiber Source </td>  
-                                <td> Meat Source </td>  
-                                <td> Milk Source </td>   
-                                <td> Egg Source </td>   
-                                <td> Gestation Days </td>   
-                                <td> Min Temp </td>   
-                                <td> Max Temp </td>   
-                                <td> Vaccine Schedule </td> 
+    $html_table = '<table> <tr> <td> Animal_Species_ID </td> 
+                                <td> Animal_Species_Name </td> 
+                                <td> Source_Name </td>  
+                                <td> Difficulty_Level </td>  
+                                <td> Cage_Happy </td>  
+                                <td> Pasture_Happy </td>  
+                                <td> Eats_Bugs </td>  
+                                <td> Eats_Meat </td>  
+                                <td> Eats_Plants </td>  
+                                <td> Fiber_Source </td>  
+                                <td> Meat_Source </td>  
+                                <td> Milk_Source </td>   
+                                <td> Egg_Source </td>   
+                                <td> Gestation_Days </td>   
+                                <td> Min_Temp </td>   
+                                <td> Max_Temp </td>   
+                                <td> Vaccine_Schedule </td> 
                            </tr>';
 
     if ($result !== false) {
