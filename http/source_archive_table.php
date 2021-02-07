@@ -10,8 +10,8 @@ try{
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
-        $source_id = $_POST['source_id'];
-        $sftp_folder_id = $_POST['sftp_folder_id'];
+        $source_id = (int) $_POST['source_id'];
+        $sftp_folder_id = (int) $_POST['sftp_folder_id'];
         $sftp_file_name = $_POST['sftp_file_name'];
         $sftp_share_url = $_POST['sftp_share_url'];
 
