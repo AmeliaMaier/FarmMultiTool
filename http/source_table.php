@@ -62,7 +62,7 @@ try{
                     <div class="page-header">
                         <h2>Existing Data Sources</h2>
                     </div>
-                    <span class="table"> <?php echo $html_table; ?> </span>
+                    <span class="table-responsive"> <?php echo $html_table; ?> </span>
                 </div>
             </div>
         </div>

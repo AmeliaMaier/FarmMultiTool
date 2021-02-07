@@ -107,7 +107,6 @@ function get_sources_table(){
     return $html_table;
 }
 
-
 function get_sources_archive_table(){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
