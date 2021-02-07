@@ -50,7 +50,7 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
                                   `vaccine_schedule`, `gestation_days`, `created_dt`) 
                 VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
-    $stmt->bind_param('iisbbbbbbsbbbiibi', $user_id, $source_id, $animal_species_name, $source_meat,
+    $stmt->bind_param('iisiiiiiisiiiiiii', $user_id, $source_id, $animal_species_name, $source_meat,
                         $source_fiber, $source_milk, $source_egg, $cage_happy, $pasture_happy, $difficulty_level,
                         $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days);
     return $stmt->execute();

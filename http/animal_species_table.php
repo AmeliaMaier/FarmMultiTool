@@ -17,12 +17,12 @@ try{
             $housing_type_error = 'Cannot select both Cage Happy and Cage Unhappy for the same species.';
         }else {
             if (isset($_POST['housing_cage'])) {
-                $cage_happy = true;
+                $cage_happy = 1;
             }else {
                 if(isset($_POST['housing_cage_no'])){
-                    $cage_happy = false;
+                    $cage_happy = -1;
                 }else{
-                    $cage_happy = null;
+                    $cage_happy = 0;
                 }
             }
         }
@@ -34,12 +34,12 @@ try{
             }
         }else {
             if (isset($_POST['housing_pasture'])) {
-                $pasture_happy = true;
+                $pasture_happy = 1;
             }else {
                 if(isset($_POST['housing_pasture_no'])){
-                    $pasture_happy = false;
+                    $pasture_happy = -1;
                 }else{
-                    $pasture_happy = null;
+                    $pasture_happy = 0;
                 }
             }
         }
@@ -47,12 +47,12 @@ try{
             $food_type_error = 'Cannot select both Eats Meat and Can\'t Eat Meat for the same species.';
         }else {
             if (isset($_POST['food_meat'])) {
-                $food_meat = true;
+                $food_meat = 1;
             }else {
                 if(isset($_POST['food_meat_no'])){
-                    $food_meat = false;
+                    $food_meat = -1;
                 }else{
-                    $food_meat = null;
+                    $food_meat = 0;
                 }
             }
         }
@@ -64,12 +64,12 @@ try{
             }
         }else {
             if(isset($_POST['food_bug'])) {
-                $food_bug = true;
+                $food_bug = 1;
             }else {
                 if(isset($_POST['food_bug_no'])){
-                    $food_bug = false;
+                    $food_bug = -1;
                 }else{
-                    $food_bug = null;
+                    $food_bug = 0;
                 }
             }
         }
@@ -81,12 +81,12 @@ try{
             }
         }else {
             if (isset($_POST['food_plant'])) {
-                $food_plant = true;
+                $food_plant = 1;
             }else {
                 if(isset($_POST['food_plant_no'])){
-                    $food_plant = false;
+                    $food_plant = -1;
                 }else{
-                    $food_plant = null;
+                    $food_plant = 0;
                 }
             }
         }
@@ -94,12 +94,12 @@ try{
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
             if (isset($_POST['source_meat'])) {
-                $source_meat = true;
+                $source_meat = 1;
             }else {
                 if(isset($_POST['source_meat_no'])){
-                    $source_meat = false;
+                    $source_meat = -1;
                 }else{
-                    $source_meat = null;
+                    $source_meat = 0;
                 }
             }
         }
@@ -111,12 +111,12 @@ try{
             }
         }else {
             if (isset($_POST['source_egg'])) {
-                $source_egg = true;
+                $source_egg = 1;
             }else {
                 if(isset($_POST['source_egg_no'])){
-                    $source_egg = false;
+                    $source_egg = -1;
                 }else{
-                    $source_egg = null;
+                    $source_egg = 0;
                 }
             }
         }
@@ -128,12 +128,12 @@ try{
             }
         }else {
             if (isset($_POST['source_milk'])) {
-                $source_milk = true;
+                $source_milk = 1;
             }else {
                 if(isset($_POST['source_milk_no'])){
-                    $source_milk = false;
+                    $source_milk = -1;
                 }else{
-                    $source_milk = null;
+                    $source_milk = 0;
                 }
             }
         }
@@ -145,12 +145,12 @@ try{
             }
         }else {
             if (isset($_POST['source_fiber'])) {
-                $source_fiber = true;
+                $source_fiber = 1;
             }else {
                 if(isset($_POST['source_fiber_no'])){
-                    $source_fiber = false;
+                    $source_fiber = -1;
                 }else{
-                    $source_fiber = null;
+                    $source_fiber = 0;
                 }
             }
         }
@@ -161,12 +161,12 @@ try{
             $vaccines_error = 'Cannot select both Has Vaccines and Does Not Have Vaccies for the same species.';
         }else {
             if (isset($_POST['vaccines'])) {
-                $vaccines = true;
+                $vaccines = 1;
             }else {
                 if(isset($_POST['vaccines_no'])){
-                    $vaccines = false;
+                    $vaccines = -1;
                 }else{
-                    $vaccines = null;
+                    $vaccines = 0;
                 }
             }
         }
@@ -324,9 +324,9 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Vaccines</label><br>
-                    <input type="checkbox" id="vaccines" name="vaccines" value="vaccines">
+                        <input type="checkbox" id="vaccines" name="vaccines" value="vaccines">
                     <label for="vaccines"> Has Vaccines </label>
-                    <input type="checkbox" id="vaccines_no" name="vaccines_no" value="vaccines_no">
+                        <input type="checkbox" id="vaccines_no" name="vaccines_no" value="vaccines_no">
                     <label for="vaccines_no"> Does Not Have Vaccines </label><br>
                     <span class="text-danger"><?php if (isset($vaccines_error)) echo $vaccines_error; ?></span>
                 </div>
