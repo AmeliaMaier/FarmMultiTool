@@ -103,6 +103,7 @@ CREATE TABLE `farmmult_core`.`core_source_archive`
     `deleted_dt` DATE NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_source_archive` CHANGE `sftp_file_id` `sftp_file_name` TEXT NOT NULL;
 ALTER TABLE `core_source_archive`
     ADD CONSTRAINT `core_source_archive_ibfk_1`
         FOREIGN KEY (`source_id`) REFERENCES `core_sources` (`id`);

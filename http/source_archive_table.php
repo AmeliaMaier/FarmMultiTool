@@ -12,10 +12,10 @@ try{
         $archive_type = $_POST['archive_type'];
         $source_id = $_POST['source_id'];
         $sftp_folder_id = $_POST['sftp_folder_id'];
-        $sftp_file_id = $_POST['sftp_file_id'];
+        $sftp_file_name = $_POST['sftp_file_name'];
         $sftp_share_url = $_POST['sftp_share_url'];
 
-        $result = add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $_SESSION['user_id']);
+        $result = add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $_SESSION['user_id']);
 
         if ($result['success']) {
             $success_message = 'Data source archive record added'.$source_id;
@@ -97,8 +97,8 @@ try{
                     <span class="text-danger"><?php if (isset($sftp_folder_error)) echo $sftp_folder_error; ?></span>
                 </div>
                 <div class="form-group">
-                    <label>SFTP File ID</label>
-                    <input type="number" name="sftp_file_id" class="form-control" value=""  min="0" max="9223372036854775807" required="">
+                    <label>SFTP File Name</label>
+                    <input type="Text" name="sftp_file_name" class="form-control" value=""  maxlength="250" required="">
                     <span class="text-danger"><?php if (isset($sftp_file_error)) echo $sftp_file_error; ?></span>
                 </div>
                 <div class="form-group">

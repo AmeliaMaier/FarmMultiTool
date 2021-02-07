@@ -11,14 +11,14 @@ function add_source($source_type, $address_isbn, $title, $user_id){
     return array("success"=>false, "error"=>"An error occurred while saving the data source.");
 }
 
-function add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id){
+function add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $user_id){
     if ($archive_type == 'auto'){
         return array("success"=>false, "error"=>"Auto Archive is not yet Implemented. Please re-add Manually.");
     }
     if (source_archive_exists($source_id)){
         return array("success"=>false, "error"=>"Data Source ".$source_id." is already archived. No changes saved.");
     }
-    if(insert_source_archive($source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id)){
+    if(insert_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $user_id)){
         return array("success"=>true);
     }
     return array("success"=>false, "error"=>"An error occurred while saving the data source's archive record.");
@@ -67,15 +67,15 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
     return $stmt->execute();
 }
 
-function insert_source_archive($source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url, $user_id){
+function insert_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $user_id){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'INSERT INTO `core_sources_archive`
-                (`user_id`, `source_id`, `sftp_folder_id`, `sftp_file_id`, `share_url`, `created_dt`) 
+                (`user_id`, `source_id`, `sftp_folder_id`, `sftp_file_name`, `share_url`, `created_dt`) 
                 VALUES 
                 (?, ?, ?, ?, ?, CURRENT_DATE)');
-    $stmt->bind_param('iiiis', $user_id, $source_id, $sftp_folder_id, $sftp_file_id, $sftp_share_url);
+    $stmt->bind_param('iiiss', $user_id, $source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url);
     return $stmt->execute();
 }
 
