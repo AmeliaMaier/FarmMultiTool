@@ -2,6 +2,7 @@
 try{
     session_start();
     include "./../php_app/animal_operations.php";
+    include "./../php_app/source_operations.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
