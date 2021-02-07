@@ -174,9 +174,9 @@ function get_sources_dropdown(){
 function get_sftp_folder_dropdown(){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
-    $query = "SELECT sftp_id, name
-                FROM core_sources 
-                WHERE deleted_dt IS NULL";
+    $query = "SELECT sftp_folder_id, name 
+                FROM sftp_folders 
+                WHERE deleted_dt IS NULL ";
     $result = $conn->query($query);
 
     $html_dropdown = "<select name='sftp_folder_id'>";
