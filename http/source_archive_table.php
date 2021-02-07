@@ -5,7 +5,7 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
-    $html_table = get_sources_table();
+    $html_table = get_sources_archive_table();
     $source_dropdown = get_sources_dropdown();
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
     if (isset($_POST['add'])) {
