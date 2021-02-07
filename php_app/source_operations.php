@@ -12,7 +12,8 @@ function add_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function source_exists($address_isbn){
-    include "db.php";
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
     $stmt = $conn->prepare(
         'SELECT * 
                 FROM core_sources 
@@ -26,7 +27,7 @@ function source_exists($address_isbn){
 }
 
 function insert_source($source_type, $address_isbn, $title, $user_id){
-    include "db.php";
+    if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
     $stmt = $conn->prepare(
         'INSERT INTO `core_sources`
@@ -38,7 +39,7 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
 }
 
 function get_sources_table(){
-    include "db.php";
+    if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
     $query = "SELECT id, source_type, address_isbn, title
                 FROM core_sources 
@@ -66,7 +67,7 @@ function get_sources_table(){
 }
 
 function get_sources_dropdown(){
-    include "db.php";
+    if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
     $query = "SELECT id, source_type, address_isbn, title
                 FROM core_sources 
