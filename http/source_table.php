@@ -34,8 +34,11 @@ try{
 </head>
 <body>
 <ul>
+    <p class="text">Account Name : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Account Type : <?php echo $_SESSION['user_type']?></p>
+    <li> <a href="logout.php">Logout</a> </li>
     <li> <a href="dashboard.php">Home</a> </li>
-    <li> <a href="source_table.php">Data Source</a> </li>
+    <li> <a class="active" href="source_table.php">Data Source</a> </li>
     <li> <a href="source_archive_table.php">Archived Data Source</a> </li>
     <li> <a href="animal_species_table.php">Animal Species</a> </li>
     <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
@@ -87,16 +90,7 @@ try{
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="card-footer">
-            <div class="card-body">
-                <h5 class="card-title">Account </h5>
-                <p class="card-text">Account Name : <?php echo $_SESSION['user_type']?></p>
-                <p class="card-text">Account Type : <?php echo $_SESSION['user_type']?></p>
-                <p> <a href="logout.php">Logout</a> </p>
-            </div>
-        </div>
-    </div>
+
 </div>
 </body>
 </html>
