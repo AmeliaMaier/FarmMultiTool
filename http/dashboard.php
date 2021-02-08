@@ -26,6 +26,7 @@ try{
     <li> <a href="source_archive_table.php">Archived Data Source</a> </li>
     <li> <a href="animal_species_table.php">Animal Species</a> </li>
     <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
+    <li> <a href="plant_species_table.php">Plant Species</a> </li>
 </ul>
 <div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>

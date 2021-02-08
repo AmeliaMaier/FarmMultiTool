@@ -135,7 +135,6 @@ function update_animal_species($species_id, $difficulty_level,
     }
     return array("success"=>false,  "error"=>"An error occurred while updating the species' record.");
 
-
 }
 
 function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
