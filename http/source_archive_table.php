@@ -51,7 +51,6 @@ try{
     <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
     <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
     <div class="row">
-        <div class="pre-scrollable"
             <div class="card">
                 <div class="card-body">
                     <div class="col-lg-9">
@@ -62,7 +61,6 @@ try{
                     </div>
                 </div>
             </div>
-        </div>
         <div class="card">
             <div class="card-body">
                 <h2>Add Archived Data Source</h2>
