@@ -57,7 +57,7 @@ try{
                     <div class="page-header">
                         <h2>Existing Data Source Archive Records</h2>
                     </div>
-                    <span class="table-responsive"> <?php echo $html_table; ?> </span>
+                    <span class="table-responsive-xl"> <?php echo $html_table; ?> </span>
                 </div>
             </div>
         </div>

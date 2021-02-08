@@ -1923,8 +1923,10 @@ pre code {
 @media (max-width: 1199.98px) {
     .table-responsive-xl {
         display: block;
+        max-height: 15%;
         width: 100%;
         overflow-x: auto;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch
     }
 
