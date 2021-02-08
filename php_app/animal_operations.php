@@ -151,7 +151,7 @@ function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source
                   `color`= ?,
                   `price_child`= ?,
                   `price_adult`= ?,
-                  `difficulty_level`= ?,
+                  `difficulty_level`= ?
                   WHERE `id` = ?');
     $stmt->bind_param('iisiiiiiiiisiisi', $min_size, $max_size, $size_unit, $source_meat, $source_milk,
                     $source_egg, $source_fiber, $summer, $winter, $endangered, $exotic, $color, $price_child, $price_adult,
