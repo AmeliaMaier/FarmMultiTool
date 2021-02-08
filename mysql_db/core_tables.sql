@@ -90,6 +90,7 @@ ALTER TABLE `core_animal_breed`
 ALTER TABLE `core_animal_breed`
     ADD UNIQUE `core_animal_breed_unique_index`
     (`core_source_id`, `species_id`, `breed_name`);
+ALTER TABLE `core_animal_breed` ADD `difficulty_level` TEXT NOT NULL AFTER `price_adult`;
 
 CREATE TABLE `farmmult_core`.`core_source_archive`
 (

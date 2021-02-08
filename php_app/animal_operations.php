@@ -56,6 +56,109 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
     return $stmt->execute();
 }
 
+function get_animal_breed_table(){
+    function get_animal_species_table(){
+        if(!function_exists('get_db_connection')){include "db.php";}
+        $conn = get_db_connection();
+        $query = "SELECT 
+                     cs.title as source_name, 
+                     cas.species_name, 
+                     cab.breed_name,
+                     cab.difficulty_level, 
+                     cab.egg_source,
+                     cab.meat_source,
+                     cab.milk_source,
+                     cab.fiber_source,
+                     cab.color,
+                     cab.min_size,
+                     cab.max_size,
+                     cab.size_units,
+                     cab.summer_happy,
+                     cab.winter_happy,
+                     cab.endangered,
+                     cab.exotic,
+                     cab.price_adult,
+                     cab.price_child
+            FROM core_animal_breed cab
+            INNER JOIN core_animal_species cas 
+            	on cab.species_id = cas.id
+                and cab.core_source_id = cas.core_source_id
+                and cas.deleted_dt IS NULL
+            INNER JOIN core_sources cs 
+                on cab.core_source_id = cs.id 
+                and cs.deleted_dt IS NULL 
+            WHERE cab.deleted_dt IS NULL";
+        $result = $conn->query($query);
+
+        $html_table = '<table> <tr> 
+                                <td> Source_Name </td>  
+                                <td> Animal_Species_Name </td> 
+                                <td> Animal_Breed_Name </td>  
+                                <td> Difficulty_Level </td>  
+                                <td> Fiber_Source </td>  
+                                <td> Meat_Source </td>  
+                                <td> Milk_Source </td>   
+                                <td> Egg_Source </td>   
+                                <td> Color </td>   
+                                <td> Min_Size </td>   
+                                <td> Max_Size </td>   
+                                <td> Size_units </td> 
+                                <td> Summer_Happy </td> 
+                                <td> Winter_Happy </td> 
+                                <td> Endangered </td> 
+                                <td> Exotic </td> 
+                                <td> Price_Adult </td> 
+                                <td> Price_Child </td> 
+                           </tr>';
+
+        if ($result !== false) {
+            foreach($result as $row) {
+                $field1name = $row["source_name"];
+                $field2name = $row["species_name"];
+                $field3name = $row["breed_name"];
+                $field4name = $row["difficulty_level"];
+                $field5name = $row["fiber_source"];
+                $field6name = $row["meat_source"];
+                $field7name = $row["milk_source"];
+                $field8name = $row["egg_source"];
+                $field9name = $row["color"];
+                $field10name = $row["min_size"];
+                $field11name = $row["max_size"];
+                $field12name = $row["size_units"];
+                $field13name = $row["summer_happy"];
+                $field14name = $row["winter_happy"];
+                $field15name = $row["endangered"];
+                $field16name = $row["exotic"];
+                $field17name = $row["price_adult"];
+                $field18name = $row["price_child"];
+
+                $html_table .= '<tr> 
+                                  <td>'.$field1name.'</td> 
+                                  <td>'.$field2name.'</td> 
+                                  <td>'.$field3name.'</td> 
+                                  <td>'.$field4name.'</td> 
+                                  <td>'.$field5name.'</td> 
+                                  <td>'.$field6name.'</td> 
+                                  <td>'.$field7name.'</td> 
+                                  <td>'.$field8name.'</td> 
+                                  <td>'.$field9name.'</td> 
+                                  <td>'.$field10name.'</td> 
+                                  <td>'.$field11name.'</td> 
+                                  <td>'.$field12name.'</td> 
+                                  <td>'.$field13name.'</td> 
+                                  <td>'.$field14name.'</td> 
+                                  <td>'.$field15name.'</td> 
+                                  <td>'.$field16name.'</td> 
+                                  <td>'.$field17name.'</td> 
+                                  <td>'.$field18name.'</td> 
+                              </tr>';
+            }
+            $result->free();
+        }
+        $html_table .= ' </table>';
+        return $html_table;
+    }
+
 function get_animal_species_table(){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -145,4 +248,26 @@ function get_animal_species_table(){
     $html_table .= ' </table>';
     return $html_table;
 }
+
+function get_animal_species_dropdown(){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $query = "SELECT cas.id, cas.species_name, cs.title as source_name
+                FROM core_animal_species cas 
+                INNER JOIN core_sources cs 
+                    ON cas.core_source_id = cs.id
+                    AND cs.deleted_dt IS NULL
+                WHERE cas.deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='species_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'>" ."species: ".$row['species_name']."; source: ".$row['source_name'] . "</option>";
+        }
+    }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
 ?>
