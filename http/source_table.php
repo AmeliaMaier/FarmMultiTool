@@ -69,16 +69,14 @@ try{
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <div class="col-lg-9">
                     <div class="page-header">
                         <h2>Existing Data Sources</h2>
                     </div>
                     <span class="table-responsive"> <?php echo $html_table; ?> </span>
-                </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="card-group">
         <div class="card">
             <div class="card-body">
                     <div class="page-header">
@@ -142,7 +140,6 @@ try{
             </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>
