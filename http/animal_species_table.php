@@ -198,30 +198,19 @@ try{
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+<ul>
+    <p class="text">Username : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Type : <?php echo $_SESSION['user_type']?></p>
+    <li> <a href="logout.php">Logout</a> </li>
+    <li> <a href="dashboard.php">Home</a> </li>
+    <li> <a href="source_table.php">Data Source</a> </li>
+    <li> <a href="source_archive_table.php">Archived Data Source</a> </li>
+    <li> <a class="active" href="animal_species_table.php">Animal Species</a> </li>
+    <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
+</ul>
+<div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Name : <?php echo $_SESSION['user_name']?></h5>
-                    <p class="card-text">Account_Type : <?php echo $_SESSION['user_type']?></p>
-                    <p> <a href="logout.php">Logout</a> </p>
-                    <p> <a href="dashboard.php">Dashboard</a> </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="card">
-            <div class="card-body">
-                <p> <a href="source_table.php">Add Data Source</a> </p>
-                <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
-                <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
-                <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
-            </div>
-        </div>
-    </div>
+    <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
     <div class="row">
         <div class="card">
             <div class="card-body">

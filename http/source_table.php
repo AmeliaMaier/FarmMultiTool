@@ -34,8 +34,8 @@ try{
 </head>
 <body>
 <ul>
-    <p class="text">Account Name : <?php echo $_SESSION['user_type']?></p>
-    <p class="text">Account Type : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Username : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Type : <?php echo $_SESSION['user_type']?></p>
     <li> <a href="logout.php">Logout</a> </li>
     <li> <a href="dashboard.php">Home</a> </li>
     <li> <a class="active" href="source_table.php">Data Source</a> </li>
@@ -44,6 +44,8 @@ try{
     <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
 </ul>
 <div style="margin-left:25%;padding:1px 16px;height:1000px;">
+    <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
+    <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
     <div class="row">
         <div class="card">
             <div class="card-body">
