@@ -35,14 +35,7 @@ try{
 <body>
 <div class="container">
     <div class="row">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Name : <?php echo $_SESSION['user_name']?></h5>
-                <p class="card-text">Account_Type : <?php echo $_SESSION['user_type']?></p>
-                <p> <a href="logout.php">Logout</a> </p>
-            </div>
-        </div>
-        <div class="card">
+        <div class="card-header-tabs">
             <div class="card-body">
                 <p> <a href="dashboard.php">Dashboard</a> </p>
                 <p> <a href="source_table.php">Add Data Source</a> </p>
@@ -95,6 +88,16 @@ try{
 
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="card-footer">
+            <div class="card-body">
+                <h5 class="card-title">Account </h5>
+                <p class="card-text">Account Name : <?php echo $_SESSION['user_type']?></p>
+                <p class="card-text">Account Type : <?php echo $_SESSION['user_type']?></p>
+                <p> <a href="logout.php">Logout</a> </p>
             </div>
         </div>
     </div>
