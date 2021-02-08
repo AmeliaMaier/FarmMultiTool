@@ -157,8 +157,8 @@ try{
                 <h2>Add Plant Species by Source</h2>
             </div>
             <p>Please fill all applicable fields in the form</p>
-            <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
-            <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
+            <span class="text-danger"><?php if (isset($add_error_message)) echo $add_error_message; ?></span>
+            <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group">
                     <label>Plant Species Name</label>
