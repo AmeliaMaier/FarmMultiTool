@@ -1,4 +1,5 @@
 <?php
+
 try{
     session_start();
     include "./../php_app/source_operations.php";
@@ -6,6 +7,7 @@ try{
         header("Location: login.php");
     }
     $html_table = get_sources_table();
+    $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
     if (isset($_POST['add'])) {
         $source_type = $_POST['source_type'];
         $address_isbn = $_POST['address_isbn'];
@@ -14,11 +16,29 @@ try{
         $result = add_source($source_type, $address_isbn, $title, $_SESSION['user_id']);
 
         if ($result['success']) {
-            $success_message = 'Data source added for Address/ISBN '.$address_isbn;
+            $add_success_message = 'Data source added for Address/ISBN '.$address_isbn;
             $html_table = get_sources_table();
+            $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
         } else {
-            unset($success_message);
-            $error_message = $result['error'];
+            unset($add_success_message);
+            $add_error_message = $result['error'];
+        }
+    }
+
+    if (isset($_POST['update'])) {
+        $source_id = (int) $_POST['source_id'];
+        $source_type = $_POST['source_type'];
+        $title = $_POST['title'];
+
+        $result = update_source($source_type, $source_id, $title);
+
+        if ($result['success']) {
+            $update_success_message = 'Data source updated for Address/ISBN '.$address_isbn;
+            $html_table = get_sources_table();
+            $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
+        } else {
+            unset($update_success_message);
+            $update_error_message = $result['error'];
         }
     }
 }catch(Exception $e) {
@@ -57,15 +77,16 @@ try{
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="card">
             <div class="card-body">
-                <div class="col-lg-10">
                     <div class="page-header">
                         <h2>Add a Data Source</h2>
                     </div>
                     <p>Please fill all fields in the form</p>
-                    <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
-                    <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
+                    <span class="text-danger"><?php if (isset($add_error_message)) echo $add_error_message; ?></span>
+                    <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group ">
                             <label>Source Type</label>
@@ -86,9 +107,38 @@ try{
                             <span class="text-danger"><?php if (isset($title_error)) echo $title_error; ?></span>
                         </div>
                         <input type="submit" class="btn btn-primary" name="add" value="submit">
-
                     </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="page-header">
+                    <h2>Update a Data Source</h2>
                 </div>
+                <p>Please fill all fields in the form</p>
+                <span class="text-danger"><?php if (isset($update_error_message)) echo $update_error_message; ?></span>
+                <span class="text-success"><?php if (isset($update_success_message)) echo $update_success_message; ?></span>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="form-group">
+                        <label>Address/ISBN to Update</label>
+                        <span class="custom-select"><?php echo $source_dropdown ?></span>
+                        <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
+                    </div>
+                    <div class="form-group ">
+                        <label>Source Type</label>
+                        <select name="source_type" id="source_type">
+                            <option value="book">Book</option>
+                            <option value="webpage">Webpage</option>
+                        </select>
+                        <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" class="form-control" value="" maxlength="250" required="">
+                        <span class="text-danger"><?php if (isset($title_error)) echo $title_error; ?></span>
+                    </div>
+                    <input type="submit" class="btn btn-primary" name="update" value="submit">
+                </form>
             </div>
         </div>
     </div>

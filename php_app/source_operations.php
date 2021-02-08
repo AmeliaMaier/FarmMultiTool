@@ -55,6 +55,19 @@ function source_archive_exists($source_id){
     return $count > 0;
 }
 
+
+function update_source($source_type, $source_id, $title){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE core_sources 
+                SET title = ?, source_type = ?
+                WHERE id = ?');
+    $stmt->bind_param('ssi', $title, $source_type, $source_id);
+    return $stmt->execute();
+}
+
+
 function insert_source($source_type, $address_isbn, $title, $user_id){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -155,12 +168,22 @@ function get_sources_archive_table(){
     return $html_table;
 }
 
-function get_sources_dropdown(){
+function get_sources_dropdown($user_type='unset'){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
-    $query = "SELECT id, source_type, address_isbn, title
+    if ($user_type == 'unset') {
+        $query = "SELECT id, source_type, CONCAT(address_isbn, ' | ', title) title
                 FROM core_sources 
                 WHERE deleted_dt IS NULL";
+    }else{
+        $query = "SELECT cs.id, cs.source_type, cs.address_isbn, cs.title
+                    FROM core_sources cs
+                    INNER JOIN user_type ut 
+                        ON cs.user_id = ut.user_id
+                        AND ut.deleted_dt is NULL
+                    WHERE cs.deleted_dt IS NULL
+                    AND ut.type = '".$user_type."'";
+    }
     $result = $conn->query($query);
 
     $html_dropdown = "<select name='source_id'>";
