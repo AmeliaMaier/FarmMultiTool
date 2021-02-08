@@ -6,7 +6,7 @@ try{
         header("Location: login.php");
     }
     $html_table = get_sources_archive_table();
-    $source_dropdown = get_sources_dropdown();
+    $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
@@ -18,11 +18,27 @@ try{
         $result = add_source_archive($archive_type, $source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $_SESSION['user_id']);
 
         if ($result['success']) {
-            $success_message = 'Data source archive record added'.$source_id;
+            $add_success_message = 'Data source archive record added'.$source_id;
             $html_table = get_sources_archive_table();
         } else {
-            unset($success_message);
-            $error_message = $result['error'];
+            unset($add_success_message);
+            $add_error_message = $result['error'];
+        }
+    }
+    if (isset($_POST['update'])) {
+        $source_id = (int) $_POST['source_id'];
+        $sftp_folder_id = (int) $_POST['sftp_folder_id'];
+        $sftp_file_name = $_POST['sftp_file_name'];
+        $sftp_share_url = $_POST['sftp_share_url'];
+
+        $result = update_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url);
+
+        if ($result['success']) {
+            $update_success_message = 'Data source archive record added'.$source_id;
+            $html_table = get_sources_archive_table();
+        } else {
+            unset($update_success_message);
+            $update_error_message = $result['error'];
         }
     }
 }catch(Exception $e) {
@@ -61,13 +77,15 @@ try{
                     </div>
                 </div>
             </div>
+    </div>
+    <div class="card-group">
         <div class="card">
             <div class="card-body">
                 <h2>Add Archived Data Source</h2>
             </div>
             <p>Please fill all fields in the form</p>
-            <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
-            <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
+            <span class="text-danger"><?php if (isset($add_error_message)) echo $add_error_message; ?></span>
+            <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group ">
                     <label>Archive Type</label>
@@ -98,6 +116,37 @@ try{
                     <span class="text-danger"><?php if (isset($sftp_share_url_error)) echo $sftp_share_url_error; ?></span>
                 </div>
                 <input type="submit" class="btn btn-primary" name="add" value="submit">
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h2>Update Archived Data Source</h2>
+            </div>
+            <p>Please fill all fields in the form</p>
+            <span class="text-danger"><?php if (isset($update_error_message)) echo $update_error_message; ?></span>
+            <span class="text-success"><?php if (isset($update_success_message)) echo $update_success_message; ?></span>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group">
+                    <label>Data Source to Update</label>
+                    <span class="custom-select"><?php echo $source_dropdown ?></span>
+                    <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>SFTP Folder Used</label>
+                    <span class="custom-select"><?php echo $sftp_folder_dropdown ?></span>
+                    <span class="text-danger"><?php if (isset($sftp_folder_error)) echo $sftp_folder_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>SFTP File Name</label>
+                    <input type="Text" name="sftp_file_name" class="form-control" value=""  maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($sftp_file_error)) echo $sftp_file_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>SFTP Sharing URL</label>
+                    <input type="text" name="sftp_share_url" class="form-control" value="" maxlength="250" required="">
+                    <span class="text-danger"><?php if (isset($sftp_share_url_error)) echo $sftp_share_url_error; ?></span>
+                </div>
+                <input type="submit" class="btn btn-primary" name="update" value="submit">
             </form>
         </div>
     </div>

@@ -222,6 +222,8 @@ try{
                 </div>
             </div>
         </div>
+    </div>
+    <div class="card-group">
         <div class="card">
             <div class="card-body">
                 <h2>Add Animal Species by Source</h2>

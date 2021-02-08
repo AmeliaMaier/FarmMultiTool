@@ -83,6 +83,21 @@ function insert_source($source_type, $address_isbn, $title, $user_id){
     return $stmt->execute();
 }
 
+function update_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE core_source_archive
+                SET sftp_file_name = ?, sftp_folder_id = ?, share_url = ?
+                WHERE source_id = ?');
+    $stmt->bind_param('sisi', $sftp_file_name, $sftp_folder_id, $sftp_share_url, $source_id);
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the data source's archive record.");
+
+}
+
 function insert_source_archive($source_id, $sftp_folder_id, $sftp_file_name, $sftp_share_url, $user_id){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
