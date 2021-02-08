@@ -40,7 +40,7 @@ try{
     <li> <a href="animal_species_table.php">Animal Species</a> </li>
     <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
 </ul>
-<div class="container-fluid">
+<div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <div class="row">
         <div class="card">
             <div class="card-body">
