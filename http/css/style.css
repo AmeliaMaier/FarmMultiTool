@@ -1942,6 +1942,7 @@ pre code {
     overflow-x: auto;
     overflow-y: auto;
     border-collapse: collapse;
+    white-space:nowrap;
     -webkit-overflow-scrolling: touch
 }
 
