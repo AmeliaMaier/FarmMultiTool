@@ -1940,7 +1940,7 @@ pre code {
     max-height: 250px;
     max-width: 1000px;
     overflow-x: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch
 }
 
