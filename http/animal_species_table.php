@@ -178,7 +178,7 @@ try{
                                             $vaccines);
 
             if ($result['success']) {
-                $success_message = 'Data source archive record added'.$source_id;
+                $success_message = 'Animal Species record added '.$animal_species_name;
             } else {
                 unset($success_message);
                 $error_message = $result['error'];

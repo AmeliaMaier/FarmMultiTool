@@ -18,6 +18,21 @@ function add_animal_species($user_id, $animal_species_name, $source_id, $difficu
 
 }
 
+function add_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
+    $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered,
+    $exotic, $price_child, $price_adult){
+    if (animal_breed_exists($species_id, $animal_breed_name)){
+        return array("success"=>false, "error"=>"A record already exists for breed ".$animal_breed_name." with species id ".$species_id);
+    }
+    if(insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
+        $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered,
+        $exotic, $price_child, $price_adult)){
+        return array("success"=>true);
+    }
+    return array("success"=>false, "error"=>"An error occurred while saving the breed.");
+
+}
+
 function animal_species_exists($animal_species_name, $source_id){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
@@ -31,6 +46,25 @@ function animal_species_exists($animal_species_name, $source_id){
                   AND cas.core_source_id = ? 
                   AND cas.deleted_dt IS NULL ');
     $stmt->bind_param('si', $animal_species_name, $source_id);
+    $stmt->execute();
+    $stmt -> store_result();
+    $count = $stmt -> num_rows;
+    return $count > 0;
+}
+
+function animal_breed_exists($species_id, $animal_breed_name){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT cab.* 
+                FROM core_animal_breed cab
+                inner join core_animal_species cas 
+                on cab.species_id = cas.id
+                AND cas.deleted_dt IS NULL
+                WHERE cab.species_id = ? 
+                  AND cab.breed_name = ? 
+                  AND cas.deleted_dt IS NULL  ');
+    $stmt->bind_param('is', $species_id, $animal_breed_name);
     $stmt->execute();
     $stmt -> store_result();
     $count = $stmt -> num_rows;
@@ -53,6 +87,29 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
     $stmt->bind_param('iisiiiiiisiiiiiii', $user_id, $source_id, $animal_species_name, $source_meat,
                         $source_fiber, $source_milk, $source_egg, $cage_happy, $pasture_happy, $difficulty_level,
                         $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days);
+    return $stmt->execute();
+}
+
+function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
+                             $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer,
+                             $winter, $endangered, $exotic, $price_child, $price_adult){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'INSERT INTO `core_animal_breed`(`user_id`, `core_source_id`, `species_id`, `breed_name`, `min_size`, 
+                                `max_size`, `size_units`, `meat_source`, `milk_source`, `egg_source`, `fiber_source`, 
+                                `summer_happy`, `winter_happy`, `endangered`, `exotic`, `color`, `price_child`, 
+                                `price_adult`, `difficulty_level`, `created_dt`) 
+                (SELECT 
+                    ? as user_id, cas.core_source_id, ? as species_id, ? as breed_name, ? as min_size,
+                    ? as max_size, ? as size_units, ? as meat_source, ? as milk_source, ? as egg_source,
+                    ? as fiber_source, ? as summer_happy, ? as winter_happy, ? as endangered, ? as exotic,
+                    ? as color, ? as price_child, ? as price_adult, ? as difficulty_level, CURRENT_DATE as created_dt
+                FROM core_animal_species cas 
+                where cas.id = ?)');
+    $stmt->bind_param('iisiisiiiiiiiisiisi', $user_id, $species_id, $animal_breed_name, $min_size,
+                    $max_size, $size_unit, $source_meat, $source_milk, $source_egg, $source_fiber, $summer,
+                    $winter, $endangered, $exotic, $color, $price_child, $price_adult, $difficulty_level, $species_id);
     return $stmt->execute();
 }
 
