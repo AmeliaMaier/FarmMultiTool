@@ -194,10 +194,44 @@ function get_sources_dropdown($user_type='unset'){
                 FROM core_sources 
                 WHERE deleted_dt IS NULL";
     }else{
-        $query = "SELECT cs.id, cs.source_type, cs.address_isbn, cs.title
+        $query = "SELECT cs.id, cs.source_type, CONCAT(cs.address_isbn, ' | ', cs.title) title
                     FROM core_sources cs
                     INNER JOIN user_type ut 
                         ON cs.user_id = ut.user_id
+                        AND ut.deleted_dt is NULL
+                    WHERE cs.deleted_dt IS NULL
+                    AND ut.type = '".$user_type."'";
+    }
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='source_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";
+        }
+    }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
+function get_archived_sources_dropdown($user_type='unset'){
+    if(!function_exists('get_db_connection')){include "db.php";}
+    $conn = get_db_connection();
+    if ($user_type == 'unset') {
+        $query = "SELECT cs.id, cs.source_type, CONCAT(cs.address_isbn, ' | ', cs.title) title
+                    FROM core_sources cs
+                    INNER JOIN core_source_archive csa
+                        ON cs.id = csa.source_id
+                        AND csa.deleted_dt IS NULL
+                    WHERE cs.deleted_dt IS NULL";
+    }else{
+        $query = "SELECT cs.id, cs.source_type, CONCAT(cs.address_isbn, ' | ', cs.title) title
+                    FROM core_sources cs
+                    INNER JOIN core_source_archive csa
+                        ON cs.id = csa.source_id
+                        AND csa.deleted_dt IS NULL
+                    INNER JOIN user_type ut 
+                        ON csa.user_id = ut.user_id
                         AND ut.deleted_dt is NULL
                     WHERE cs.deleted_dt IS NULL
                     AND ut.type = '".$user_type."'";

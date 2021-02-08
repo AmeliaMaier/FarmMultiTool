@@ -6,7 +6,8 @@ try{
         header("Location: login.php");
     }
     $html_table = get_sources_archive_table();
-    $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
+    $source_dropdown = get_sources_dropdown();
+    $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
@@ -20,6 +21,8 @@ try{
         if ($result['success']) {
             $add_success_message = 'Data source archive record added'.$source_id;
             $html_table = get_sources_archive_table();
+            $source_dropdown = get_sources_dropdown();
+            $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
         } else {
             unset($add_success_message);
             $add_error_message = $result['error'];
@@ -36,6 +39,8 @@ try{
         if ($result['success']) {
             $update_success_message = 'Data source archive record added'.$source_id;
             $html_table = get_sources_archive_table();
+            $source_dropdown = get_sources_dropdown();
+            $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
         } else {
             unset($update_success_message);
             $update_error_message = $result['error'];
@@ -126,7 +131,7 @@ try{
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group">
                     <label>Data Source to Update</label>
-                    <span class="custom-select"><?php echo $source_dropdown ?></span>
+                    <span class="custom-select"><?php echo $archived_source_dropdown ?></span>
                     <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
                 </div>
                 <div class="form-group">
