@@ -78,7 +78,7 @@ function insert_plant_species($user_id, $plant_species_name, $source_id, $growth
                                  `soil_type`, `human_edible`, `days_to_harvest`, `perennial`, `created_dt`)
                 VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
-    $stmt->bind_param('iisiiiiiisiiiiiii', $user_id, $source_id, $plant_species_name, $sun_requirement,
+    $stmt->bind_param('iissssissiii', $user_id, $source_id, $plant_species_name, $sun_requirement,
         $growth_zone, $water_requirement, $height, $height_units, $soil_requirement, $edible, $harvest_days, $perennial);
     return $stmt->execute();
 }
