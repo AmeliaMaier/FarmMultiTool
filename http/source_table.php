@@ -35,13 +35,24 @@ try{
 <body>
 <div class="container">
     <div class="row">
-        <div class="card-header-tabs">
-            <div class="card-body">
-                <p> <a href="dashboard.php">Dashboard</a> </p>
-                <p> <a href="source_table.php">Add Data Source</a> </p>
-                <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
-                <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
-                <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
+        <div class="card-deck"
+            <div class="card-header-tabs">
+                <h5 class="card-title">Links </h5>
+                <div class="card-body">
+                    <p> <a href="dashboard.php">Dashboard</a> </p>
+                    <p> <a href="source_table.php">Add Data Source</a> </p>
+                    <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
+                    <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
+                    <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
+                </div>
+                <h5 class="card-title">Add </h5>
+                <div class="card-body">
+                    <p> <a href="dashboard.php">Dashboard</a> </p>
+                    <p> <a href="source_table.php">Add Data Source</a> </p>
+                    <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
+                    <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
+                    <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
+                </div>
             </div>
         </div>
     </div>
