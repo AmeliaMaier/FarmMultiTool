@@ -33,13 +33,13 @@ try{
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<div class="navbar-nav"
-    <p> <a href="dashboard.php">Home</a> </p>
-    <p> <a href="source_table.php">Data Source</a> </p>
-    <p> <a href="source_archive_table.php">Archived Data Source</a> </p>
-    <p> <a href="animal_species_table.php">Animal Species</a> </p>
-    <p> <a href="animal_breed_table.php">Animal Breed</a> </p>
-</div>
+<ul>
+    <li> <a href="dashboard.php">Home</a> </li>
+    <li> <a href="source_table.php">Data Source</a> </li>
+    <li> <a href="source_archive_table.php">Archived Data Source</a> </li>
+    <li> <a href="animal_species_table.php">Animal Species</a> </li>
+    <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
+</ul>
 <div class="container-fluid">
     <div class="row">
         <div class="card">
