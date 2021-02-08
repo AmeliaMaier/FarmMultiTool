@@ -57,7 +57,6 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
 }
 
 function get_animal_breed_table(){
-    function get_animal_species_table(){
         if(!function_exists('get_db_connection')){include "db.php";}
         $conn = get_db_connection();
         $query = "SELECT 
@@ -252,7 +251,7 @@ function get_animal_species_table(){
 function get_animal_species_dropdown(){
     if(!function_exists('get_db_connection')){include "db.php";}
     $conn = get_db_connection();
-    $query = "SELECT cas.id, cas.species_name, cs.title as source_name
+    $query = "SELECT cas.id, CONCAT('species: ', cas.species_name, '; source: ', cs.title) as species
                 FROM core_animal_species cas 
                 INNER JOIN core_sources cs 
                     ON cas.core_source_id = cs.id
@@ -263,7 +262,7 @@ function get_animal_species_dropdown(){
     $html_dropdown = "<select name='species_id'>";
     if ($result !== false) {
         foreach ($result as $row) {
-            $html_dropdown .= "<option value='" . $row['id'] . "'>" ."species: ".$row['species_name']."; source: ".$row['source_name'] . "</option>";
+            $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['species'] . " </option>";
         }
     }
     $html_dropdown .= " </select>";
@@ -271,3 +270,4 @@ function get_animal_species_dropdown(){
 }
 
 ?>
+
