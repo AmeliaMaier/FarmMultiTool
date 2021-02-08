@@ -37,21 +37,15 @@ try{
     <div class="row">
         <div class="card-deck"
             <div class="card-header-tabs">
-                <h5 class="card-title">Links </h5>
                 <div class="card-body">
-                    <p> <a href="dashboard.php">Dashboard</a> </p>
-                    <p> <a href="source_table.php">Add Data Source</a> </p>
-                    <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
-                    <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
-                    <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
+                    <p> <a href="dashboard.php">Home</a> </p>
                 </div>
-                <h5 class="card-title">Add </h5>
+                <h5 class="card-title">Add</h5>
                 <div class="card-body">
-                    <p> <a href="dashboard.php">Dashboard</a> </p>
-                    <p> <a href="source_table.php">Add Data Source</a> </p>
-                    <p> <a href="source_archive_table.php">Add Archived Data Source</a> </p>
-                    <p> <a href="animal_species_table.php">Add Animal Species</a> </p>
-                    <p> <a href="animal_breed_table.php">Add Animal Breed</a> </p>
+                    <p> <a href="source_table.php">Data Source</a> </p>
+                    <p> <a href="source_archive_table.php">Archived Data Source</a> </p>
+                    <p> <a href="animal_species_table.php">Animal Species</a> </p>
+                    <p> <a href="animal_breed_table.php">Animal Breed</a> </p>
                 </div>
             </div>
         </div>
