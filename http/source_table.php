@@ -35,19 +35,12 @@ try{
 <body>
 <div class="container">
     <div class="row">
-        <div class="card-deck"
-            <div class="card-header-tabs">
-                <div class="card-body">
-                    <p> <a href="dashboard.php">Home</a> </p>
-                </div>
-                <h5 class="card-title">Add</h5>
-                <div class="card-body">
-                    <p> <a href="source_table.php">Data Source</a> </p>
-                    <p> <a href="source_archive_table.php">Archived Data Source</a> </p>
-                    <p> <a href="animal_species_table.php">Animal Species</a> </p>
-                    <p> <a href="animal_breed_table.php">Animal Breed</a> </p>
-                </div>
-            </div>
+        <div class="navbar"
+            <p> <a href="dashboard.php">Home</a> </p>
+            <p> <a href="source_table.php">Data Source</a> </p>
+            <p> <a href="source_archive_table.php">Archived Data Source</a> </p>
+            <p> <a href="animal_species_table.php">Animal Species</a> </p>
+            <p> <a href="animal_breed_table.php">Animal Breed</a> </p>
         </div>
     </div>
     <div class="row">
