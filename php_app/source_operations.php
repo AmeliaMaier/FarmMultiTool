@@ -64,7 +64,10 @@ function update_source($source_type, $source_id, $title){
                 SET title = ?, source_type = ?
                 WHERE id = ?');
     $stmt->bind_param('ssi', $title, $source_type, $source_id);
-    return $stmt->execute();
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the data source's record.");
 }
 
 
