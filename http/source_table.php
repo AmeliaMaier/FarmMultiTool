@@ -35,7 +35,7 @@ try{
 <body>
 <div class="container">
     <div class="row">
-        <div class="navbar"
+        <div class="navbar-nav"
             <p> <a href="dashboard.php">Home</a> </p>
             <p> <a href="source_table.php">Data Source</a> </p>
             <p> <a href="source_archive_table.php">Archived Data Source</a> </p>
