@@ -1941,7 +1941,29 @@ pre code {
     max-width: 1000px;
     overflow-x: auto;
     overflow-y: auto;
+    border-collapse: collapse;
     -webkit-overflow-scrolling: touch
+}
+
+.table-responsive td{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table-responsive th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+
+.table-responsive tr:hover {background-color: #ddd;}
+.table-responsive tr:nth-child(even){background-color: #f2f2f2;}
+.table-responsive th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #28a745;
+    color: white;
 }
 
 .table-responsive > .table-bordered {
