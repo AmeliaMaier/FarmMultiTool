@@ -116,7 +116,7 @@ function get_plant_species_dropdown($user_type='unset'){
     $html_dropdown = "<select name='plant_species_id'>";
     if ($result !== false) {
         foreach ($result as $row) {
-            $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['species'] . " </option>";
+            $html_dropdown .= "<option value='" . $row['plant_species_id'] . "'> " . $row['species'] . " </option>";
         }
     }
     $html_dropdown .= " </select>";
