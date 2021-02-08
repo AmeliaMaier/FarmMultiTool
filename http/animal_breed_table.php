@@ -14,7 +14,7 @@ try{
 
 
         if (!isset($housing_type_error) && !isset($food_type_error) && !isset($source_of_error) && !isset($vaccines_error)){
-            $result = add_animal_breed($_SESSION['user_id'], $animal_species_name, $source_id, );
+            $result = add_animal_breed($_SESSION['user_id'], $animal_species_name, $source_id);
 
             if ($result['success']) {
                 $success_message = 'Data source archive record added'.$source_id;
