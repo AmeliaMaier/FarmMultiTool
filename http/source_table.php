@@ -40,7 +40,7 @@ try{
     <p> <a href="animal_species_table.php">Animal Species</a> </p>
     <p> <a href="animal_breed_table.php">Animal Breed</a> </p>
 </div>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="card">
             <div class="card-body">
