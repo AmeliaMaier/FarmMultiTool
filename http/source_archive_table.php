@@ -19,6 +19,7 @@ try{
 
         if ($result['success']) {
             $success_message = 'Data source archive record added'.$source_id;
+            $html_table = get_sources_archive_table();
         } else {
             unset($success_message);
             $error_message = $result['error'];

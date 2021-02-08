@@ -179,6 +179,7 @@ try{
 
             if ($result['success']) {
                 $success_message = 'Animal Species record added '.$animal_species_name;
+                $html_table = get_animal_species_table();
             } else {
                 unset($success_message);
                 $error_message = $result['error'];

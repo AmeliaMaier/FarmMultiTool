@@ -15,6 +15,7 @@ try{
 
         if ($result['success']) {
             $success_message = 'Data source added for Address/ISBN '.$address_isbn;
+            $html_table = get_sources_table();
         } else {
             unset($success_message);
             $error_message = $result['error'];
