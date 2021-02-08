@@ -101,6 +101,43 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
     return $stmt->execute();
 }
 
+function update_animal_species($species_id, $difficulty_level,
+                               $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
+                               $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
+                               $vaccines){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE `core_animal_species` 
+                SET 
+                  `meat_source`= ?,
+                  `fiber_source`= ?,
+                  `milk_source`= ?,
+                  `egg_source`= ?,
+                  `cage_happy`= ?,
+                  `pasture_happy`= ?,
+                  `difficulty_level`= ?,
+                  `eats_bugs`= ?,
+                  `eats_meat`= ?,
+                  `eats_plants`= ?,
+                  `min_temp`= ?,
+                  `max_temp`= ?,
+                  `vaccine_schedule`= ?,
+                  `gestation_days`= ?
+                  WHERE id = ?');
+    $stmt->bind_param('iiiiiisiiiiiiii', $source_meat, $source_fiber, $source_milk, $source_egg,
+                    $cage_happy, $pasture_happy, $difficulty_level, $food_bug, $food_meat, $food_plant, $min_temp,
+                    $max_temp, $vaccines, $gestation_days, $species_id);
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the species' record.");
+
+
+}
+
 function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
                              $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer,
                              $winter, $endangered, $exotic, $price_child, $price_adult)
@@ -367,12 +404,25 @@ function get_animal_species_dropdown($user_type = 'unset')
         include "db.php";
     }
     $conn = get_db_connection();
-    $query = "SELECT cas.id, CONCAT('species: ', cas.species_name, '; source: ', cs.title) as species
-                FROM core_animal_species cas 
-                INNER JOIN core_sources cs 
-                    ON cas.core_source_id = cs.id
-                    AND cs.deleted_dt IS NULL
-                WHERE cas.deleted_dt IS NULL";
+    if ($user_type = 'unset') {
+        $query = "SELECT cas.id, CONCAT(cas.species_name, ' | ', cs.title) as species
+                    FROM core_animal_species cas 
+                    INNER JOIN core_sources cs 
+                        ON cas.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    WHERE cas.deleted_dt IS NULL";
+    } else{
+        $query = "SELECT cas.id, CONCAT(cas.species_name, ' | ', cs.title) as species
+                    FROM core_animal_species cas 
+                    INNER JOIN core_sources cs 
+                        ON cas.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    INNER JOIN user_type ut 
+                    	ON cas.user_id = ut.user_id
+                        AND ut.deleted_dt IS NULL
+                    WHERE cas.deleted_dt IS NULL
+                    AND ut.type = '".$user_type."'";
+    }
     $result = $conn->query($query);
 
     $html_dropdown = "<select name='species_id'>";
