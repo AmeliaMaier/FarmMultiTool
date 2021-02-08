@@ -29,7 +29,7 @@ try{
         }
     }
     if (isset($_POST['update'])) {
-        $source_id = (int) $_POST['source_id'];
+        $source_id = (int) $_POST['archived_source_id'];
         $sftp_folder_id = (int) $_POST['sftp_folder_id'];
         $sftp_file_name = $_POST['sftp_file_name'];
         $sftp_share_url = $_POST['sftp_share_url'];
@@ -59,7 +59,7 @@ try{
 </head>
 <body>
 <ul>
-    <p class="text">Username : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Username : <?php echo $_SESSION['user_name']?></p>
     <p class="text">Type : <?php echo $_SESSION['user_type']?></p>
     <li> <a href="logout.php">Logout</a> </li>
     <li> <a href="dashboard.php">Home</a> </li>

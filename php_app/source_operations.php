@@ -238,7 +238,7 @@ function get_archived_sources_dropdown($user_type='unset'){
     }
     $result = $conn->query($query);
 
-    $html_dropdown = "<select name='source_id'>";
+    $html_dropdown = "<select name='archived_source_id'>";
     if ($result !== false) {
         foreach ($result as $row) {
             $html_dropdown .= "<option value='" . $row['id'] . "'>" . $row['title'] . "</option>";

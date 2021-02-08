@@ -18,7 +18,7 @@ try{
 </head>
 <body>
 <ul>
-    <p class="text">Username : <?php echo $_SESSION['user_type']?></p>
+    <p class="text">Username : <?php echo $_SESSION['user_name']?></p>
     <p class="text">Type : <?php echo $_SESSION['user_type']?></p>
     <li> <a href="logout.php">Logout</a> </li>
     <li> <a class="active" href="dashboard.php">Home</a> </li>
