@@ -92,10 +92,10 @@ try{
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group ">
                     <label>Archive Type</label>
-                    <<select name="archive_type" id="archive_type">
+                    <select name="archive_type" id="archive_type">
                         <option value="already">Manually Archived Data Source</option>
                         <option value="auto">Automatically Archive Based on URL - Not Implemented</option>
-                    </select>>
+                    </select>
                     <span class="text-danger"><?php if (isset($archive_type_error)) echo $archive_type_error; ?></span>
                 </div>
                 <div class="form-group">
