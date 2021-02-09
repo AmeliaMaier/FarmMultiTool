@@ -467,7 +467,8 @@ function get_animal_breed_table()
             INNER JOIN core_sources cs 
                 on cab.core_source_id = cs.id 
                 and cs.deleted_dt IS NULL 
-            WHERE cab.deleted_dt IS NULL";
+            WHERE cab.deleted_dt IS NULL
+            ORDER BY cas.species_name, cab.breed_name, cs.title";
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
@@ -566,7 +567,8 @@ function get_animal_species_table()
                 INNER JOIN core_sources cs 
                     on cas.core_source_id = cs.id 
                     and cs.deleted_dt IS NULL 
-            WHERE cas.deleted_dt IS NULL ";
+            WHERE cas.deleted_dt IS NULL 
+            ORDER BY cas.species_name, cs.title";
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
@@ -658,7 +660,8 @@ function get_animal_food_plants_table(){
                 INNER JOIN core_plant_species cps 
                     ON cafp.plant_species_id = cps.id
                     AND cps.deleted_dt IS NULL
-                WHERE cafp.deleted_dt IS NULL";
+                WHERE cafp.deleted_dt IS NULL
+                ORDER BY cas.species_name, cps.species_name, cs.title";
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
@@ -723,7 +726,8 @@ function get_animal_events_table(){
                 LEFT JOIN core_animal_breed cab 
                     ON cae.animal_breed_id = cab.id 
                     AND cab.deleted_dt IS NULL
-                WHERE cae.deleted_dt IS NULL";
+                WHERE cae.deleted_dt IS NULL
+                ORDER BY cas.species_name, cab.breed_name, cae.event_name, cs.title";
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
@@ -774,7 +778,8 @@ function get_animal_event_links_table(){
                 LEFT JOIN core_animal_events next_event
                     ON cael.next_event_id = next_event.id
                     AND next_event.deleted_dt IS NULL
-                WHERE cael.deleted_dt IS NULL";
+                WHERE cael.deleted_dt IS NULL
+                ORDER BY current_event.event_name, next_event.event_name, cs.title ";
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
@@ -819,7 +824,8 @@ function get_animal_species_dropdown($user_type = 'unset')
                     INNER JOIN core_sources cs 
                         ON cas.core_source_id = cs.id
                         AND cs.deleted_dt IS NULL
-                    WHERE cas.deleted_dt IS NULL";
+                    WHERE cas.deleted_dt IS NULL
+                    ORDER BY cas.species_name, cs.title";
     } else{
         $query = "SELECT cas.id, CONCAT(cas.species_name, ' | ', cs.title) as species
                     FROM core_animal_species cas 
@@ -830,7 +836,8 @@ function get_animal_species_dropdown($user_type = 'unset')
                     	ON cas.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cas.deleted_dt IS NULL
-                    AND ut.type = '".$user_type."'";
+                    AND ut.type = '".$user_type."'
+                    ORDER BY cas.species_name, cs.title";
     }
     $result = $conn->query($query);
 
@@ -851,23 +858,31 @@ function get_animal_breed_dropdown($user_type = 'unset', $with_null=false)
     }
     $conn = get_db_connection();
     if ($user_type = 'unset') {
-        $query = "SELECT cab.id, CONCAT(cas.species_name, ' | ', cab.breed_name) as breeds
+        $query = "SELECT cab.id, CONCAT(cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as breeds
                     FROM core_animal_breed cab
                     INNER JOIN core_animal_species cas 
                         ON cab.species_id = cas.id 
                         AND cas.deleted_dt IS NULL
-                    WHERE cab.deleted_dt IS NULL";
+                    INNER JOIN core_sources cs 
+                        ON cab.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    WHERE cab.deleted_dt IS NULL
+                    ORDER BY cas.species_name, cab.breed_name, cs.title";
     } else {
-        $query = "SELECT cab.id, CONCAT(cas.species_name, ' | ', cab.breed_name) as breeds
+        $query = "SELECT cab.id, CONCAT(cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as breeds
                     FROM core_animal_breed cab
                     INNER JOIN core_animal_species cas 
                         ON cab.species_id = cas.id 
                         AND cas.deleted_dt IS NULL
+                    INNER JOIN core_sources cs 
+                        ON cab.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
                     INNER JOIN user_type ut 
                         ON cab.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cab.deleted_dt IS NULL
-                    AND ut.type = '" . $user_type . "'";
+                    AND ut.type = '" . $user_type . "'
+                    ORDER BY cas.species_name, cab.breed_name, cs.title";
     }
     $result = $conn->query($query);
 
@@ -901,7 +916,8 @@ function get_animal_food_plants_dropdown($user_type = 'unset'){
                     INNER JOIN core_plant_species cps 
                         ON cafp.plant_species_id = cps.id
                         AND cps.deleted_dt IS NULL
-                    WHERE cafp.deleted_dt IS NULL";
+                    WHERE cafp.deleted_dt IS NULL
+                    ORDER BY cas.species_name, cps.species_name, cs.title";
     } else {
         $query = "SELECT
                         cafp.`id`, 
@@ -920,7 +936,8 @@ function get_animal_food_plants_dropdown($user_type = 'unset'){
                         ON cab.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cafp.deleted_dt IS NULL
-                    AND ut.type = '" . $user_type . "'";
+                    AND ut.type = '" . $user_type . "'
+                    ORDER BY cas.species_name, cps.species_name, cs.title";
     }
     $result = $conn->query($query);
 
@@ -956,7 +973,11 @@ function get_animal_events_dropdown($user_type = 'unset', $name = 'animal_event_
                     LEFT JOIN core_animal_breed cab 
                         ON cae.animal_breed_id = cab.id 
                         AND cab.deleted_dt IS NULL
-                    WHERE cae.deleted_dt IS NULL";
+                    WHERE cae.deleted_dt IS NULL
+                    ORDER BY (CASE 
+                        WHEN cab.breed_name is NULL THEN 
+                            CONCAT(cae.event_name, ' | ', cas.species_name, ' | ',  cs.title)
+                        ELSE CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) END)";
     } else {
         $query = "SELECT 
                     cae.id,
@@ -978,7 +999,11 @@ function get_animal_events_dropdown($user_type = 'unset', $name = 'animal_event_
                         ON cas.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cae.deleted_dt IS NULL
-                    AND ut.type = '" . $user_type . "'";
+                    AND ut.type = '" . $user_type . "'
+                    ORDER BY (CASE 
+                        WHEN cab.breed_name is NULL THEN 
+                            CONCAT(cae.event_name, ' | ', cas.species_name, ' | ',  cs.title)
+                        ELSE CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) END)";
     }
     $result = $conn->query($query);
 
@@ -1015,7 +1040,11 @@ function get_animal_event_links_dropdown($user_type = 'unset', $name = 'animal_e
                     LEFT JOIN core_animal_events next_event
                         ON cael.next_event_id = next_event.id
                         AND next_event.deleted_dt IS NULL
-                    WHERE cael.deleted_dt IS NULL";
+                    WHERE cael.deleted_dt IS NULL
+                    ORDER BY (CASE 
+                    WHEN next_event.event_name is NULL 
+                     THEN CONCAT(current_event.event_name, ' | ', cs.title)
+                     ELSE CONCAT(current_event.event_name, ' | ', next_event.event_name, ' | ', cs.title) END)";
     } else {
         $query = "SELECT 
                     cael.id,
@@ -1037,7 +1066,11 @@ function get_animal_event_links_dropdown($user_type = 'unset', $name = 'animal_e
                         ON cael.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cael.deleted_dt IS NULL
-                    AND ut.type = '" . $user_type . "'";
+                    AND ut.type = '" . $user_type . "'
+                    ORDER BY (CASE 
+                    WHEN next_event.event_name is NULL 
+                     THEN CONCAT(current_event.event_name, ' | ', cs.title)
+                     ELSE CONCAT(current_event.event_name, ' | ', next_event.event_name, ' | ', cs.title) END)";
     }
     $result = $conn->query($query);
 
