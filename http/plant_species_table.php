@@ -13,7 +13,11 @@ try{
     if (isset($_POST['add'])) {
         $plant_species_name = $_POST['plant_species_name'];
         $source_id = (int) $_POST['source_id'];
-        $growth_zone = $_POST['growth_zone'];
+        if ($_POST['growth_zone'] = 'null'){
+            $growth_zone = null;
+        }else{
+            $growth_zone = $_POST['growth_zone'];
+        }
         $water_requirement = $_POST['water_requirement'];
         $sun_requirement = $_POST['sun_requirement'];
         $soil_requirement = $_POST['soil_requirement'];
@@ -65,7 +69,11 @@ try{
 
     if (isset($_POST['update'])) {
         $species_id = (int) $_POST['plant_species_id'];
-        $growth_zone = $_POST['growth_zone'];
+        if ($_POST['growth_zone'] = 'null'){
+            $growth_zone = null;
+        }else{
+            $growth_zone = $_POST['growth_zone'];
+        }
         $water_requirement = $_POST['water_requirement'];
         $sun_requirement = $_POST['sun_requirement'];
         $soil_requirement = $_POST['soil_requirement'];
@@ -176,6 +184,7 @@ try{
                 <div class="form-group">
                     <label>Primary Growth Zone</label><br>
                     <select name="growth_zone" id="growth_zone">
+                        <option value="null"> Unknown </option>
                         <option value="1A"> 1A </option>
                         <option value="1B"> 1B </option>
                         <option value="2A"> 2A </option>
@@ -274,6 +283,7 @@ try{
                 <div class="form-group">
                     <label>Primary Growth Zone</label><br>
                     <select name="growth_zone" id="growth_zone">
+                        <option value="null"> Unknown </option>
                         <option value="1A"> 1A </option>
                         <option value="1B"> 1B </option>
                         <option value="2A"> 2A </option>
