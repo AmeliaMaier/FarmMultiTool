@@ -217,17 +217,17 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Water Requirements</label>
-                    <input type="text" name="water_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="water_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($water_requirement_error)) echo $water_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Sun Requirements</label>
-                    <input type="text" name="sun_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="sun_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($sun_requirement_error)) echo $sun_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Soil Requirements</label>
-                    <input type="text" name="soil_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="soil_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($soil_requirement_error)) echo $soil_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -316,17 +316,17 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Water Requirements</label>
-                    <input type="text" name="water_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="water_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($water_requirement_error)) echo $water_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Sun Requirements</label>
-                    <input type="text" name="sun_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="sun_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($sun_requirement_error)) echo $sun_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Soil Requirements</label>
-                    <input type="text" name="soil_requirement" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="soil_requirement" class="form-control" value="" maxlength="250" >
                     <span class="text-danger"><?php if (isset($soil_requirement_error)) echo $soil_requirement_error; ?></span>
                 </div>
                 <div class="form-group">
