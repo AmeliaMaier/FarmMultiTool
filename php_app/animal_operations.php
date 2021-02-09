@@ -135,7 +135,7 @@ function animal_food_plants_exists($source_id, $animal_species_id, $plant_specie
                 AND cafp.core_source_id = ?
                 AND cas.id = ?
                 AND cps.id = ?');
-    $stmt->bind_param('is', $source_id, $animal_species_id, $plant_species_id);
+    $stmt->bind_param('iii', $source_id, $animal_species_id, $plant_species_id);
     $stmt->execute();
     $stmt->store_result();
     $count = $stmt->num_rows;
