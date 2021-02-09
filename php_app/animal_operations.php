@@ -58,6 +58,17 @@ function add_animal_event($user_id, $source_id, $animal_species_id, $animal_bree
 
 }
 
+function add_animal_event_link($user_id, $source_id, $current_event_id, $next_event_id, $time_between, $time_units){
+    if (animal_event_link_exists($source_id, $current_event_id, $next_event_id)) {
+        return array("success" => false, "error" => "A record already exists for event link");
+    }
+    if (insert_animal_event_link($user_id, $source_id, $current_event_id, $next_event_id, $time_between, $time_units)){
+        return array("success" => true);
+    }
+    return array("success" => false, "error" => "An error occurred while saving the event link.");
+
+}
+
 function animal_species_exists($animal_species_name, $source_id)
 {
     if (!function_exists('get_db_connection')) {
@@ -155,6 +166,35 @@ function animal_event_exists($source_id, $animal_species_id, $animal_breed_id, $
                 AND cae.animal_breed_id = ?
                 AND cae.event_name = ?');
     $stmt->bind_param('iiis', $source_id, $animal_species_id, $animal_breed_id, $event_name);
+    $stmt->execute();
+    $stmt->store_result();
+    $count = $stmt->num_rows;
+    return $count > 0;
+}
+
+function animal_event_link_exists($source_id, $current_event_id, $next_event_id){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT 
+                cael.id           
+                FROM `core_animal_event_links` cael
+                INNER JOIN core_animal_events current_event 
+                    ON cael.current_event_id = current_event.id
+                    AND current_event.deleted_dt IS NULL
+                INNER JOIN core_sources cs 
+                    ON cael.core_source_id = cs.id 
+                    AND cs.deleted_dt IS NULL
+                LEFT JOIN core_animal_events next_event
+                    ON cael.next_event_id = next_event.id
+                    AND next_event.deleted_dt IS NULL
+                WHERE cael.deleted_dt IS NULL
+                AND cael.core_source_id = ?
+                AND cael.current_event_id = ?
+                AND cael.next_event_id = ?');
+    $stmt->bind_param('iii', $source_id, $current_event_id, $next_event_id);
     $stmt->execute();
     $stmt->store_result();
     $count = $stmt->num_rows;
@@ -356,6 +396,40 @@ function update_animal_event($event_id){
         return array("success"=>true);
     }
     return array("success"=>false,  "error"=>"An error occurred while updating the event record.");
+
+}
+
+function insert_animal_event_link($user_id, $source_id, $current_event_id, $next_event_id, $time_between, $time_units){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'INSERT INTO `core_animal_event_links`
+                (`core_source_id`, `user_id`, `current_event_id`, 
+                 `next_event_id`, `time_between`, `time_unit`, `created_dt`)
+              VALUES
+                ( ?,?,?,?,?,?, CURRENT_DATE)');
+    $stmt->bind_param('iiiiis', $source_id, $user_id, $current_event_id, $next_event_id,
+                $time_between, $time_units);
+    return $stmt->execute();
+}
+
+function update_animal_event_link($event_link_id, $time_between, $time_units){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE `core_animal_event_links` 
+                SET 
+                  time_between = ?, time_unit = ?
+                  WHERE `id` = ?');
+    $stmt->bind_param('isi', $time_between, $time_units, $event_link_id);
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the event link record.");
 
 }
 
@@ -679,6 +753,60 @@ function get_animal_events_table(){
     return $html_table;
 }
 
+function get_animal_event_links_table(){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $query = "SELECT 
+                cs.title as source_name,
+                current_event.event_name as current_event_name,
+                next_event.event_name as next_event_name,
+                cael.time_between,
+                cael.time_unit
+                FROM `core_animal_event_links` cael
+                INNER JOIN core_animal_events current_event 
+                    ON cael.current_event_id = current_event.id
+                    AND current_event.deleted_dt IS NULL
+                INNER JOIN core_sources cs 
+                    ON cael.core_source_id = cs.id 
+                    AND cs.deleted_dt IS NULL
+                LEFT JOIN core_animal_events next_event
+                    ON cael.next_event_id = next_event.id
+                    AND next_event.deleted_dt IS NULL
+                WHERE cael.deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_table = '<table> <tr> 
+                                <td> Source_Name </td>  
+                                <td> Current_Event_Name </td>  
+                                <td> Next_Event_Name </td>  
+                                <td> Time_Between_Events </td>  
+                                <td> Time_Unit </td>  
+                           </tr>';
+
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $field1name = $row["source_name"];
+            $field2name = $row["current_event_name"];
+            $field3name = $row["next_event_name"];
+            $field4name = $row["time_between"];
+            $field5name = $row["time_unit"];
+
+            $html_table .= '<tr> 
+                                  <td>' . $field1name . '</td>
+                                  <td>' . $field2name . '</td> 
+                                  <td>' . $field3name . '</td> 
+                                  <td>' . $field4name . '</td>  
+                                  <td>' . $field5name . '</td>  
+                              </tr>';
+        }
+        $result->free();
+    }
+    $html_table .= ' </table>';
+    return $html_table;
+}
+
 function get_animal_species_dropdown($user_type = 'unset')
 {
     if (!function_exists('get_db_connection')) {
@@ -806,7 +934,7 @@ function get_animal_food_plants_dropdown($user_type = 'unset'){
     return $html_dropdown;
 }
 
-function get_animal_events_dropdown($user_type = 'unset'){
+function get_animal_events_dropdown($user_type = 'unset', $name = 'animal_event_id', $with_null = false){
     if (!function_exists('get_db_connection')) {
         include "db.php";
     }
@@ -854,12 +982,72 @@ function get_animal_events_dropdown($user_type = 'unset'){
     }
     $result = $conn->query($query);
 
-    $html_dropdown = "<select name='animal_event_id'>";
+    $html_dropdown = "<select name='".$name."'>";
     if ($result !== false) {
         foreach ($result as $row) {
             $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['event_name'] . " </option>";
         }
     }
+    if ($with_null){$html_dropdown .= "<option value='null'> None </option>";}
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
+function get_animal_event_links_dropdown($user_type = 'unset', $name = 'animal_event_link_id', $with_null = false){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    if ($user_type = 'unset') {
+        $query = "SELECT 
+                    cael.id,
+                    (CASE 
+                    WHEN next_event.event_name is NULL 
+                     THEN CONCAT(current_event.event_name, ' | ', cs.title)
+                     ELSE CONCAT(current_event.event_name, ' | ', next_event.event_name, ' | ', cs.title) END)as event_link_name             
+                    FROM `core_animal_event_links` cael
+                    INNER JOIN core_animal_events current_event 
+                        ON cael.current_event_id = current_event.id
+                        AND current_event.deleted_dt IS NULL
+                    INNER JOIN core_sources cs 
+                        ON cael.core_source_id = cs.id 
+                        AND cs.deleted_dt IS NULL
+                    LEFT JOIN core_animal_events next_event
+                        ON cael.next_event_id = next_event.id
+                        AND next_event.deleted_dt IS NULL
+                    WHERE cael.deleted_dt IS NULL";
+    } else {
+        $query = "SELECT 
+                    cael.id,
+                    (CASE 
+                    WHEN next_event.event_name is NULL 
+                     THEN CONCAT(current_event.event_name, ' | ', cs.title)
+                     ELSE CONCAT(current_event.event_name, ' | ', next_event.event_name, ' | ', cs.title) END)as event_link_name             
+                    FROM `core_animal_event_links` cael
+                    INNER JOIN core_animal_events current_event 
+                        ON cael.current_event_id = current_event.id
+                        AND current_event.deleted_dt IS NULL
+                    INNER JOIN core_sources cs 
+                        ON cael.core_source_id = cs.id 
+                        AND cs.deleted_dt IS NULL
+                    LEFT JOIN core_animal_events next_event
+                        ON cael.next_event_id = next_event.id
+                        AND next_event.deleted_dt IS NULL
+                    INNER JOIN user_type ut 
+                        ON cael.user_id = ut.user_id
+                        AND ut.deleted_dt IS NULL
+                    WHERE cael.deleted_dt IS NULL
+                    AND ut.type = '" . $user_type . "'";
+    }
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='".$name."'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['event_link_name'] . " </option>";
+        }
+    }
+    if ($with_null){$html_dropdown .= "<option value='null'> None </option>";}
     $html_dropdown .= " </select>";
     return $html_dropdown;
 }
