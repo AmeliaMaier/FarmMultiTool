@@ -10,12 +10,16 @@ try{
     $html_table = get_animal_events_table();
     $source_dropdown = get_sources_dropdown();
     $species_dropdown = get_animal_species_dropdown();
-    $breed_dropdown = get_animal_breed_dropdown();
+    $breed_dropdown = get_animal_breed_dropdown('unset', true);
     $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
 
     if (isset($_POST['add'])) {
         $animal_species_id = (int) $_POST['species_id'];
-        $animal_breed_id = (int) $_POST['breed_id'];
+        if($_POST['animal_event_id'] == 'null'){
+            $animal_breed_id = null;
+        } else{
+            $animal_breed_id = (int) $_POST['breed_id'];
+        }
         $source_id = (int) $_POST['source_id'];
         $event_name = $_POST['event_name'];
 
@@ -35,11 +39,7 @@ try{
     }
 
     if (isset($_POST['update'])) {
-        if($_POST['animal_event_id'] == 'null'){
-            $animal_event_id = null;
-        }else{
-            $animal_event_id = (int) $_POST['animal_event_id'];
-        }
+        $animal_event_id = (int) $_POST['animal_event_id'];
 
         $result = update_animal_event($animal_event_id);
         if ($result['success']) {

@@ -716,7 +716,7 @@ function get_animal_species_dropdown($user_type = 'unset')
     return $html_dropdown;
 }
 
-function get_animal_breed_dropdown($user_type = 'unset')
+function get_animal_breed_dropdown($user_type = 'unset', $with_null=false)
 {
     if (!function_exists('get_db_connection')) {
         include "db.php";
@@ -749,6 +749,7 @@ function get_animal_breed_dropdown($user_type = 'unset')
             $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['breeds'] . " </option>";
         }
     }
+    if ($with_null){$html_dropdown .= "<option value='null'> None </option>";}
     $html_dropdown .= " </select>";
     return $html_dropdown;
 }
@@ -853,7 +854,6 @@ function get_animal_events_dropdown($user_type = 'unset'){
             $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['event_name'] . " </option>";
         }
     }
-    $html_dropdown .= "<option value='null'> None </option>";
     $html_dropdown .= " </select>";
     return $html_dropdown;
 }
