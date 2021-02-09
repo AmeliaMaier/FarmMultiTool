@@ -52,7 +52,7 @@ try{
             $result = add_animal_food_plants($_SESSION['user_id'], $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
                 $free_feed, $teething, $grit, $notes);
             if ($result['success']) {
-                $add_success_message = 'Data source added for Address/ISBN ' . $address_isbn;
+                $add_success_message = 'Food record added for Animal/Plant combination ';
 
                 $html_table = get_animal_food_plants_table();
                 $animal_dropdown = get_animal_species_dropdown();
@@ -101,7 +101,7 @@ try{
             $result = update_animal_food_plants($animal_food_plants_id, $medical, $limit_access,
                 $free_feed, $teething, $grit, $notes);
             if ($result['success']) {
-                $update_success_message = 'Data source updated for Address/ISBN ' . $address_isbn;
+                $update_success_message = 'Food record updated for Animal/Plant combination ';
 
                 $html_table = get_animal_food_plants_table();
                 $animal_dropdown = get_animal_species_dropdown();

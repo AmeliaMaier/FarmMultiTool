@@ -239,7 +239,7 @@ function update_animal_food_plants($animal_food_plants_id, $medical, $limit_acce
                   `notes`= ?
                   WHERE `id` = ?');
     $stmt->bind_param('iiiiisi', $medical, $limit_access, $free_feed, $teething,
-                $grit, $notes);
+                $grit, $notes, $animal_food_plants_id);
     if($stmt->execute()){
         return array("success"=>true);
     }
