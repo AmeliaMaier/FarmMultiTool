@@ -207,6 +207,7 @@ CREATE TABLE `farmmult_core`.`core_animal_event_links`
     `deleted_dt`       DATE NULL DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_animal_event_links` CHANGE `time_unit` `time_unit` TEXT NOT NULL;
 ALTER TABLE `core_animal_event_links`
     ADD CONSTRAINT `core_animal_event_links_ibfk_1` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
 ALTER TABLE `core_animal_event_links`
