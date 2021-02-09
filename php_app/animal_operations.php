@@ -661,8 +661,8 @@ function get_animal_events_table(){
 
     if ($result !== false) {
         foreach ($result as $row) {
-            $field1name = $row["animal_species_name"];
-            $field2name = $row["animal_breed_name"];
+            $field1name = $row["species_name"];
+            $field2name = $row["breed_name"];
             $field3name = $row["source_name"];
             $field4name = $row["event_name"];
 
@@ -829,7 +829,10 @@ function get_animal_events_dropdown($user_type = 'unset'){
     } else {
         $query = "SELECT 
                     cae.id,
-                    CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as event_name
+                    (CASE 
+                        WHEN cab.breed_name is NULL THEN 
+                            CONCAT(cae.event_name, ' | ', cas.species_name, ' | ',  cs.title)
+                        ELSE CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) END)as event_name
                     FROM `core_animal_events` cae
                     INNER JOIN core_animal_species cas 
                         ON cae.animal_species_id = cas.id
@@ -841,7 +844,7 @@ function get_animal_events_dropdown($user_type = 'unset'){
                         ON cae.animal_breed_id = cab.id 
                         AND cab.deleted_dt IS NULL
                     INNER JOIN user_type ut 
-                        ON cab.user_id = ut.user_id
+                        ON cas.user_id = ut.user_id
                         AND ut.deleted_dt IS NULL
                     WHERE cae.deleted_dt IS NULL
                     AND ut.type = '" . $user_type . "'";

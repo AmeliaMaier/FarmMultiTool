@@ -15,7 +15,7 @@ try{
 
     if (isset($_POST['add'])) {
         $animal_species_id = (int) $_POST['species_id'];
-        if($_POST['animal_event_id'] == 'null'){
+        if($_POST['breed_id'] == 'null'){
             $animal_breed_id = null;
         } else{
             $animal_breed_id = (int) $_POST['breed_id'];
