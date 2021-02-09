@@ -215,9 +215,9 @@ try{
                     <div class="form-group">
                         <label>Uses</label><br>
                         <input type="checkbox" id="medical" name="medical" value="medical">
-                        <label for="medical"> Medical </label>
+                        <label for="medical"> Medical </label><br>
                         <input type="checkbox" id="limit_access" name="limit_access" value="limit_access">
-                        <label for="limit_access"> Limit Access </label><br>
+                        <label for="limit_access"> Limit Access </label>
                         <input type="checkbox" id="free_feed" name="free_feed" value="free_feed">
                         <label for="free_feed"> Free Feed </label><br>
                         <input type="checkbox" id="teething" name="teething" value="teething">
