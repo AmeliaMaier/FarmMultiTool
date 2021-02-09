@@ -191,7 +191,7 @@ try{
                         </div>
                         <div class="form-group">
                             <label>Notes</label>
-                            <input type="text" name="notes" class="form-control" value="" maxlength="250" required="">
+                            <input type="text" name="notes" class="form-control" value="" maxlength="250">
                             <span class="text-danger"><?php if (isset($notes_error)) echo $notes_error; ?></span>
                         </div>
                         <input type="submit" class="btn btn-primary" name="add" value="submit">
@@ -228,7 +228,7 @@ try{
                     </div>
                     <div class="form-group">
                         <label>Notes</label>
-                        <input type="text" name="notes" class="form-control" value="" maxlength="250" required="">
+                        <input type="text" name="notes" class="form-control" value="" maxlength="250">
                         <span class="text-danger"><?php if (isset($notes_error)) echo $notes_error; ?></span>
                     </div>
                     <input type="submit" class="btn btn-primary" name="update" value="submit">
