@@ -35,6 +35,18 @@ function add_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty
 
 }
 
+function add_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
+                $free_feed, $teething, $grit, $notes){
+    if (animal_food_plants_exists($source_id, $animal_species_id, $plant_species_id)) {
+        return array("success" => false, "error" => "A record already exists for breed " . $animal_breed_name . " with species id " . $species_id);
+    }
+    if (insert_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
+        $free_feed, $teething, $grit, $notes)) {
+        return array("success" => true);
+    }
+    return array("success" => false, "error" => "An error occurred while saving the Animal's food.");
+}
+
 function animal_species_exists($animal_species_name, $source_id)
 {
     if (!function_exists('get_db_connection')) {
@@ -73,6 +85,35 @@ function animal_breed_exists($species_id, $animal_breed_name)
                   AND cab.breed_name = ? 
                   AND cas.deleted_dt IS NULL  ');
     $stmt->bind_param('is', $species_id, $animal_breed_name);
+    $stmt->execute();
+    $stmt->store_result();
+    $count = $stmt->num_rows;
+    return $count > 0;
+}
+
+function animal_food_plants_exists($source_id, $animal_species_id, $plant_species_id){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT
+                    cafp.*
+                FROM `core_animal_food_plants` cafp
+                INNER JOIN core_sources cs 
+                    ON cafp.core_source_id = cs.id
+                    AND cs.deleted_dt IS NULL
+                INNER JOIN core_animal_species cas 
+                    ON cafp.animal_species_id = cas.id
+                    AND cas.deleted_dt IS NULL
+                INNER JOIN core_plant_species cps 
+                    ON cafp.plant_species_id = cps.id
+                    AND cps.deleted_dt IS NULL
+                WHERE cafp.deleted_dt IS NULL
+                AND cafp.core_source_id = ?
+                AND cas.id = ?
+                AND cps.id = ?');
+    $stmt->bind_param('is', $source_id, $animal_species_id, $plant_species_id);
     $stmt->execute();
     $stmt->store_result();
     $count = $stmt->num_rows;
@@ -161,6 +202,49 @@ function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficu
         $max_size, $size_unit, $source_meat, $source_milk, $source_egg, $source_fiber, $summer,
         $winter, $endangered, $exotic, $color, $price_child, $price_adult, $difficulty_level, $species_id);
     return $stmt->execute();
+}
+
+function insert_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
+    $free_feed, $teething, $grit, $notes){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'INSERT INTO `core_animal_food_plants`(`animal_species_id`, 
+                                      `plant_species_id`, `medical_use`, `limit_access`, 
+                                      `free_feed`, `teething`, `grit`, `user_id`, 
+                                      `core_source_id`, `notes`, `created_dt`)
+              VALUES
+                ( ?,?,?,?,?,?,?,?,?,?, CURRENT_DATE)');
+    $stmt->bind_param('iiiiiiiiis', $animal_species_id, $plant_species_id, $medical, $limit_access,
+                $free_feed, $teething, $grit, $user_id, $source_id, $notes);
+    return $stmt->execute();
+}
+
+function update_animal_food_plants($animal_food_plants_id, $medical, $limit_access,
+                                   $free_feed, $teething, $grit, $notes){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE `core_animal_food_plants` 
+                SET 
+                  `medical_use`= ?,
+                  `limit_access`= ?,
+                  `free_feed`= ?,
+                  `teething`= ?,
+                  `grit`= ?,
+                  `notes`= ?
+                  WHERE `id` = ?');
+    $stmt->bind_param('iiiiisi', $medical, $limit_access, $free_feed, $teething,
+                $grit, $notes);
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the food's record.");
+
 }
 
 function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source_egg, $source_milk,
@@ -397,6 +481,77 @@ function get_animal_species_table()
     return $html_table;
 }
 
+function get_animal_food_plants_table(){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $query = "SELECT
+                    cafp.`id`, 
+                    cas.species_name as animal_species_name, 
+                    cps.species_name as plant_species_name, 
+                    cs.title as source_name,
+                    cafp.`medical_use`, 
+                    cafp.`limit_access`, 
+                    cafp.`free_feed`, 
+                    cafp.`teething`, 
+                    cafp.`grit`, 
+                    cafp.`notes`
+                FROM `core_animal_food_plants` cafp
+                INNER JOIN core_sources cs 
+                    ON cafp.core_source_id = cs.id
+                    AND cs.deleted_dt IS NULL
+                INNER JOIN core_animal_species cas 
+                    ON cafp.animal_species_id = cas.id
+                    AND cas.deleted_dt IS NULL
+                INNER JOIN core_plant_species cps 
+                    ON cafp.plant_species_id = cps.id
+                    AND cps.deleted_dt IS NULL
+                WHERE cafp.deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_table = '<table> <tr> 
+                                <td> Animal_Species_Name </td> 
+                                <td> Plant_Species_Name </td> 
+                                <td> Source_Name </td>  
+                                <td> Medical_Use </td>  
+                                <td> Limit_Access </td>  
+                                <td> Free_Feed </td>  
+                                <td> Teething </td>  
+                                <td> Grit </td>  
+                                <td> Notes </td>  
+                           </tr>';
+
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $field1name = $row["animal_species_name"];
+            $field2name = $row["plant_species_name"];
+            $field3name = $row["source_name"];
+            $field4name = $row["medical_use"];
+            $field5name = $row["limit_access"];
+            $field6name = $row["free_feed"];
+            $field7name = $row["teething"];
+            $field8name = $row["grit"];
+            $field9name = $row["notes"];
+
+            $html_table .= '<tr> 
+                                  <td>' . $field1name . '</td>
+                                  <td>' . $field2name . '</td> 
+                                  <td>' . $field3name . '</td> 
+                                  <td>' . $field4name . '</td> 
+                                  <td>' . $field5name . '</td> 
+                                  <td>' . $field6name . '</td> 
+                                  <td>' . $field7name . '</td> 
+                                  <td>' . $field8name . '</td> 
+                                  <td>' . $field9name . '</td> 
+                              </tr>';
+        }
+        $result->free();
+    }
+    $html_table .= ' </table>';
+    return $html_table;
+}
+
 function get_animal_species_dropdown($user_type = 'unset')
 {
     if (!function_exists('get_db_connection')) {
@@ -465,6 +620,58 @@ function get_animal_breed_dropdown($user_type = 'unset')
     if ($result !== false) {
         foreach ($result as $row) {
             $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['breeds'] . " </option>";
+        }
+    }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
+function get_animal_food_plants_dropdown($user_type = 'unset'){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    if ($user_type = 'unset') {
+        $query = "SELECT
+                        cafp.`id`, 
+                        CONCAT(cas.species_name, ' | ',  cps.species_name, ' | ', cs.title) as food_name
+                    FROM `core_animal_food_plants` cafp
+                    INNER JOIN core_sources cs 
+                        ON cafp.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    INNER JOIN core_animal_species cas 
+                        ON cafp.animal_species_id = cas.id
+                        AND cas.deleted_dt IS NULL
+                    INNER JOIN core_plant_species cps 
+                        ON cafp.plant_species_id = cps.id
+                        AND cps.deleted_dt IS NULL
+                    WHERE cafp.deleted_dt IS NULL";
+    } else {
+        $query = "SELECT
+                        cafp.`id`, 
+                        CONCAT(cas.species_name, ' | ',  cps.species_name, ' | ', cs.title) as food_name
+                    FROM `core_animal_food_plants` cafp
+                    INNER JOIN core_sources cs 
+                        ON cafp.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    INNER JOIN core_animal_species cas 
+                        ON cafp.animal_species_id = cas.id
+                        AND cas.deleted_dt IS NULL
+                    INNER JOIN core_plant_species cps 
+                        ON cafp.plant_species_id = cps.id
+                        AND cps.deleted_dt IS NULL
+                    INNER JOIN user_type ut 
+                        ON cab.user_id = ut.user_id
+                        AND ut.deleted_dt IS NULL
+                    WHERE cafp.deleted_dt IS NULL
+                    AND ut.type = '" . $user_type . "'";
+    }
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='animal_food_plants_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['food_name'] . " </option>";
         }
     }
     $html_dropdown .= " </select>";
