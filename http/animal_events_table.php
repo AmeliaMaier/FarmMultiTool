@@ -29,7 +29,7 @@ try{
             $html_table = get_animal_events_table();
             $source_dropdown = get_sources_dropdown();
             $species_dropdown = get_animal_species_dropdown();
-            $breed_dropdown = get_animal_breed_dropdown();
+            $breed_dropdown = get_animal_breed_dropdown('unset', true);
             $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
         } else {
             unset($add_success_message);
@@ -47,7 +47,7 @@ try{
             $html_table = get_animal_events_table();
             $source_dropdown = get_sources_dropdown();
             $species_dropdown = get_animal_species_dropdown();
-            $breed_dropdown = get_animal_breed_dropdown();
+            $breed_dropdown = get_animal_breed_dropdown('unset', true);
             $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
         } else {
                 unset($update_success_message);
