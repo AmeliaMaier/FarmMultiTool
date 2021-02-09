@@ -38,13 +38,24 @@ function add_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty
 function add_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
                 $free_feed, $teething, $grit, $notes){
     if (animal_food_plants_exists($source_id, $animal_species_id, $plant_species_id)) {
-        return array("success" => false, "error" => "A record already exists for breed " . $animal_breed_name . " with species id " . $species_id);
+        return array("success" => false, "error" => "A record already exists for animal id " . $animal_species_id . " with plant id " . $plant_species_id);
     }
     if (insert_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
         $free_feed, $teething, $grit, $notes)) {
         return array("success" => true);
     }
     return array("success" => false, "error" => "An error occurred while saving the Animal's food.");
+}
+
+function add_animal_event($user_id, $source_id, $animal_species_id, $animal_breed_id, $event_name){
+    if (animal_event_exists($source_id, $animal_species_id, $animal_breed_id, $event_name)) {
+        return array("success" => false, "error" => "A record already exists for event " . $event_name);
+    }
+    if (insert_animal_event($user_id, $source_id, $animal_species_id, $animal_breed_id, $event_name)){
+        return array("success" => true);
+    }
+    return array("success" => false, "error" => "An error occurred while saving the Animal's event.");
+
 }
 
 function animal_species_exists($animal_species_name, $source_id)
@@ -114,6 +125,36 @@ function animal_food_plants_exists($source_id, $animal_species_id, $plant_specie
                 AND cas.id = ?
                 AND cps.id = ?');
     $stmt->bind_param('is', $source_id, $animal_species_id, $plant_species_id);
+    $stmt->execute();
+    $stmt->store_result();
+    $count = $stmt->num_rows;
+    return $count > 0;
+}
+
+function animal_event_exists($source_id, $animal_species_id, $animal_breed_id, $event_name){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'SELECT 
+                cae.id
+                FROM `core_animal_events` cae
+                INNER JOIN core_animal_species cas 
+                    ON cae.animal_species_id = cas.id
+                    AND cas.deleted_dt IS NULL
+                INNER JOIN core_sources cs 
+                    ON cas.core_source_id = cs.id
+                    AND cs.deleted_dt IS NULL
+                LEFT JOIN core_animal_breed cab 
+                    ON cae.animal_breed_id = cab.id 
+                    AND cab.deleted_dt IS NULL
+                WHERE cae.deleted_dt IS NULL
+                AND cae.core_source_id = ?
+                AND cae.animal_species_id = ?
+                AND cae.animal_breed_id = ?
+                AND cae.event_name = ?');
+    $stmt->bind_param('iiis', $source_id, $animal_species_id, $animal_breed_id, $event_name);
     $stmt->execute();
     $stmt->store_result();
     $count = $stmt->num_rows;
@@ -204,6 +245,42 @@ function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficu
     return $stmt->execute();
 }
 
+function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source_egg, $source_milk,
+                             $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered, $exotic,
+                             $price_child, $price_adult)
+{
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE `core_animal_breed` 
+                SET `min_size`= ?,
+                  `max_size`= ?,
+                  `size_units`= ?,
+                  `meat_source`= ?,
+                  `milk_source`= ?,
+                  `egg_source`= ?,
+                  `fiber_source`= ?,
+                  `summer_happy`= ?,
+                  `winter_happy`= ?,
+                  `endangered`= ?,
+                  `exotic`= ?,
+                  `color`= ?,
+                  `price_child`= ?,
+                  `price_adult`= ?,
+                  `difficulty_level`= ?
+                  WHERE `id` = ?');
+    $stmt->bind_param('iisiiiiiiiisiisi', $min_size, $max_size, $size_unit, $source_meat, $source_milk,
+        $source_egg, $source_fiber, $summer, $winter, $endangered, $exotic, $color, $price_child, $price_adult,
+        $difficulty_level, $breed_id);
+    if($stmt->execute()){
+        return array("success"=>true);
+    }
+    return array("success"=>false,  "error"=>"An error occurred while updating the breed's record.");
+
+}
+
 function insert_animal_food_plants($user_id, $source_id, $animal_species_id, $plant_species_id, $medical, $limit_access,
     $free_feed, $teething, $grit, $notes){
     if (!function_exists('get_db_connection')) {
@@ -247,41 +324,41 @@ function update_animal_food_plants($animal_food_plants_id, $medical, $limit_acce
 
 }
 
-function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source_egg, $source_milk,
-                             $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered, $exotic,
-                             $price_child, $price_adult)
-{
+
+function insert_animal_event($user_id, $source_id, $animal_species_id, $animal_breed_id, $event_name){
     if (!function_exists('get_db_connection')) {
         include "db.php";
     }
     $conn = get_db_connection();
     $stmt = $conn->prepare(
-        'UPDATE `core_animal_breed` 
-                SET `min_size`= ?,
-                  `max_size`= ?,
-                  `size_units`= ?,
-                  `meat_source`= ?,
-                  `milk_source`= ?,
-                  `egg_source`= ?,
-                  `fiber_source`= ?,
-                  `summer_happy`= ?,
-                  `winter_happy`= ?,
-                  `endangered`= ?,
-                  `exotic`= ?,
-                  `color`= ?,
-                  `price_child`= ?,
-                  `price_adult`= ?,
-                  `difficulty_level`= ?
+        'INSERT INTO `core_animal_events`
+                (`user_id`, `core_source_id`, `animal_species_id`, `animal_breed_id`, 
+                 `event_name`, `created_dt`)
+              VALUES
+                ( ?,?,?,?,?, CURRENT_DATE)');
+    $stmt->bind_param('iiiis', $user_id, $source_id, $animal_species_id, $animal_breed_id,
+                $event_name);
+    return $stmt->execute();
+}
+
+function update_animal_event($event_id){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $stmt = $conn->prepare(
+        'UPDATE `core_animal_events` 
+                SET 
+                  created_dt = created_dt
                   WHERE `id` = ?');
-    $stmt->bind_param('iisiiiiiiiisiisi', $min_size, $max_size, $size_unit, $source_meat, $source_milk,
-                    $source_egg, $source_fiber, $summer, $winter, $endangered, $exotic, $color, $price_child, $price_adult,
-                    $difficulty_level, $breed_id);
+    $stmt->bind_param('i', $event_id);
     if($stmt->execute()){
         return array("success"=>true);
     }
-    return array("success"=>false,  "error"=>"An error occurred while updating the breed's record.");
+    return array("success"=>false,  "error"=>"An error occurred while updating the event record.");
 
 }
+
 
 function get_animal_breed_table()
 {
@@ -552,6 +629,56 @@ function get_animal_food_plants_table(){
     return $html_table;
 }
 
+function get_animal_events_table(){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    $query = "SELECT 
+                cas.species_name,
+                cab.breed_name,
+                cs.title as source_name,
+                cae.event_name
+                FROM `core_animal_events` cae
+                INNER JOIN core_animal_species cas 
+                    ON cae.animal_species_id = cas.id
+                    AND cas.deleted_dt IS NULL
+                INNER JOIN core_sources cs 
+                    ON cas.core_source_id = cs.id
+                    AND cs.deleted_dt IS NULL
+                LEFT JOIN core_animal_breed cab 
+                    ON cae.animal_breed_id = cab.id 
+                    AND cab.deleted_dt IS NULL
+                WHERE cae.deleted_dt IS NULL";
+    $result = $conn->query($query);
+
+    $html_table = '<table> <tr> 
+                                <td> Animal_Species_Name </td> 
+                                <td> Animal_Breed_Name </td> 
+                                <td> Source_Name </td>  
+                                <td> Event_Name </td>  
+                           </tr>';
+
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $field1name = $row["animal_species_name"];
+            $field2name = $row["animal_breed_name"];
+            $field3name = $row["source_name"];
+            $field4name = $row["event_name"];
+
+            $html_table .= '<tr> 
+                                  <td>' . $field1name . '</td>
+                                  <td>' . $field2name . '</td> 
+                                  <td>' . $field3name . '</td> 
+                                  <td>' . $field4name . '</td>  
+                              </tr>';
+        }
+        $result->free();
+    }
+    $html_table .= ' </table>';
+    return $html_table;
+}
+
 function get_animal_species_dropdown($user_type = 'unset')
 {
     if (!function_exists('get_db_connection')) {
@@ -674,6 +801,59 @@ function get_animal_food_plants_dropdown($user_type = 'unset'){
             $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['food_name'] . " </option>";
         }
     }
+    $html_dropdown .= " </select>";
+    return $html_dropdown;
+}
+
+function get_animal_events_dropdown($user_type = 'unset'){
+    if (!function_exists('get_db_connection')) {
+        include "db.php";
+    }
+    $conn = get_db_connection();
+    if ($user_type = 'unset') {
+        $query = "SELECT 
+                    cae.id,
+                    CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as event_name
+                    FROM `core_animal_events` cae
+                    INNER JOIN core_animal_species cas 
+                        ON cae.animal_species_id = cas.id
+                        AND cas.deleted_dt IS NULL
+                    INNER JOIN core_sources cs 
+                        ON cas.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    LEFT JOIN core_animal_breed cab 
+                        ON cae.animal_breed_id = cab.id 
+                        AND cab.deleted_dt IS NULL
+                    WHERE cae.deleted_dt IS NULL";
+    } else {
+        $query = "SELECT 
+                    cae.id,
+                    CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as event_name
+                    FROM `core_animal_events` cae
+                    INNER JOIN core_animal_species cas 
+                        ON cae.animal_species_id = cas.id
+                        AND cas.deleted_dt IS NULL
+                    INNER JOIN core_sources cs 
+                        ON cas.core_source_id = cs.id
+                        AND cs.deleted_dt IS NULL
+                    LEFT JOIN core_animal_breed cab 
+                        ON cae.animal_breed_id = cab.id 
+                        AND cab.deleted_dt IS NULL
+                    INNER JOIN user_type ut 
+                        ON cab.user_id = ut.user_id
+                        AND ut.deleted_dt IS NULL
+                    WHERE cae.deleted_dt IS NULL
+                    AND ut.type = '" . $user_type . "'";
+    }
+    $result = $conn->query($query);
+
+    $html_dropdown = "<select name='animal_event_id'>";
+    if ($result !== false) {
+        foreach ($result as $row) {
+            $html_dropdown .= "<option value='" . $row['id'] . "'> " . $row['event_name'] . " </option>";
+        }
+    }
+    $html_dropdown .= "<option value='null'> None </option>";
     $html_dropdown .= " </select>";
     return $html_dropdown;
 }
