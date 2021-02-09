@@ -814,7 +814,10 @@ function get_animal_events_dropdown($user_type = 'unset'){
     if ($user_type = 'unset') {
         $query = "SELECT 
                     cae.id,
-                    CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) as event_name
+                    (CASE 
+                        WHEN cab.breed_name is NULL THEN 
+                            CONCAT(cae.event_name, ' | ', cas.species_name, ' | ',  cs.title)
+                        ELSE CONCAT(cae.event_name, ' | ', cas.species_name, ' | ', cab.breed_name, ' | ', cs.title) END)as event_name
                     FROM `core_animal_events` cae
                     INNER JOIN core_animal_species cas 
                         ON cae.animal_species_id = cas.id
