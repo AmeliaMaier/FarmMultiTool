@@ -250,7 +250,7 @@ function update_animal_species($species_id, $difficulty_level,
                   `gestation_days`= ?, 
                    daily_feed_amount = ?, 
                     feed_amount_unit = ?, 
-                    daily_feed_per_unit = ?,
+                    daily_feed_per_unit = ?
                   WHERE id = ?');
     $stmt->bind_param('iiiiiisiiiiiiidssi', $source_meat, $source_fiber, $source_milk, $source_egg,
                     $cage_happy, $pasture_happy, $difficulty_level, $food_bug, $food_meat, $food_plant, $min_temp,
