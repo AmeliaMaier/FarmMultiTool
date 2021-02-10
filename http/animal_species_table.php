@@ -494,7 +494,7 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Daily Food Amount Per Weight Unit</label>
-                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00">
+                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00" step="any">
                     <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -617,7 +617,7 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Daily Food Amount Per Weight Unit</label>
-                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00">
+                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00" step="any">
                     <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
                 </div>
                 <div class="form-group">
