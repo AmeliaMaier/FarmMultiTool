@@ -493,25 +493,29 @@ try{
                     <span class="text-danger"><?php if (isset($food_type_error)) echo $food_type_error; ?></span>
                 </div>
                 <div class="form-group">
-                    <label>Food Per Day</label>
-                    <div
-                        <label>Daily Food Amount Per Weight Unit</label>
-                        <input type="number" name="daily_food_amount" class="form-control" value="" min="1" max="730">
-                        <label>Daily Food Unit</label>
-                        <select name="daily_food_unit" id="daily_food_unit">
-                            <option value="null">Unknown</option>
-                            <option value="gram">Gram</option>
-                            <option value="cup">Cup</option>
-                            <option value="ounce">Ounce</option>
-                            <option value="quart">Quart</option>
-                            <option value="pound">Pound</option>
-                        </select>
+                    <label>Daily Food Amount Per Weight Unit</label>
+                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00">
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Daily Food Unit</label>
+                    <select name="daily_food_unit" id="daily_food_unit">
+                        <option value="null">Unknown</option>
+                        <option value="gram">Gram</option>
+                        <option value="cup">Cup</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="quart">Quart</option>
+                        <option value="pound">Pound</option>
+                    </select>
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
+                </div>
+                <div class="form-group">
                     <label>Daily Food Per Weight Unit</label>
-                        <select name="daily_food_per_unit" id="daily_food_per_unit">
-                            <option value="null">Unknown</option>
-                            <option value="ounce">Ounce</option>
-                            <option value="pound">Pound</option>
-                        </select>
+                    <select name="daily_food_per_unit" id="daily_food_per_unit">
+                        <option value="null">Unknown</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="pound">Pound</option>
+                    </select>
                     <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -612,10 +616,11 @@ try{
                     <span class="text-danger"><?php if (isset($food_type_error)) echo $food_type_error; ?></span>
                 </div>
                 <div class="form-group">
-                    <label>Food Per Day</label>
-                    <div
                     <label>Daily Food Amount Per Weight Unit</label>
-                    <input type="number" name="daily_food_amount" class="form-control" value="" min="1" max="730">
+                    <input type="number" name="daily_food_amount" class="form-control" value="" min="0.00" max="730.00">
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
+                </div>
+                <div class="form-group">
                     <label>Daily Food Unit</label>
                     <select name="daily_food_unit" id="daily_food_unit">
                         <option value="null">Unknown</option>
@@ -625,6 +630,9 @@ try{
                         <option value="quart">Quart</option>
                         <option value="pound">Pound</option>
                     </select>
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
+                </div>
+                <div class="form-group">
                     <label>Daily Food Per Weight Unit</label>
                     <select name="daily_food_per_unit" id="daily_food_per_unit">
                         <option value="null">Unknown</option>
