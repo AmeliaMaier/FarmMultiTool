@@ -95,7 +95,7 @@ try{
                 }
             }
         }
-        $daily_feed = $_POST['daily_food_amount'];
+        $daily_feed = (float) $_POST['daily_food_amount'];
         if($_POST['daily_food_unit'] = 'null'){
             $daily_feed_unit = null;
         } else {
@@ -288,7 +288,7 @@ try{
                 }
             }
         }
-        $daily_feed = $_POST['daily_food_amount'];
+        $daily_feed = (float) $_POST['daily_food_amount'];
         if($_POST['daily_food_unit'] = 'null'){
             $daily_feed_unit = null;
         } else {
