@@ -13,7 +13,7 @@ try{
     if (isset($_POST['add'])) {
         $plant_species_name = $_POST['plant_species_name'];
         $source_id = (int) $_POST['source_id'];
-        if ($_POST['growth_zone'] = 'null'){
+        if ($_POST['growth_zone'] == 'null'){
             $growth_zone = null;
         }else{
             $growth_zone = $_POST['growth_zone'];
@@ -69,7 +69,7 @@ try{
 
     if (isset($_POST['update'])) {
         $species_id = (int) $_POST['plant_species_id'];
-        if ($_POST['growth_zone'] = 'null'){
+        if ($_POST['growth_zone'] == 'null'){
             $growth_zone = null;
         }else{
             $growth_zone = $_POST['growth_zone'];

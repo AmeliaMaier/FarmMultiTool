@@ -13,7 +13,7 @@ try{
     if (isset($_POST['add'])) {
         $animal_species_name = $_POST['animal_species_name'];
         $source_id = (int) $_POST['source_id'];
-        if($_POST['difficulty_level']='null'){
+        if($_POST['difficulty_level']=='null'){
             $difficulty_level = null;
         }else {
             $difficulty_level = $_POST['difficulty_level'];
@@ -96,12 +96,12 @@ try{
             }
         }
         $daily_feed = (float) $_POST['daily_food_amount'];
-        if($_POST['daily_food_unit'] = 'null'){
+        if($_POST['daily_food_unit'] == 'null'){
             $daily_feed_unit = null;
         } else {
             $daily_feed_unit = $_POST['daily_food_unit'];
         }
-        if($_POST['daily_food_per_unit'] = 'null'){
+        if($_POST['daily_food_per_unit'] == 'null'){
             $daily_feed_unit_per = null;
         } else {
             $daily_feed_unit_per = $_POST['daily_food_per_unit'];
@@ -206,7 +206,7 @@ try{
 
     if (isset($_POST['update'])) {
         $species_id = (int) $_POST['species_id'];
-        if($_POST['difficulty_level']='null'){
+        if($_POST['difficulty_level']=='null'){
             $difficulty_level = null;
         }else {
             $difficulty_level = $_POST['difficulty_level'];
@@ -289,12 +289,12 @@ try{
             }
         }
         $daily_feed = (float) $_POST['daily_food_amount'];
-        if($_POST['daily_food_unit'] = 'null'){
+        if($_POST['daily_food_unit'] == 'null'){
             $daily_feed_unit = null;
         } else {
             $daily_feed_unit = $_POST['daily_food_unit'];
         }
-        if($_POST['daily_food_per_unit'] = 'null'){
+        if($_POST['daily_food_per_unit'] == 'null'){
             $daily_feed_unit_per = null;
         } else {
             $daily_feed_unit_per = $_POST['daily_food_per_unit'];
