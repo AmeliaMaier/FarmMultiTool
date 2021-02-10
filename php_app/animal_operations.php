@@ -486,9 +486,9 @@ function get_animal_breed_table()
     $result = $conn->query($query);
 
     $html_table = '<table> <tr> 
-                                <td> Source_Name </td>  
                                 <td> Animal_Species_Name </td> 
                                 <td> Animal_Breed_Name </td>  
+                                <td> Source_Name </td>  
                                 <td> Difficulty_Level </td>  
                                 <td> Fiber_Source </td>  
                                 <td> Meat_Source </td>  
@@ -509,9 +509,9 @@ function get_animal_breed_table()
 
     if ($result !== false) {
         foreach ($result as $row) {
-            $field1name = $row["source_name"];
             $field2name = $row["species_name"];
             $field3name = $row["breed_name"];
+            $field1name = $row["source_name"];
             $field4name = $row["difficulty_level"];
             $field5name = $row["fiber_source"];
             $field6name = $row["meat_source"];
@@ -530,9 +530,9 @@ function get_animal_breed_table()
             $field18name = $row["price_child"];
 
             $html_table .= '<tr> 
-                                  <td>' . $field1name . '</td> 
                                   <td>' . $field2name . '</td> 
                                   <td>' . $field3name . '</td> 
+                                  <td>' . $field1name . '</td> 
                                   <td>' . $field4name . '</td> 
                                   <td>' . $field5name . '</td> 
                                   <td>' . $field6name . '</td> 
