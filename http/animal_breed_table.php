@@ -12,7 +12,11 @@ try{
     if (isset($_POST['add'])) {
         $species_id = (int) $_POST['species_id'];
         $animal_breed_name = $_POST['animal_breed_name'];
-        $difficulty_level = $_POST['difficulty_level'];
+        if($_POST['difficulty_level']=='null'){
+            $difficulty_level = null;
+        }else {
+            $difficulty_level = $_POST['difficulty_level'];
+        }
         if (isset($_POST['source_meat']) && isset($_POST['source_meat_no'])){
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
@@ -180,7 +184,11 @@ try{
 
     if (isset($_POST['update'])) {
         $breed_id = (int) $_POST['breed_id'];
-        $difficulty_level = $_POST['difficulty_level'];
+        if($_POST['difficulty_level']=='null'){
+            $difficulty_level = null;
+        }else {
+            $difficulty_level = $_POST['difficulty_level'];
+        }
         if (isset($_POST['source_meat']) && isset($_POST['source_meat_no'])){
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
@@ -406,6 +414,7 @@ try{
                 <div class="form-group">
                     <label>Difficulty Level</label><br>
                     <select name="difficulty_level" id="difficulty_level">
+                        <option value="null">Unknown</option>
                         <option value="beginner">Beginner</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="expert">Expert</option>
@@ -512,6 +521,7 @@ try{
                 <div class="form-group">
                     <label>Difficulty Level</label><br>
                     <select name="difficulty_level" id="difficulty_level">
+                        <option value="null">Unknown</option>
                         <option value="beginner">Beginner</option>
                         <option value="intermediate">Intermediate</option>
                         <option value="expert">Expert</option>
