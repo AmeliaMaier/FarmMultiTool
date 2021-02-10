@@ -41,6 +41,8 @@ CREATE TABLE `farmmult_core`.`core_animal_species`
 ALTER TABLE `core_animal_species` CHANGE `species_name` `species_name` VARCHAR (250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `core_animal_species`
     ADD `user_id` BIGINT NOT NULL AFTER `id`;
+ALTER TABLE `core_animal_species` CHANGE `daily_feed_amount` `daily_feed_amount` FLOAT(11) NULL DEFAULT NULL;
+ALTER TABLE `core_animal_species` ADD `daily_feed_amount` INT NULL DEFAULT NULL AFTER `eats_plants`, ADD `feed_amount_unit` TEXT NULL DEFAULT NULL AFTER `daily_feed_amount`, ADD `daily_feed_per_unit` TEXT NULL DEFAULT NULL AFTER `feed_amount_unit`;
 ALTER TABLE `core_animal_species`
     ADD CONSTRAINT `core_animal_species_ibfk_1` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
 ALTER TABLE `core_animal_species`

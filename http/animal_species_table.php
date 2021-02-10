@@ -95,6 +95,17 @@ try{
                 }
             }
         }
+        $daily_feed = $_POST['daily_food_amount'];
+        if($_POST['daily_food_unit'] = 'null'){
+            $daily_feed_unit = null;
+        } else {
+            $daily_feed_unit = $_POST['daily_food_unit'];
+        }
+        if($_POST['daily_food_per_unit'] = 'null'){
+            $daily_feed_unit_per = null;
+        } else {
+            $daily_feed_unit_per = $_POST['daily_food_per_unit'];
+        }
         if (isset($_POST['source_meat']) && isset($_POST['source_meat_no'])){
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
@@ -180,7 +191,7 @@ try{
             $result = add_animal_species($_SESSION['user_id'], $animal_species_name, $source_id, $difficulty_level,
                                             $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                             $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                                            $vaccines);
+                                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per);
 
             if ($result['success']) {
                 $add_success_message = 'Animal Species record added '.$animal_species_name;
@@ -277,6 +288,17 @@ try{
                 }
             }
         }
+        $daily_feed = $_POST['daily_food_amount'];
+        if($_POST['daily_food_unit'] = 'null'){
+            $daily_feed_unit = null;
+        } else {
+            $daily_feed_unit = $_POST['daily_food_unit'];
+        }
+        if($_POST['daily_food_per_unit'] = 'null'){
+            $daily_feed_unit_per = null;
+        } else {
+            $daily_feed_unit_per = $_POST['daily_food_per_unit'];
+        }
         if (isset($_POST['source_meat']) && isset($_POST['source_meat_no'])){
             $source_of_error = 'Cannot select both Raised for Meat and Not Raised for Meat for the same species.';
         }else {
@@ -362,7 +384,7 @@ try{
             $result = update_animal_species($species_id, $difficulty_level,
                 $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                 $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                $vaccines);
+                $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per);
 
             if ($result['success']) {
                 $update_success_message = 'Animal Species record added '.$animal_species_name;
@@ -471,6 +493,28 @@ try{
                     <span class="text-danger"><?php if (isset($food_type_error)) echo $food_type_error; ?></span>
                 </div>
                 <div class="form-group">
+                    <label>Food Per Day</label>
+                    <div
+                        <label>Daily Food Amount Per Weight Unit</label>
+                        <input type="number" name="daily_food_amount" class="form-control" value="" min="1" max="730">
+                        <label>Daily Food Unit</label>
+                        <select name="daily_food_unit" id="daily_food_unit">
+                            <option value="null">Unknown</option>
+                            <option value="gram">Gram</option>
+                            <option value="cup">Cup</option>
+                            <option value="ounce">Ounce</option>
+                            <option value="quart">Quart</option>
+                            <option value="pound">Pound</option>
+                        </select>
+                    <label>Daily Food Per Weight Unit</label>
+                        <select name="daily_food_per_unit" id="daily_food_per_unit">
+                            <option value="null">Unknown</option>
+                            <option value="ounce">Ounce</option>
+                            <option value="pound">Pound</option>
+                        </select>
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
+                </div>
+                <div class="form-group">
                     <label>Source Of:</label><br>
                     <input type="checkbox" id="source_meat" name="source_meat" value="source_meat">
                         <label for="source_meat"> Raised for Meat </label>
@@ -566,6 +610,28 @@ try{
                     <input type="checkbox" id="food_plant_no" name="food_plant_no" value="food_plant_no">
                     <label for="food_plant_no"> Can't Eat Plants </label><br>
                     <span class="text-danger"><?php if (isset($food_type_error)) echo $food_type_error; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Food Per Day</label>
+                    <div
+                    <label>Daily Food Amount Per Weight Unit</label>
+                    <input type="number" name="daily_food_amount" class="form-control" value="" min="1" max="730">
+                    <label>Daily Food Unit</label>
+                    <select name="daily_food_unit" id="daily_food_unit">
+                        <option value="null">Unknown</option>
+                        <option value="gram">Gram</option>
+                        <option value="cup">Cup</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="quart">Quart</option>
+                        <option value="pound">Pound</option>
+                    </select>
+                    <label>Daily Food Per Weight Unit</label>
+                    <select name="daily_food_per_unit" id="daily_food_per_unit">
+                        <option value="null">Unknown</option>
+                        <option value="ounce">Ounce</option>
+                        <option value="pound">Pound</option>
+                    </select>
+                    <span class="text-danger"><?php if (isset($daily_food_error)) echo $daily_food_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Source Of:</label><br>

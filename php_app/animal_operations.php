@@ -4,7 +4,7 @@ return;
 function add_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
                             $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                             $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                            $vaccines)
+                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)
 {
     if (animal_species_exists($animal_species_name, $source_id)) {
         return array("success" => false, "error" => "A record already exists for species " . $animal_species_name . " with source id " . $source_id);
@@ -12,7 +12,7 @@ function add_animal_species($user_id, $animal_species_name, $source_id, $difficu
     if (insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
         $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
         $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-        $vaccines)) {
+        $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)) {
         return array("success" => true);
     }
     return array("success" => false, "error" => "An error occurred while saving the species.");
@@ -204,7 +204,7 @@ function animal_event_link_exists($source_id, $current_event_id, $next_event_id)
 function insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
                                $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                               $vaccines)
+                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)
 {
     if (!function_exists('get_db_connection')) {
         include "db.php";
@@ -214,19 +214,19 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
         'INSERT INTO `core_animal_species`(`user_id`, `core_source_id`, `species_name`, `meat_source`, 
                                   `fiber_source`, `milk_source`, `egg_source`, `cage_happy`, `pasture_happy`, 
                                   `difficulty_level`, `eats_bugs`, `eats_meat`, `eats_plants`, `min_temp`, `max_temp`, 
-                                  `vaccine_schedule`, `gestation_days`, `created_dt`) 
+                                  `vaccine_schedule`, `gestation_days`, daily_feed_amount, feed_amount_unit, daily_feed_per_unit,  `created_dt`) 
                 VALUES 
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
-    $stmt->bind_param('iisiiiiiisiiiiiii', $user_id, $source_id, $animal_species_name, $source_meat,
+    $stmt->bind_param('iisiiiiiisiiiiiiiiss', $user_id, $source_id, $animal_species_name, $source_meat,
         $source_fiber, $source_milk, $source_egg, $cage_happy, $pasture_happy, $difficulty_level,
-        $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days);
+        $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days,$daily_feed, $daily_feed_unit, $daily_feed_unit_per);
     return $stmt->execute();
 }
 
 function update_animal_species($species_id, $difficulty_level,
                                $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                               $vaccines){
+                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per){
     if (!function_exists('get_db_connection')) {
         include "db.php";
     }
@@ -247,11 +247,14 @@ function update_animal_species($species_id, $difficulty_level,
                   `min_temp`= ?,
                   `max_temp`= ?,
                   `vaccine_schedule`= ?,
-                  `gestation_days`= ?
+                  `gestation_days`= ?, 
+                   daily_feed_amount = ?, 
+                    feed_amount_unit = ?, 
+                    daily_feed_per_unit = ?,
                   WHERE id = ?');
-    $stmt->bind_param('iiiiiisiiiiiiii', $source_meat, $source_fiber, $source_milk, $source_egg,
+    $stmt->bind_param('iiiiiisiiiiiiiissi', $source_meat, $source_fiber, $source_milk, $source_egg,
                     $cage_happy, $pasture_happy, $difficulty_level, $food_bug, $food_meat, $food_plant, $min_temp,
-                    $max_temp, $vaccines, $gestation_days, $species_id);
+                    $max_temp, $vaccines, $gestation_days, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $species_id);
     if($stmt->execute()){
         return array("success"=>true);
     }
@@ -562,7 +565,10 @@ function get_animal_species_table()
                      cas.gestation_days, 
                      cas.min_temp, 
                      cas.max_temp, 
-                     cas.vaccine_schedule 
+                     cas.vaccine_schedule,
+                     cas.feed_amount_unit,
+                     cas.daily_feed_amount,
+                     cas.daily_feed_per_unit
             FROM core_animal_species cas 
                 INNER JOIN core_sources cs 
                     on cas.core_source_id = cs.id 
@@ -588,6 +594,9 @@ function get_animal_species_table()
                                 <td> Min_Temp </td>   
                                 <td> Max_Temp </td>   
                                 <td> Vaccine_Schedule </td> 
+                                <td> Daily_Feed_Amount </td> 
+                                <td> Daily_Feed_Unit </td> 
+                                <td> Daily_Feed_Per_Weight_Unit </td> 
                            </tr>';
 
     if ($result !== false) {
@@ -608,6 +617,9 @@ function get_animal_species_table()
             $field15name = $row["min_temp"];
             $field16name = $row["max_temp"];
             $field17name = $row["vaccine_schedule"];
+            $field18name = $row["daily_feed_amount"];
+            $field19name = $row["feed_amount_unit"];
+            $field20name = $row["daily_feed_per_unit"];
 
             $html_table .= '<tr> 
                                   <td>' . $field2name . '</td> 
@@ -626,6 +638,9 @@ function get_animal_species_table()
                                   <td>' . $field15name . '</td> 
                                   <td>' . $field16name . '</td> 
                                   <td>' . $field17name . '</td> 
+                                  <td>' . $field18name . '</td> 
+                                  <td>' . $field19name . '</td> 
+                                  <td>' . $field20name . '</td> 
                               </tr>';
         }
         $result->free();
