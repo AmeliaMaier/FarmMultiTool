@@ -443,11 +443,11 @@ try{
                     <label for="source_pelt"> Raised for Pelt </label>
                     <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
                     <label for="source_pelt_no"> Not Raised for Pelt </label><br>
-                    <<span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
+                    <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Color(s)</label>
-                    <input type="text" name="color" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="color" class="form-control" value="" maxlength="250">
                     <span class="text-danger"><?php if (isset($color_error)) echo $color_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -550,11 +550,11 @@ try{
                     <label for="source_pelt"> Raised for Pelt </label>
                     <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
                     <label for="source_pelt_no"> Not Raised for Pelt </label><br>
-                    <<span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
+                    <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Color(s)</label>
-                    <input type="text" name="color" class="form-control" value="" maxlength="250" required="">
+                    <input type="text" name="color" class="form-control" value="" maxlength="250">
                     <span class="text-danger"><?php if (isset($color_error)) echo $color_error; ?></span>
                 </div>
                 <div class="form-group">
