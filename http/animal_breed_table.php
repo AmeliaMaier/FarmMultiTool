@@ -77,6 +77,23 @@ try{
                 }
             }
         }
+        if (isset($_POST['source_pelt']) && isset($_POST['source_pelt_no'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }
+        }else {
+            if (isset($_POST['source_pelt'])) {
+                $source_pelt = 1;
+            }else {
+                if(isset($_POST['source_pelt_no'])){
+                    $source_pelt = -1;
+                }else{
+                    $source_pelt = 0;
+                }
+            }
+        }
         $color = $_POST['color'];
         $min_size = (int) $_POST['min_size'];
         $max_size = (int) $_POST['max_size'];
@@ -147,7 +164,7 @@ try{
         if (!isset($source_of_error) && !isset($weather_error) && !isset($rearity_error)){
             $result = add_animal_breed($_SESSION['user_id'], $species_id, $animal_breed_name, $difficulty_level, $source_meat,
                 $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered,
-                $exotic, $price_child, $price_adult);
+                $exotic, $price_child, $price_adult, $source_pelt);
 
             if ($result['success']) {
                 $add_success_message = 'Data source archive record added'.$source_id;
@@ -228,6 +245,23 @@ try{
                 }
             }
         }
+        if (isset($_POST['source_pelt']) && isset($_POST['source_pelt_no'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }
+        }else {
+            if (isset($_POST['source_pelt'])) {
+                $source_pelt = 1;
+            }else {
+                if(isset($_POST['source_pelt_no'])){
+                    $source_pelt = -1;
+                }else{
+                    $source_pelt = 0;
+                }
+            }
+        }
         $color = $_POST['color'];
         $min_size = (int) $_POST['min_size'];
         $max_size = (int) $_POST['max_size'];
@@ -298,7 +332,7 @@ try{
         if (!isset($source_of_error) && !isset($weather_error) && !isset($rearity_error)){
             $result = update_animal_breed($breed_id, $difficulty_level, $source_meat, $source_egg, $source_milk,
                 $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered, $exotic,
-                $price_child, $price_adult);
+                $price_child, $price_adult, $source_pelt);
 
             if ($result['success']) {
                 $update_success_message = 'Data source archive record added'.$source_id;
@@ -396,7 +430,11 @@ try{
                     <label for="source_fiber"> Raised for Fiber </label>
                     <input type="checkbox" id="source_fiber_no" name="source_fiber_no" value="source_fiber_no">
                     <label for="source_fiber_no"> Not Raised for Fiber </label><br>
-                    <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
+                    <input type="checkbox" id="source_pelt" name="source_pelt" value="source_pelt">
+                    <label for="source_pelt"> Raised for Pelt </label>
+                    <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
+                    <label for="source_pelt_no"> Not Raised for Pelt </label><br>
+                    <<span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Color(s)</label>
@@ -498,7 +536,11 @@ try{
                     <label for="source_fiber"> Raised for Fiber </label>
                     <input type="checkbox" id="source_fiber_no" name="source_fiber_no" value="source_fiber_no">
                     <label for="source_fiber_no"> Not Raised for Fiber </label><br>
-                    <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
+                    <input type="checkbox" id="source_pelt" name="source_pelt" value="source_pelt">
+                    <label for="source_pelt"> Raised for Pelt </label>
+                    <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
+                    <label for="source_pelt_no"> Not Raised for Pelt </label><br>
+                    <<span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
                     <label>Color(s)</label>

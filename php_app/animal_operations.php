@@ -4,7 +4,8 @@ return;
 function add_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
                             $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                             $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)
+                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt,
+                            $source_hot_fert, $source_cold_fert)
 {
     if (animal_species_exists($animal_species_name, $source_id)) {
         return array("success" => false, "error" => "A record already exists for species " . $animal_species_name . " with source id " . $source_id);
@@ -12,7 +13,7 @@ function add_animal_species($user_id, $animal_species_name, $source_id, $difficu
     if (insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
         $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
         $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-        $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)) {
+        $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt, $source_hot_fert, $source_cold_fert)) {
         return array("success" => true);
     }
     return array("success" => false, "error" => "An error occurred while saving the species.");
@@ -21,14 +22,14 @@ function add_animal_species($user_id, $animal_species_name, $source_id, $difficu
 
 function add_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
                           $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered,
-                          $exotic, $price_child, $price_adult)
+                          $exotic, $price_child, $price_adult, $source_pelt)
 {
     if (animal_breed_exists($species_id, $animal_breed_name)) {
         return array("success" => false, "error" => "A record already exists for breed " . $animal_breed_name . " with species id " . $species_id);
     }
     if (insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
         $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered,
-        $exotic, $price_child, $price_adult)) {
+        $exotic, $price_child, $price_adult, $source_pelt)) {
         return array("success" => true);
     }
     return array("success" => false, "error" => "An error occurred while saving the breed.");
@@ -204,7 +205,8 @@ function animal_event_link_exists($source_id, $current_event_id, $next_event_id)
 function insert_animal_species($user_id, $animal_species_name, $source_id, $difficulty_level,
                                $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per)
+                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt,
+                               $source_hot_fert, $source_cold_fert)
 {
     if (!function_exists('get_db_connection')) {
         include "db.php";
@@ -214,19 +216,22 @@ function insert_animal_species($user_id, $animal_species_name, $source_id, $diff
         'INSERT INTO `core_animal_species`(`user_id`, `core_source_id`, `species_name`, `meat_source`, 
                                   `fiber_source`, `milk_source`, `egg_source`, `cage_happy`, `pasture_happy`, 
                                   `difficulty_level`, `eats_bugs`, `eats_meat`, `eats_plants`, `min_temp`, `max_temp`, 
-                                  `vaccine_schedule`, `gestation_days`, daily_feed_amount, feed_amount_unit, daily_feed_per_unit,  `created_dt`) 
+                                  `vaccine_schedule`, `gestation_days`, daily_feed_amount, feed_amount_unit, 
+                                  daily_feed_per_unit, `pelt_source`, `hot_fertilizer`, `cold_fertilizer`, `created_dt`) 
                 VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
-    $stmt->bind_param('iisiiiiiisiiiiiiiiss', $user_id, $source_id, $animal_species_name, $source_meat,
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)');
+    $stmt->bind_param('iisiiiiiisiiiiiiiissiii', $user_id, $source_id, $animal_species_name, $source_meat,
         $source_fiber, $source_milk, $source_egg, $cage_happy, $pasture_happy, $difficulty_level,
-        $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days,$daily_feed, $daily_feed_unit, $daily_feed_unit_per);
+        $food_bug, $food_meat, $food_plant, $min_temp, $max_temp, $vaccines, $gestation_days,$daily_feed, $daily_feed_unit,
+        $daily_feed_unit_per, $source_pelt, $source_hot_fert, $source_cold_fert);
     return $stmt->execute();
 }
 
 function update_animal_species($species_id, $difficulty_level,
                                $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per){
+                               $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per,  $source_pelt,
+                               $source_hot_fert, $source_cold_fert){
     if (!function_exists('get_db_connection')) {
         include "db.php";
     }
@@ -249,12 +254,16 @@ function update_animal_species($species_id, $difficulty_level,
                   `vaccine_schedule`= ?,
                   `gestation_days`= ?, 
                    daily_feed_amount = ?, 
-                    feed_amount_unit = ?, 
-                    daily_feed_per_unit = ?
+                   feed_amount_unit = ?, 
+                   daily_feed_per_unit = ?,
+                   `pelt_source` = ?, 
+                    `hot_fertilizer` = ?, 
+                    `cold_fertilizer` = ?
                   WHERE id = ?');
-    $stmt->bind_param('iiiiiisiiiiiiidssi', $source_meat, $source_fiber, $source_milk, $source_egg,
+    $stmt->bind_param('iiiiiisiiiiiiidssiiii', $source_meat, $source_fiber, $source_milk, $source_egg,
                     $cage_happy, $pasture_happy, $difficulty_level, $food_bug, $food_meat, $food_plant, $min_temp,
-                    $max_temp, $vaccines, $gestation_days, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $species_id);
+                    $max_temp, $vaccines, $gestation_days, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt,
+                    $source_hot_fert, $source_cold_fert,  $species_id);
     if($stmt->execute()){
         return array("success"=>true);
     }
@@ -264,7 +273,7 @@ function update_animal_species($species_id, $difficulty_level,
 
 function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficulty_level, $source_meat,
                              $source_egg, $source_milk, $source_fiber, $color, $min_size, $max_size, $size_unit, $summer,
-                             $winter, $endangered, $exotic, $price_child, $price_adult)
+                             $winter, $endangered, $exotic, $price_child, $price_adult, $source_pelt)
 {
     if (!function_exists('get_db_connection')) {
         include "db.php";
@@ -274,23 +283,23 @@ function insert_animal_breed($user_id, $species_id, $animal_breed_name, $difficu
         'INSERT INTO `core_animal_breed`(`user_id`, `core_source_id`, `species_id`, `breed_name`, `min_size`, 
                                 `max_size`, `size_units`, `meat_source`, `milk_source`, `egg_source`, `fiber_source`, 
                                 `summer_happy`, `winter_happy`, `endangered`, `exotic`, `color`, `price_child`, 
-                                `price_adult`, `difficulty_level`, `created_dt`) 
+                                `price_adult`, `difficulty_level`, `pelt_source`, `created_dt`) 
                 (SELECT 
                     ? as user_id, cas.core_source_id, ? as species_id, ? as breed_name, ? as min_size,
                     ? as max_size, ? as size_units, ? as meat_source, ? as milk_source, ? as egg_source,
                     ? as fiber_source, ? as summer_happy, ? as winter_happy, ? as endangered, ? as exotic,
-                    ? as color, ? as price_child, ? as price_adult, ? as difficulty_level, CURRENT_DATE as created_dt
+                    ? as color, ? as price_child, ? as price_adult, ? as difficulty_level, ? as pelt_source, CURRENT_DATE as created_dt
                 FROM core_animal_species cas 
                 where cas.id = ?)');
-    $stmt->bind_param('iisiisiiiiiiiisiisi', $user_id, $species_id, $animal_breed_name, $min_size,
+    $stmt->bind_param('iisiisiiiiiiiisiisii', $user_id, $species_id, $animal_breed_name, $min_size,
         $max_size, $size_unit, $source_meat, $source_milk, $source_egg, $source_fiber, $summer,
-        $winter, $endangered, $exotic, $color, $price_child, $price_adult, $difficulty_level, $species_id);
+        $winter, $endangered, $exotic, $color, $price_child, $price_adult, $difficulty_level, $source_pelt, $species_id);
     return $stmt->execute();
 }
 
 function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source_egg, $source_milk,
                              $source_fiber, $color, $min_size, $max_size, $size_unit, $summer, $winter, $endangered, $exotic,
-                             $price_child, $price_adult)
+                             $price_child, $price_adult, $source_pelt)
 {
     if (!function_exists('get_db_connection')) {
         include "db.php";
@@ -312,11 +321,12 @@ function update_animal_breed($breed_id, $difficulty_level, $source_meat, $source
                   `color`= ?,
                   `price_child`= ?,
                   `price_adult`= ?,
-                  `difficulty_level`= ?
+                  `difficulty_level`= ?,
+                    `pelt_source`= ?
                   WHERE `id` = ?');
-    $stmt->bind_param('iisiiiiiiiisiisi', $min_size, $max_size, $size_unit, $source_meat, $source_milk,
+    $stmt->bind_param('iisiiiiiiiisiisii', $min_size, $max_size, $size_unit, $source_meat, $source_milk,
         $source_egg, $source_fiber, $summer, $winter, $endangered, $exotic, $color, $price_child, $price_adult,
-        $difficulty_level, $breed_id);
+        $difficulty_level, $source_pelt, $breed_id);
     if($stmt->execute()){
         return array("success"=>true);
     }
@@ -452,6 +462,7 @@ function get_animal_breed_table()
                      cab.meat_source,
                      cab.milk_source,
                      cab.fiber_source,
+                     cab.pelt_source,
                      cab.color,
                      cab.min_size,
                      cab.max_size,
@@ -483,6 +494,7 @@ function get_animal_breed_table()
                                 <td> Meat_Source </td>  
                                 <td> Milk_Source </td>   
                                 <td> Egg_Source </td>   
+                                <td> Pelt_Source </td>     
                                 <td> Color </td>   
                                 <td> Min_Size </td>   
                                 <td> Max_Size </td>   
@@ -505,6 +517,7 @@ function get_animal_breed_table()
             $field6name = $row["meat_source"];
             $field7name = $row["milk_source"];
             $field8name = $row["egg_source"];
+            $field8_1name = $row["pelt_source"];
             $field9name = $row["color"];
             $field10name = $row["min_size"];
             $field11name = $row["max_size"];
@@ -525,6 +538,7 @@ function get_animal_breed_table()
                                   <td>' . $field6name . '</td> 
                                   <td>' . $field7name . '</td> 
                                   <td>' . $field8name . '</td> 
+                                  <td>' . $field8_1name . '</td> 
                                   <td>' . $field9name . '</td> 
                                   <td>' . $field10name . '</td> 
                                   <td>' . $field11name . '</td> 
@@ -562,6 +576,9 @@ function get_animal_species_table()
                      cas.meat_source, 
                      cas.milk_source, 
                      cas.egg_source, 
+                     cas.pelt_source,
+                     cas.cold_fertilizer, 
+                     cas.hot_fertilizer,
                      cas.gestation_days, 
                      cas.min_temp, 
                      cas.max_temp, 
@@ -589,7 +606,10 @@ function get_animal_species_table()
                                 <td> Fiber_Source </td>  
                                 <td> Meat_Source </td>  
                                 <td> Milk_Source </td>   
-                                <td> Egg_Source </td>   
+                                <td> Egg_Source </td>  
+                                <td> Pelt_Source </td>   
+                                <td> Hot_Ferilizer_Source </td>   
+                                <td> Cold_Ferilizer_Source </td>   
                                 <td> Gestation_Days </td>   
                                 <td> Min_Temp </td>   
                                 <td> Max_Temp </td>   
@@ -613,6 +633,9 @@ function get_animal_species_table()
             $field11name = $row["meat_source"];
             $field12name = $row["milk_source"];
             $field13name = $row["egg_source"];
+            $field13_1name = $row["pelt_source"];
+            $field13_2name = $row["hot_fertilizer"];
+            $field13_3name = $row["cold_fertilizer"];
             $field14name = $row["gestation_days"];
             $field15name = $row["min_temp"];
             $field16name = $row["max_temp"];
@@ -634,6 +657,9 @@ function get_animal_species_table()
                                   <td>' . $field11name . '</td> 
                                   <td>' . $field12name . '</td> 
                                   <td>' . $field13name . '</td> 
+                                  <td>' . $field13_1name . '</td> 
+                                  <td>' . $field13_2name . '</td> 
+                                  <td>' . $field13_3name . '</td> 
                                   <td>' . $field14name . '</td> 
                                   <td>' . $field15name . '</td> 
                                   <td>' . $field16name . '</td> 

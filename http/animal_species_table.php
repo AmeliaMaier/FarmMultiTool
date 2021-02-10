@@ -170,6 +170,44 @@ try{
                 }
             }
         }
+        if (isset($_POST['source_pelt']) && isset($_POST['source_pelt_no'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }
+        }else {
+            if (isset($_POST['source_pelt'])) {
+                $source_pelt = 1;
+            }else {
+                if(isset($_POST['source_pelt_no'])){
+                    $source_pelt = -1;
+                }else{
+                    $source_pelt = 0;
+                }
+            }
+        }
+
+        if (isset($_POST['hot_fert']) && isset($_POST['cold_fert'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Hot Fertilizer and Raised for Cold Fertilizer for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Hot Fertilizer and Raised for Cold Fertilizer for the same species.';
+            }
+        }else {
+            if (isset($_POST['hot_fert'])) {
+                $source_hot_fert = 1;
+                $source_cold_fert = -1;
+            }else {
+                if(isset($_POST['cold_fert'])){
+                    $source_hot_fert = -1;
+                    $source_cold_fert = 1;
+                }else{
+                    $source_hot_fert = 0;
+                    $source_cold_fert = 0;
+                }
+            }
+        }
         $gestation_days = (int) $_POST['gestation_days'];
         $min_temp = (int) $_POST['min_temp'];
         $max_temp = (int) $_POST['max_temp'];
@@ -191,7 +229,8 @@ try{
             $result = add_animal_species($_SESSION['user_id'], $animal_species_name, $source_id, $difficulty_level,
                                             $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                                             $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per);
+                                            $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt,
+                                            $source_hot_fert, $source_cold_fert);
 
             if ($result['success']) {
                 $add_success_message = 'Animal Species record added '.$animal_species_name;
@@ -363,6 +402,43 @@ try{
                 }
             }
         }
+        if (isset($_POST['source_pelt']) && isset($_POST['source_pelt_no'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Pelt and Not Raised for Pelt for the same species.';
+            }
+        }else {
+            if (isset($_POST['source_pelt'])) {
+                $source_pelt = 1;
+            }else {
+                if(isset($_POST['source_pelt_no'])){
+                    $source_pelt = -1;
+                }else{
+                    $source_pelt = 0;
+                }
+            }
+        }
+        if (isset($_POST['hot_fert']) && isset($_POST['cold_fert'])){
+            if(isset($source_of_error)){
+                $source_of_error .= ' Cannot select both Raised for Hot Fertilizer and Raised for Cold Fertilizer for the same species.';
+            }else {
+                $source_of_error = 'Cannot select both Raised for Hot Fertilizer and Raised for Cold Fertilizer for the same species.';
+            }
+        }else {
+            if (isset($_POST['hot_fert'])) {
+                $source_hot_fert = 1;
+                $source_cold_fert = -1;
+            }else {
+                if(isset($_POST['cold_fert'])){
+                    $source_hot_fert = -1;
+                    $source_cold_fert = 1;
+                }else{
+                    $source_hot_fert = 0;
+                    $source_cold_fert = 0;
+                }
+            }
+        }
         $gestation_days = (int) $_POST['gestation_days'];
         $min_temp = (int) $_POST['min_temp'];
         $max_temp = (int) $_POST['max_temp'];
@@ -384,7 +460,8 @@ try{
             $result = update_animal_species($species_id, $difficulty_level,
                 $cage_happy, $pasture_happy, $food_meat, $food_bug, $food_plant, $source_meat,
                 $source_egg, $source_milk, $source_fiber, $gestation_days, $min_temp, $max_temp,
-                $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per);
+                $vaccines, $daily_feed, $daily_feed_unit, $daily_feed_unit_per, $source_pelt,
+                $source_hot_fert, $source_cold_fert);
 
             if ($result['success']) {
                 $update_success_message = 'Animal Species record added '.$animal_species_name;
@@ -536,6 +613,14 @@ try{
                         <label for="source_fiber"> Raised for Fiber </label>
                     <input type="checkbox" id="source_fiber_no" name="source_fiber_no" value="source_fiber_no">
                         <label for="source_fiber_no"> Not Raised for Fiber </label><br>
+                    <input type="checkbox" id="source_pelt" name="source_pelt" value="source_pelt">
+                        <label for="source_pelt"> Raised for Pelt </label>
+                    <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
+                        <label for="source_pelt_no"> Not Raised for Pelt </label><br>
+                    <input type="checkbox" id="hot_fert" name="hot_fert" value="hot_fert">
+                        <label for="hot_fert"> Raised for Hot Fertilizer </label>
+                    <input type="checkbox" id="cold_fert" name="cold_fert" value="cold_fert">
+                        <label for="cold_fert"> Raised for Cold Fertilizer </label><br>
                     <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -659,6 +744,14 @@ try{
                     <label for="source_fiber"> Raised for Fiber </label>
                     <input type="checkbox" id="source_fiber_no" name="source_fiber_no" value="source_fiber_no">
                     <label for="source_fiber_no"> Not Raised for Fiber </label><br>
+                    <input type="checkbox" id="source_pelt" name="source_pelt" value="source_pelt">
+                    <label for="source_pelt"> Raised for Pelt </label>
+                    <input type="checkbox" id="source_pelt_no" name="source_pelt_no" value="source_pelt_no">
+                    <label for="source_pelt_no"> Not Raised for Pelt </label><br>
+                    <input type="checkbox" id="hot_fert" name="hot_fert" value="hot_fert">
+                    <label for="hot_fert"> Raised for Hot Fertilizer </label>
+                    <input type="checkbox" id="cold_fert" name="cold_fert" value="cold_fert">
+                    <label for="cold_fert"> Raised for Cold Fertilizer </label><br>
                     <span class="text-danger"><?php if (isset($source_of_error)) echo $source_of_error; ?></span>
                 </div>
                 <div class="form-group">
