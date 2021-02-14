@@ -178,7 +178,7 @@ try{
                 </div>
                 <div class="form-group">
                     <label>Data Source</label>
-                    <span class="custom-select-sm"><?php echo $source_dropdown ?></span>
+                    <span class="custom-select"><?php echo $source_dropdown ?></span>
                     <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
                 </div>
                 <div class="form-group">
@@ -277,7 +277,7 @@ try{
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group">
                     <label>Species to Update</label>
-                    <span class="custom-select-sm"><?php echo $species_dropdown ?></span>
+                    <span class="custom-select"><?php echo $species_dropdown ?></span>
                     <span class="text-danger"><?php if (isset($species_error)) echo $species_error; ?></span>
                 </div>
                 <div class="form-group">
