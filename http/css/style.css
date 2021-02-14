@@ -2438,7 +2438,7 @@ textarea.form-control {
     }
 
     .form-inline .custom-select, .form-inline .input-group {
-        width: 75%
+        width: 35%
     }
 
     .form-inline .form-check {
