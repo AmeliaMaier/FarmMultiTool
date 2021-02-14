@@ -90,26 +90,24 @@ try{
                     <span class="text-danger"><?php if (isset($add_error_message)) echo $add_error_message; ?></span>
                     <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group ">
-                            <fieldset>
-                                <legend> Source Type </legend>
-                                <select name="source_type" id="source_type">
-                                    <option value="book">Book</option>
-                                    <option value="webpage">Webpage</option>
-                                </select>
-                                <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
-                            </fieldset>
-                        </div>
-                        <div class="form-group">
-                            <label>Web Address or ISBN</label>
+                        <fieldset>
+                            <legend> Source Type </legend>
+                            <select name="source_type" id="source_type">
+                                <option value="book">Book</option>
+                                <option value="webpage">Webpage</option>
+                            </select>
+                            <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
+                        </fieldset>
+                        <fieldset>
+                            <legend> Web Address or ISBN </legend>
                             <input type="text" name="address_isbn" class="form-control" value="" maxlength="250" required="">
                             <span class="text-danger"><?php if (isset($address_isbn_error)) echo $address_isbn_error; ?></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Title</label>
+                        </fieldset>
+                        <fieldset>
+                            <legend> Title </legend>
                             <input type="text" name="title" class="form-control" value="" maxlength="250" required="">
                             <span class="text-danger"><?php if (isset($title_error)) echo $title_error; ?></span>
-                        </div>
+                        </fieldset>
                         <input type="submit" class="btn btn-primary" name="add" value="submit">
                     </form>
             </div>
