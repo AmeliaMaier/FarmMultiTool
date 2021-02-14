@@ -2438,7 +2438,7 @@ textarea.form-control {
     }
 
     .form-inline .custom-select, .form-inline .input-group {
-        width: 35%
+        width: auto
     }
 
     .form-inline .form-check {
@@ -3745,7 +3745,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .custom-select {
     display: inline-block;
-    width: 100%;
+    width: auto;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem 1.75rem .375rem .75rem;
     font-size: 1rem;
