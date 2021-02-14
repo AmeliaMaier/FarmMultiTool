@@ -90,24 +90,24 @@ try{
                     <span class="text-danger"><?php if (isset($add_error_message)) echo $add_error_message; ?></span>
                     <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <fieldset>
-                            <legend> Source Type </legend>
+                        <div class="form-group ">
+                            <label>Source Type</label>
                             <select name="source_type" id="source_type">
                                 <option value="book">Book</option>
                                 <option value="webpage">Webpage</option>
                             </select>
                             <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
-                        </fieldset>
-                        <fieldset>
-                            <legend> Web Address or ISBN </legend>
+                        </div>
+                        <div class="form-group">
+                            <label>Web Address or ISBN</label>
                             <input type="text" name="address_isbn" class="form-control" value="" maxlength="250" required="">
                             <span class="text-danger"><?php if (isset($address_isbn_error)) echo $address_isbn_error; ?></span>
-                        </fieldset>
-                        <fieldset>
-                            <legend> Title </legend>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
                             <input type="text" name="title" class="form-control" value="" maxlength="250" required="">
                             <span class="text-danger"><?php if (isset($title_error)) echo $title_error; ?></span>
-                        </fieldset>
+                        </div>
                         <input type="submit" class="btn btn-primary" name="add" value="submit">
                     </form>
             </div>
