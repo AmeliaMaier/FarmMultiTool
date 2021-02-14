@@ -91,12 +91,14 @@ try{
                     <span class="text-success"><?php if (isset($add_success_message)) echo $add_success_message; ?></span>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group ">
-                            <label>Source Type</label>
-                            <select name="source_type" id="source_type">
-                                <option value="book">Book</option>
-                                <option value="webpage">Webpage</option>
-                            </select>
-                            <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
+                            <fieldset>
+                                <legend> Source Type </legend>
+                                <select name="source_type" id="source_type">
+                                    <option value="book">Book</option>
+                                    <option value="webpage">Webpage</option>
+                                </select>
+                                <span class="text-danger"><?php if (isset($source_type_error)) echo $source_type_error; ?></span>
+                            </fieldset>
                         </div>
                         <div class="form-group">
                             <label>Web Address or ISBN</label>

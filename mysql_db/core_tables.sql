@@ -41,9 +41,11 @@ CREATE TABLE `farmmult_core`.`core_animal_species`
 ALTER TABLE `core_animal_species` CHANGE `species_name` `species_name` VARCHAR (250) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 ALTER TABLE `core_animal_species`
     ADD `user_id` BIGINT NOT NULL AFTER `id`;
-ALTER TABLE `core_animal_species` CHANGE `daily_feed_amount` `daily_feed_amount` FLOAT(11) NULL DEFAULT NULL;
-ALTER TABLE `core_animal_species` ADD `daily_feed_amount` INT NULL DEFAULT NULL AFTER `eats_plants`, ADD `feed_amount_unit` TEXT NULL DEFAULT NULL AFTER `daily_feed_amount`, ADD `daily_feed_per_unit` TEXT NULL DEFAULT NULL AFTER `feed_amount_unit`;
-ALTER TABLE `core_animal_species` ADD `pelt_source` BOOLEAN NULL DEFAULT NULL AFTER `egg_source`, ADD `hot_fertilizer` BOOLEAN NULL DEFAULT NULL AFTER `pelt_source`, ADD `cold_fertilizer` BOOLEAN NULL DEFAULT NULL AFTER `hot_fertilizer`;
+ALTER TABLE `core_animal_species` CHANGE `daily_feed_amount` `daily_feed_amount` FLOAT (11) NULL DEFAULT NULL;
+ALTER TABLE `core_animal_species`
+    ADD `daily_feed_amount` INT NULL DEFAULT NULL AFTER `eats_plants`, ADD `feed_amount_unit` TEXT NULL DEFAULT NULL AFTER `daily_feed_amount`, ADD `daily_feed_per_unit` TEXT NULL DEFAULT NULL AFTER `feed_amount_unit`;
+ALTER TABLE `core_animal_species`
+    ADD `pelt_source` BOOLEAN NULL DEFAULT NULL AFTER `egg_source`, ADD `hot_fertilizer` BOOLEAN NULL DEFAULT NULL AFTER `pelt_source`, ADD `cold_fertilizer` BOOLEAN NULL DEFAULT NULL AFTER `hot_fertilizer`;
 ALTER TABLE `core_animal_species`
     ADD CONSTRAINT `core_animal_species_ibfk_1` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
 ALTER TABLE `core_animal_species`
@@ -95,7 +97,8 @@ ALTER TABLE `core_animal_breed`
     (`core_source_id`, `species_id`, `breed_name`);
 ALTER TABLE `core_animal_breed`
     ADD `difficulty_level` TEXT NOT NULL AFTER `price_adult`;
-ALTER TABLE `core_animal_breed` ADD `pelt_source` BOOLEAN NULL DEFAULT NULL AFTER `egg_source`;
+ALTER TABLE `core_animal_breed`
+    ADD `pelt_source` BOOLEAN NULL DEFAULT NULL AFTER `egg_source`;
 
 CREATE TABLE `farmmult_core`.`core_source_archive`
 (
@@ -223,3 +226,65 @@ ALTER TABLE `core_animal_event_links`
 ALTER TABLE `core_animal_event_links`
     ADD CONSTRAINT `core_animal_event_links_ibfk_4` FOREIGN KEY (`next_event_id`) REFERENCES `core_animal_events` (`id`);
 
+
+CREATE TABLE `farmmult_core`.`core_animal_illnesses`
+(
+    `id`                BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id`           BIGINT NOT NULL,
+    `core_source_id`    BIGINT NOT NULL,
+    `animal_species_id` BIGINT NULL,
+    `illness_name`      VARCHAR(250) NULL,
+    `infectius`         BOOLEAN NULL DEFAULT NULL,
+    `cull`              BOOLEAN NULL DEFAULT NULL,
+    `created_dt`        DATE NULL,
+    `deleted_dt`        DATE NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_animal_illnesses`
+    ADD UNIQUE `core_animal_illnesses_unique_index`(`core_source_id`, `species_id`, `illness_name`);
+ALTER TABLE `core_animal_illnesses`
+    ADD CONSTRAINT `core_animal_illnesses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_animal_illnesses`
+    ADD CONSTRAINT `core_animal_illnesses_ibfk_2` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
+ALTER TABLE `core_animal_illnesses`
+    ADD CONSTRAINT `core_animal_illnesses_ibfk_3` FOREIGN KEY (`animal_species_id`) REFERENCES `core_animal_species` (`id`);
+
+CREATE TABLE `farmmult_core`.`core_symptoms`
+(
+    `id`             BIGINT       NOT NULL AUTO_INCREMENT,
+    `user_id`        BIGINT       NOT NULL,
+    `core_source_id` BIGINT       NOT NULL,
+    `symptom`        VARCHAR(250) NOT NULL,
+    `created_dt`     DATE         NOT NULL,
+    `deleted_dt`     DATE NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_symptoms`
+    ADD UNIQUE `core_symptoms_unique_index`(`core_source_id`, `symptom`);
+ALTER TABLE `core_symptoms`
+    ADD CONSTRAINT `core_symptoms_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_symptoms`
+    ADD CONSTRAINT `core_symptoms_ibfk_2` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
+
+CREATE TABLE `farmmult_core`.`core_animal_illness_symptom`
+(
+    `id`                BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id`           BIGINT NOT NULL,
+    `core_source_id`    BIGINT NOT NULL,
+    `animal_illness_id` BIGINT NOT NULL,
+    `animal_symptom_id` BIGINT NOT NULL,
+    `notes`             TEXT NULL DEFAULT NULL,
+    `created_dt`        DATE   NOT NULL,
+    `deleted_dt`        DATE NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_animal_illness_symptom`
+    ADD UNIQUE `core_animal_illness_symptom_index`(`core_source_id`, `animal_illness_id`, `animal_symptom_id`);
+ALTER TABLE `core_animal_illness_symptom`
+    ADD CONSTRAINT `core_animal_illness_symptom_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_animal_illness_symptom`
+    ADD CONSTRAINT `core_animal_illness_symptom_ibfk_2` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
+ALTER TABLE `core_animal_illness_symptom`
+    ADD CONSTRAINT `core_animal_illness_symptom_ibfk_3` FOREIGN KEY (`animal_illness_id`) REFERENCES `core_animal_illnesses` (`id`);
+ALTER TABLE `core_animal_illness_symptom`
+    ADD CONSTRAINT `core_animal_illness_symptom_ibfk_4` FOREIGN KEY (`animal_symptom_id`) REFERENCES `core_symptoms` (`id`);
