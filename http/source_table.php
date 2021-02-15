@@ -4,12 +4,11 @@ try{
     session_start();
     include "./../php_app/source_operations.php";
     include "./../php_app/shared_html.php";
+    include "./../php_app/shared_functions.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
-    $page_name_full = explode('/', $_SERVER['PHP_SELF']);
-    $page_name = explode('.',end($page_name_full))[0];
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], $page_name);
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], get_page_name($_SERVER['PHP_SELF']));
 
     $html_table = get_sources_table();
     $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
