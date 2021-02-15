@@ -7,9 +7,13 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $page_name_full = explode('/', $_SERVER['PHP_SELF']);
+    $page_name = explode('.',end($page_name_full))[0];
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], $page_name);
+
     $html_table = get_sources_table();
     $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_table');
+
     if (isset($_POST['add'])) {
         $source_type = $_POST['source_type'];
         $address_isbn = $_POST['address_isbn'];
@@ -21,7 +25,6 @@ try{
             $add_success_message = 'Data source added for Address/ISBN '.$address_isbn;
             $html_table = get_sources_table();
             $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_table');
         } else {
             unset($add_success_message);
             $add_error_message = $result['error'];
@@ -39,7 +42,6 @@ try{
             $update_success_message = 'Data source updated for Address/ISBN '.$address_isbn;
             $html_table = get_sources_table();
             $source_dropdown = get_sources_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_table');
         } else {
             unset($update_success_message);
             $update_error_message = $result['error'];
