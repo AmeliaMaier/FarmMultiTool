@@ -2,6 +2,7 @@
 try{
     session_start();
     include "./../php_app/source_operations.php";
+    include "./../php_app/shared_html.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
@@ -9,6 +10,7 @@ try{
     $source_dropdown = get_sources_dropdown();
     $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
         $source_id = (int) $_POST['source_id'];
@@ -23,6 +25,7 @@ try{
             $html_table = get_sources_archive_table();
             $source_dropdown = get_sources_dropdown();
             $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
+            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
         } else {
             unset($add_success_message);
             $add_error_message = $result['error'];
@@ -41,6 +44,7 @@ try{
             $html_table = get_sources_archive_table();
             $source_dropdown = get_sources_dropdown();
             $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
+            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
         } else {
             unset($update_success_message);
             $update_error_message = $result['error'];
@@ -58,20 +62,7 @@ try{
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<ul>
-    <p class="text">Username : <?php echo $_SESSION['user_name']?></p>
-    <p class="text">Type : <?php echo $_SESSION['user_type']?></p>
-    <li> <a href="logout.php">Logout</a> </li>
-    <li> <a href="dashboard.php">Home</a> </li>
-    <li> <a href="source_table.php">Data Source</a> </li>
-    <li> <a class="active" href="source_archive_table.php">Archived Data Source</a> </li>
-    <li> <a href="animal_species_table.php">Animal Species</a> </li>
-    <li> <a href="animal_breed_table.php">Animal Breed</a> </li>
-    <li> <a href="plant_species_table.php">Plant Species</a> </li>
-    <li> <a href="animal_food_plants_table.php">Animal Food: Plants</a> </li>
-    <li> <a href="animal_events_table.php">Animal Events</a> </li>
-    <li> <a href="animal_event_links_table.php">Animal Event Links</a> </li>
-</ul>
+<?php echo  $nav_bar; ?>
 <div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <span class="text-danger"><?php if (isset($error_message)) echo $error_message; ?></span>
     <span class="text-success"><?php if (isset($success_message)) echo $success_message; ?></span>
