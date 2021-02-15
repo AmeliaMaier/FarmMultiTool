@@ -34,6 +34,7 @@ function get_dropdown_html($label, $dropdown){
     return '<div class="form-group">
                     <label>'.$label.'</label>
                     <span class="custom-select">< '.$dropdown.' ></span>
+                    <span class="text-danger"><?php if (isset($dropdown_error)) echo $dropdown_error; ?></span>
                 </div>';
 }
 

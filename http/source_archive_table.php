@@ -27,9 +27,10 @@ function get_shared_inputs()
 
 try{
     session_start();
-    include "./../php_app/source_operations.php";
-    include "./../php_app/shared_html.php";
-    include "./../php_app/shared_functions.php";
+    if(!function_exists('add_source_archive')){include "./../php_app/source_operations.php";}
+    if(!function_exists('get_navbar')){include "./../php_app/shared_html.php";}
+    if(!function_exists('get_page_name')){include "./../php_app/shared_functions.php";}
+
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
