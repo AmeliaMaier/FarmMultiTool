@@ -107,7 +107,7 @@ try{
                     </select>
                     <span class="text-danger"><?php if (isset($archive_type_error)) echo $archive_type_error; ?></span>
                 </div>
-                <?php echo  get_source_dropdown_html(); ?>
+<!--                --><?php //echo  get_source_dropdown_html(); ?>
                 <?php echo  get_shared_inputs(); ?>
                 <input type="submit" class="btn btn-primary" name="add" value="submit">
             </form>
