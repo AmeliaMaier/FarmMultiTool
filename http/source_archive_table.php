@@ -3,7 +3,6 @@
 function get_html_pieces($user_name, $user_type, $page_path){
     return array(get_navbar($user_name, $user_type, get_page_name($page_path)),
                 get_sources_archive_table(),
-                get_sources_dropdown(),
                 get_archived_sources_dropdown($user_type));
 }
 
@@ -34,7 +33,7 @@ try{
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
-    list($nav_bar, $html_table, $source_dropdown, $archived_source_dropdown) =
+    list($nav_bar, $html_table, $archived_source_dropdown) =
         get_html_pieces($_SESSION['user_name'],$_SESSION['user_type'], $_SERVER['PHP_SELF']);
 
 
@@ -44,7 +43,7 @@ try{
 
         if ($result['success']) {
             $add_success_message = 'Data source archive record added'.$_POST['source_id'];
-            list($nav_bar, $html_table, $source_dropdown, $archived_source_dropdown) =
+            list($nav_bar, $html_table, $archived_source_dropdown) =
                 get_html_pieces($_SESSION['user_name'],$_SESSION['user_type'], $_SERVER['PHP_SELF']);
         } else {
             unset($add_success_message);
@@ -57,7 +56,7 @@ try{
 
         if ($result['success']) {
             $update_success_message = 'Data source archive record added'.$_POST['archived_source_id'];
-            list($nav_bar, $html_table, $source_dropdown, $archived_source_dropdown) =
+            list($nav_bar, $html_table,  $archived_source_dropdown) =
                 get_html_pieces($_SESSION['user_name'],$_SESSION['user_type'], $_SERVER['PHP_SELF']);
         } else {
             unset($update_success_message);
@@ -107,11 +106,7 @@ try{
                     </select>
                     <span class="text-danger"><?php if (isset($archive_type_error)) echo $archive_type_error; ?></span>
                 </div>
-                <div class="form-group">
-                    <label>Data Source</label>
-                    <span class="custom-select"><?php echo $source_dropdown ?></span>
-                    <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
-                </div>
+                <?php echo  get_source_dropdown_html(); ?>
                 <?php echo  get_shared_inputs(); ?>
                 <input type="submit" class="btn btn-primary" name="add" value="submit">
             </form>
@@ -124,11 +119,7 @@ try{
             <span class="text-danger"><?php if (isset($update_error_message)) echo $update_error_message; ?></span>
             <span class="text-success"><?php if (isset($update_success_message)) echo $update_success_message; ?></span>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <div class="form-group">
-                    <label>Data Source to Update</label>
-                    <span class="custom-select"><?php echo $archived_source_dropdown ?></span>
-                    <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
-                </div>
+                <?php echo  get_dropdown_html('Data Source to Update', $archived_source_dropdown); ?>
                 <?php echo  get_shared_inputs(); ?>
                 <input type="submit" class="btn btn-primary" name="update" value="submit">
             </form>
