@@ -1,5 +1,5 @@
 <?php
-return;
+if(!function_exists('get_source_dropdown')){include "source_operations.php";}
 
 function get_navbar($username, $user_type, $current_page_name)
 {
@@ -22,10 +22,9 @@ function get_navbar($username, $user_type, $current_page_name)
 }
 
 function get_source_dropdown_html(){
-    if(!function_exists('get_source_dropdown')){include "source_operations.php";}
     return '<div class="form-group">
                     <label>Data Source</label>
-                    <span class="custom-select"><'.get_sources_table().'></span>
+                    <span class="custom-select">'.get_source_dropdown().'</span>
                     <span class="text-danger"><?php if (isset($data_source_error)) echo $data_source_error; ?></span>
                 </div>';
 }
@@ -33,7 +32,7 @@ function get_source_dropdown_html(){
 function get_dropdown_html($label, $dropdown){
     return '<div class="form-group">
                     <label>'.$label.'</label>
-                    <span class="custom-select">< '.$dropdown.' ></span>
+                    <span class="custom-select">'.$dropdown.'</span>
                     <span class="text-danger"><?php if (isset($dropdown_error)) echo $dropdown_error; ?></span>
                 </div>';
 }

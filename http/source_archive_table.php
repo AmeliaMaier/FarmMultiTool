@@ -13,7 +13,7 @@ function get_html_pieces($user_name, $user_type, $page_path){
 function get_shared_inputs(){
     return '<div class="form-group">
                 <label>SFTP Folder Used</label>
-                <span class="custom-select"><'.get_sftp_folder_dropdown().'></span>
+                <span class="custom-select">'.get_sftp_folder_dropdown().'</span>
                 <span class="text-danger"><?php if (isset($sftp_folder_error)) echo $sftp_folder_error; ?></span>
             </div>
             <div class="form-group">
@@ -107,7 +107,7 @@ try{
                     </select>
                     <span class="text-danger"><?php if (isset($archive_type_error)) echo $archive_type_error; ?></span>
                 </div>
-<!--                --><?php //echo  get_source_dropdown_html(); ?>
+                <?php echo  get_source_dropdown_html(); ?>
                 <?php echo  get_shared_inputs(); ?>
                 <input type="submit" class="btn btn-primary" name="add" value="submit">
             </form>
