@@ -1,6 +1,7 @@
 <?php
 try{
     session_start();
+    include "./../php_app/shared_html.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
