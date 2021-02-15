@@ -1,13 +1,16 @@
 <?php
 
+if(!function_exists('add_source_archive')){include "./../php_app/source_operations.php";}
+if(!function_exists('get_navbar')){include "./../php_app/shared_html.php";}
+if(!function_exists('get_page_name')){include "./../php_app/shared_functions.php";}
+
 function get_html_pieces($user_name, $user_type, $page_path){
     return array(get_navbar($user_name, $user_type, get_page_name($page_path)),
                 get_sources_archive_table(),
                 get_archived_sources_dropdown($user_type));
 }
 
-function get_shared_inputs()
-{
+function get_shared_inputs(){
     return '<div class="form-group">
                 <label>SFTP Folder Used</label>
                 <span class="custom-select"><'.get_sftp_folder_dropdown().'></span>
@@ -27,9 +30,6 @@ function get_shared_inputs()
 
 try{
     session_start();
-    if(!function_exists('add_source_archive')){include "./../php_app/source_operations.php";}
-    if(!function_exists('get_navbar')){include "./../php_app/shared_html.php";}
-    if(!function_exists('get_page_name')){include "./../php_app/shared_functions.php";}
 
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
