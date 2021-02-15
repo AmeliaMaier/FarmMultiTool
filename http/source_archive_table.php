@@ -3,14 +3,17 @@ try{
     session_start();
     include "./../php_app/source_operations.php";
     include "./../php_app/shared_html.php";
+    include "./../php_app/shared_functions.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], get_page_name($_SERVER['PHP_SELF']));
+
     $html_table = get_sources_archive_table();
     $source_dropdown = get_sources_dropdown();
     $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
     $sftp_folder_dropdown = get_sftp_folder_dropdown();
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
+
     if (isset($_POST['add'])) {
         $archive_type = $_POST['archive_type'];
         $source_id = (int) $_POST['source_id'];
@@ -25,7 +28,6 @@ try{
             $html_table = get_sources_archive_table();
             $source_dropdown = get_sources_dropdown();
             $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
         } else {
             unset($add_success_message);
             $add_error_message = $result['error'];
@@ -44,7 +46,6 @@ try{
             $html_table = get_sources_archive_table();
             $source_dropdown = get_sources_dropdown();
             $archived_source_dropdown = get_archived_sources_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'source_archive_table');
         } else {
             unset($update_success_message);
             $update_error_message = $result['error'];

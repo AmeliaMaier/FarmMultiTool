@@ -4,13 +4,15 @@ try{
     include "./../php_app/plant_operations.php";
     include "./../php_app/source_operations.php";
     include "./../php_app/shared_html.php";
+    include "./../php_app/shared_functions.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], get_page_name($_SERVER['PHP_SELF']));
+
     $html_table = get_plant_species_table();
     $source_dropdown = get_sources_dropdown();
     $species_dropdown = get_plant_species_dropdown($_SESSION['user_type']);
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'plant_species_table');
 
     if (isset($_POST['add'])) {
         $plant_species_name = $_POST['plant_species_name'];
@@ -62,7 +64,6 @@ try{
                 $add_success_message = 'Plant Species record added '.$plant_species_name;
                 $html_table = get_plant_species_table();
                 $species_dropdown = get_plant_species_dropdown($_SESSION['user_type']);
-                $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'plant_species_table');
             } else {
                 unset($add_success_message);
                 $add_error_message = $result['error'];
@@ -118,7 +119,6 @@ try{
                 $update_success_message = 'Plant Species record added '.$plant_species_name;
                 $html_table = get_plant_species_table();
                 $species_dropdown = get_plant_species_dropdown($_SESSION['user_type']);
-                $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'plant_species_table');
             } else {
                 unset($update_success_message);
                 $update_error_message = $result['error'];

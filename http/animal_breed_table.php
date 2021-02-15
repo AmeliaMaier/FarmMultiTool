@@ -3,13 +3,15 @@ try{
     session_start();
     include "./../php_app/animal_operations.php";
     include "./../php_app/shared_html.php";
+    include "./../php_app/shared_functions.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], get_page_name($_SERVER['PHP_SELF']));
+
     $html_table = get_animal_breed_table();
     $species_dropdown = get_animal_species_dropdown();
     $breed_dropdown = get_animal_breed_dropdown($_SESSION['user_type']);
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_breed_table');
 
     if (isset($_POST['add'])) {
         $species_id = (int) $_POST['species_id'];
@@ -177,8 +179,7 @@ try{
                 $html_table = get_animal_breed_table();
                 $species_dropdown = get_animal_species_dropdown();
                 $breed_dropdown = get_animal_breed_dropdown($_SESSION['user_type']);
-                $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_breed_table');
-            } else {
+           } else {
                 unset($add_success_message);
                 $add_error_message = $result['error'];
             }
@@ -350,7 +351,6 @@ try{
                 $html_table = get_animal_breed_table();
                 $species_dropdown = get_animal_species_dropdown();
                 $breed_dropdown = get_animal_breed_dropdown($_SESSION['user_type']);
-                $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_breed_table');
             } else {
                 unset($update_success_message);
                 $update_error_message = $result['error'];

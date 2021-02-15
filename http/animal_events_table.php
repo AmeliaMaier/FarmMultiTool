@@ -5,15 +5,17 @@ try{
     include "./../php_app/animal_operations.php";
     include "./../php_app/source_operations.php";
     include "./../php_app/shared_html.php";
+    include "./../php_app/shared_functions.php";
     if(isset($_SESSION['user_id']) =="") {
         header("Location: login.php");
     }
+    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], get_page_name($_SERVER['PHP_SELF']));
+
     $html_table = get_animal_events_table();
     $source_dropdown = get_sources_dropdown();
     $species_dropdown = get_animal_species_dropdown();
     $breed_dropdown = get_animal_breed_dropdown('unset', true);
     $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
-    $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_events_table');
 
     if (isset($_POST['add'])) {
         $animal_species_id = (int) $_POST['species_id'];
@@ -33,7 +35,6 @@ try{
             $species_dropdown = get_animal_species_dropdown();
             $breed_dropdown = get_animal_breed_dropdown('unset', true);
             $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_events_table');
         } else {
             unset($add_success_message);
             $add_error_message = $result['error'];
@@ -52,7 +53,6 @@ try{
             $species_dropdown = get_animal_species_dropdown();
             $breed_dropdown = get_animal_breed_dropdown('unset', true);
             $events_dropdown = get_animal_events_dropdown($_SESSION['user_type']);
-            $nav_bar = get_navbar($_SESSION['user_name'], $_SESSION['user_type'], 'animal_events_table');
         } else {
                 unset($update_success_message);
                 $update_error_message = $result['error'];
