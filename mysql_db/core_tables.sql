@@ -288,3 +288,21 @@ ALTER TABLE `core_animal_illness_symptom`
     ADD CONSTRAINT `core_animal_illness_symptom_ibfk_3` FOREIGN KEY (`animal_illness_id`) REFERENCES `core_animal_illnesses` (`id`);
 ALTER TABLE `core_animal_illness_symptom`
     ADD CONSTRAINT `core_animal_illness_symptom_ibfk_4` FOREIGN KEY (`animal_symptom_id`) REFERENCES `core_symptoms` (`id`);
+
+CREATE TABLE `farmmult_core`.`core_plant_starting_events`
+(
+    `id`             BIGINT       NOT NULL AUTO_INCREMENT,
+    `name`           VARCHAR(255) NOT NULL,
+    `description`    VARCHAR(255) NOT NULL,
+    `user_id`        BIGINT       NOT NULL,
+    `core_source_id` BIGINT       NOT NULL,
+    `created_dt`     DATE         NOT NULL,
+    `deleted_dt`     DATE NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `core_plant_starting_events`
+    ADD UNIQUE `core_plant_starting_events_index`(`core_source_id`, `name`);
+ALTER TABLE `core_plant_starting_events`
+    ADD CONSTRAINT `core_plant_starting_events_user_ibfk` FOREIGN KEY (`user_id`) REFERENCES `user_logins` (`id`);
+ALTER TABLE `core_plant_starting_events`
+    ADD CONSTRAINT `core_plant_starting_events_sourse_ibfk` FOREIGN KEY (`core_source_id`) REFERENCES `core_sources` (`id`);
